@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-pub fn largest_of_five(a: &[i32; 5]) -> i32 {
-    let mut largest = a[0];
-    for i in 1..a.len() {
-        if a[i] > largest {
-            largest = a[i];
+pub fn largest_of_five(a: &[i32; 5]) -> &i32 {
+    let mut largest = &a[0];
+    for i in a.iter() {
+        if i > largest {
+            largest = i;
         }
     }
     largest
@@ -38,7 +38,7 @@ mod tests {
             Test {a: [1, 4, 3, 2, 5], want: 5},
         ];
         for t in &tests {
-            assert_eq!(largest_of_five(&t.a), t.want);
+            assert_eq!(largest_of_five(&t.a), &t.want);
         }
     }
 }
