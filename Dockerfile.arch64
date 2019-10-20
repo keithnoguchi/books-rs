@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
 FROM archlinux/base
-RUN pacman -Sy --noconfirm rust rustup
+RUN pacman -Sy --noconfirm make gcc rust
 WORKDIR /home/build
 CMD ["make"]
