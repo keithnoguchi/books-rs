@@ -11,9 +11,8 @@ pub fn largest_of_five(a: &[i32; 5]) -> &i32 {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     #[test]
-    fn largest_of_the_array() {
+    fn largest_of_five() {
         struct Test {
             a: [i32; 5],
             want: i32,
@@ -24,7 +23,7 @@ mod tests {
             Test {a: [1, 4, 3, 2, 5], want: 5},
         ];
         for t in &tests {
-            assert_eq!(largest_of_five(&t.a), &t.want);
+            assert_eq!(super::largest_of_five(&t.a), &t.want);
         }
     }
     #[test]
