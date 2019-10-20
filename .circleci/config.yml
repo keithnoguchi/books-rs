@@ -6,7 +6,7 @@ defaults: &defaults
     image: ubuntu-1604:201903-01
 workflows:
   version: 2
-  checkout_run_test:
+  test_on_multiple_targets:
     jobs:
       - checkout
       - test-arch64:
