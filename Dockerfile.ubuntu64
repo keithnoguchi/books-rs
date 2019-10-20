@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0
 FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y rust
+RUN apt-get update && apt-get install -y rustc cargo
 WORKDIR /home/build
 CMD ["make"]
