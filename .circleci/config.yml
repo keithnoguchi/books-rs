@@ -1,0 +1,37 @@
+---
+version: 2
+defaults: &defaults
+  working_directory: /home/circleci/rustbox
+  machine:
+    image: ubuntu-1604:201903-01
+workflows:
+  version: 2
+  checkout_run_test:
+    jobs:
+      - checkout
+      - test-arch64:
+          requires:
+            - checkout
+      - test-ubuntu64:
+          requires:
+            - checkout
+jobs:
+  checkout:
+    <<: *defaults
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root:  .
+          paths: .
+  test-arch64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make test-arch64
+  test-ubuntu64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make test-ubuntu64
