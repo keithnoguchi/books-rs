@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-pub fn largest<'a, T: PartialOrd>(a: &'a[T; 5]) -> &'a T {
+pub fn largest<'a, T: PartialOrd>(a: &'a [T; 5]) -> &'a T {
     let mut largest = &a[0];
     for i in a.iter() {
         if i > largest {

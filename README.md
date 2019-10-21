@@ -14,6 +14,7 @@
 - [vector]: Standard vector type
 - [string]: String type
 - [hashmap]: HashMap type
+- [generic]: Generics
 
 # Test
 
@@ -49,3 +50,4 @@ Happy Hacking!
 [vector]: src/vector.rs
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
+[generic]: src/generic.rs
