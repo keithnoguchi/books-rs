@@ -79,9 +79,18 @@ mod tests {
             want: i32,
         }
         let tests = [
-            Test {a: [1, 2, 3, 4, 5], want: 5},
-            Test {a: [5, 4, 3, 2, 1], want: 5},
-            Test {a: [1, 4, 3, 2, 5], want: 5},
+            Test {
+                a: [1, 2, 3, 4, 5],
+                want: 5,
+            },
+            Test {
+                a: [5, 4, 3, 2, 1],
+                want: 5,
+            },
+            Test {
+                a: [1, 4, 3, 2, 5],
+                want: 5,
+            },
         ];
         for t in &tests {
             assert_eq!(super::largest(&t.a), &t.want);

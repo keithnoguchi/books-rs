@@ -1,10 +1,12 @@
 # SPDX-License-Identifier: GPL-2.0
-.PHONY: test clean
+.PHONY: test clean fmt
 all: test
 test:
 	@cargo test
 clean:
 	@cargo clean
+fmt:
+	@rustfmt --check src/*.rs
 # CI targets.
 .PHONY: arch64 ubuntu64
 arch64: arch64-image

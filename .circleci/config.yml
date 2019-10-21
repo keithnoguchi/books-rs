@@ -9,12 +9,15 @@ workflows:
   test_on_multiple_targets:
     jobs:
       - checkout
+      - format:
+          requires:
+            - checkout
       - test-arch64:
           requires:
-            - checkout
+            - format
       - test-ubuntu64:
           requires:
-            - checkout
+            - format
 jobs:
   checkout:
     <<: *defaults
@@ -23,6 +26,12 @@ jobs:
       - persist_to_workspace:
           root:  .
           paths: .
+  format:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make fmt
   test-arch64:
     <<: *defaults
     steps:

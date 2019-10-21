@@ -63,7 +63,7 @@ mod tests {
             Test {
                 name: &"get index 0, 1, 3, 4 from the empty vector",
                 data: vec![],
-                want: vec![(0, None),(1, None),(3, None),(4, None)],
+                want: vec![(0, None), (1, None), (3, None), (4, None)],
             },
             Test {
                 name: &"get index 0 from the three entries vector",
@@ -73,7 +73,7 @@ mod tests {
             Test {
                 name: &"get index 0, 1, 3, 4 from the three entries vector",
                 data: vec![1, 2, 3],
-                want: vec![(0, Some(&1)),(1, Some(&2)),(3, None),(4, None)],
+                want: vec![(0, Some(&1)), (1, Some(&2)), (3, None), (4, None)],
             },
         ];
         for t in &tests {
