@@ -5,13 +5,13 @@ mod tests {
     fn next() {
         let a = vec!['a', 'b', 'c', 'd', 'e'];
         let mut i = a.iter();
-        assert_eq!(i.next(), Some(&'a'));
-        assert_eq!(i.next(), Some(&'b'));
-        assert_eq!(i.next(), Some(&'c'));
-        assert_eq!(i.next(), Some(&'d'));
-        assert_eq!(i.next(), Some(&'e'));
+        assert_eq!(Some(&'a'), i.next());
+        assert_eq!(Some(&'b'), i.next());
+        assert_eq!(Some(&'c'), i.next());
+        assert_eq!(Some(&'d'), i.next());
+        assert_eq!(Some(&'e'), i.next());
         for _ in 1..1000 {
-            assert_eq!(i.next(), None);
+            assert_eq!(None, i.next());
         }
     }
     #[test]
@@ -44,7 +44,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.data.len(), t.want, "{}", t.want);
+            debug_assert_eq!(t.want, t.data.len(), "{}", t.want);
         }
     }
     #[test]
@@ -79,7 +79,7 @@ mod tests {
         for t in &tests {
             for want in t.want.iter() {
                 let got = t.data.get(want.0);
-                debug_assert_eq!(got, want.1, "{}", t.name);
+                debug_assert_eq!(want.1, got, "{}", t.name);
             }
         }
     }
@@ -115,7 +115,7 @@ mod tests {
             for a in t.push.iter() {
                 t.data.push(*a);
             }
-            debug_assert_eq!(t.data, t.want, "{}", t.name);
+            debug_assert_eq!(t.want, t.data, "{}", t.name);
         }
     }
     #[test]
@@ -160,7 +160,7 @@ mod tests {
         for t in &mut tests {
             for want in &t.want {
                 let got = t.data.pop();
-                debug_assert_eq!(&got, want, "{}", t.name);
+                debug_assert_eq!(want, &got, "{}", t.name);
             }
         }
     }

@@ -15,14 +15,14 @@ mod tests {
     fn next() {
         let a = [1, 2, 3, 4, 5];
         let mut i = a.iter();
-        assert_eq!(i.next(), Some(&1));
-        assert_eq!(i.next(), Some(&2));
-        assert_eq!(i.next(), Some(&3));
-        assert_eq!(i.next(), Some(&4));
-        assert_eq!(i.next(), Some(&5));
+        assert_eq!(Some(&1), i.next());
+        assert_eq!(Some(&2), i.next());
+        assert_eq!(Some(&3), i.next());
+        assert_eq!(Some(&4), i.next());
+        assert_eq!(Some(&5), i.next());
         // you can call next() forever.
         for _ in 0..1000 {
-            assert_eq!(i.next(), None);
+            assert_eq!(None, i.next());
         }
     }
     #[test]
@@ -68,7 +68,7 @@ mod tests {
         for t in &tests {
             let got = &t.data[t.range.0..t.range.1];
             for (i, want) in t.want.iter().enumerate() {
-                debug_assert_eq!(&got[i], want, "{}", t.name);
+                debug_assert_eq!(want, &got[i], "{}", t.name);
             }
         }
     }
@@ -93,7 +93,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            assert_eq!(super::largest(&t.a), &t.want);
+            assert_eq!(&t.want, super::largest(&t.a));
         }
     }
 }

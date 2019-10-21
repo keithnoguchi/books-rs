@@ -10,8 +10,8 @@
 
 # Modules
 
-- [array]: Standard array
-- [vector]: Standard vector
+- [array]: Standard array type
+- [vector]: Standard vector type
 - [string]: String type
 - [hashmap]: HashMap type
 
