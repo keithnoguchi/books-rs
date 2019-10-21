@@ -17,18 +17,20 @@
 
 ```sh
 $ make test
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.03s
      Running target/debug/deps/rustbox-9e9575d91e3bd718
 
-running 6 tests
-test array::tests::largest_on_array ... ok
-test vector::tests::length_of_vector ... ok
-test array::tests::next_on_array ... ok
-test vector::tests::next_on_vector ... ok
-test vector::tests::push_on_vector ... ok
-test vector::tests::pop_from_vector ... ok
+running 8 tests
+test array::tests::largest ... ok
+test vector::tests::get ... ok
+test array::tests::slice ... ok
+test array::tests::next ... ok
+test vector::tests::next ... ok
+test vector::tests::len ... ok
+test vector::tests::pop ... ok
+test vector::tests::push ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
    Doc-tests rustbox
 

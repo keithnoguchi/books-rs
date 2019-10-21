@@ -12,7 +12,7 @@ pub fn largest(a: &[i32; 5]) -> &i32 {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn next_on_array() {
+    fn next() {
         let a = [1, 2, 3, 4, 5];
         let mut i = a.iter();
         assert_eq!(i.next(), Some(&1));
@@ -26,7 +26,7 @@ mod tests {
         }
     }
     #[test]
-    fn slice_on_array() {
+    fn slice() {
         struct Test {
             name: &'static str,
             data: [i32; 5],
@@ -73,7 +73,7 @@ mod tests {
         }
     }
     #[test]
-    fn largest_on_array() {
+    fn largest() {
         struct Test {
             a: [i32; 5],
             want: i32,

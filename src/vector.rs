@@ -2,7 +2,7 @@
 #[cfg(test)]
 mod tests {
     #[test]
-    fn next_on_vector() {
+    fn next() {
         let a = vec!['a', 'b', 'c', 'd', 'e'];
         let mut i = a.iter();
         assert_eq!(i.next(), Some(&'a'));
@@ -15,7 +15,7 @@ mod tests {
         }
     }
     #[test]
-    fn length_of_vector() {
+    fn len() {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
@@ -48,7 +48,7 @@ mod tests {
         }
     }
     #[test]
-    fn get_on_vector() {
+    fn get() {
         struct Test {
             name: &'static str,
             data: Vec<i64>,
@@ -84,7 +84,7 @@ mod tests {
         }
     }
     #[test]
-    fn push_to_vector() {
+    fn push() {
         struct Test {
             name: &'static str,
             data: Vec<char>,
@@ -119,7 +119,7 @@ mod tests {
         }
     }
     #[test]
-    fn pop_from_vector() {
+    fn pop() {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
