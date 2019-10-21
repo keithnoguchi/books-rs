@@ -13,6 +13,7 @@
 - [array]: Standard array
 - [vector]: Standard vector
 - [string]: String type
+- [hashmap]: HashMap type
 
 # Test
 
@@ -47,3 +48,4 @@ Happy Hacking!
 [array]: src/array.rs
 [vector]: src/vector.rs
 [string]: src/string.rs
+[hashmap]: src/hashmap.rs
