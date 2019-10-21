@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-pub fn largest(a: &[i32; 5]) -> &i32 {
-    let mut largest = &a[0];
-    for i in a.iter() {
+pub fn largest(a: [i32; 5]) -> i32 {
+    let mut largest = a[0];
+    for &i in a.iter() {
         if i > largest {
             largest = i;
         }
@@ -93,7 +93,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            assert_eq!(&t.want, super::largest(&t.a));
+            assert_eq!(t.want, super::largest(t.a));
         }
     }
 }
