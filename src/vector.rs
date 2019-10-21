@@ -77,7 +77,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            for (i, &want) in t.want.iter().enumerate() {
+            for want in t.want.iter() {
                 let got = t.data.get(want.0);
                 debug_assert_eq!(got, want.1, "{}", t.name);
             }
