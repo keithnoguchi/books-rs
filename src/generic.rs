@@ -4,10 +4,15 @@ struct Point<T> {
     y: T,
 }
 
+enum Option<T> {
+    Some(T),
+    None,
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
-    fn struct_u32() {
+    fn struct_point_u32() {
         use super::Point;
         struct Test {
             name: &'static str,
@@ -30,6 +35,36 @@ mod tests {
             let got = &t.data;
             debug_assert_eq!(t.want.0, got.x, "{}: x", t.name);
             debug_assert_eq!(t.want.1, got.y, "{}: y", t.name);
+        }
+    }
+    #[test]
+    fn enum_option_u32() {
+        struct Test {
+            name: &'static str,
+            data: super::Option<u32>,
+            want: u32,
+        };
+        let tests = [
+            Test {
+                name: "value '1'",
+                data: super::Option::Some(1),
+                want: 1,
+            },
+            Test {
+                name: "value '2'",
+                data: super::Option::Some(2),
+                want: 2,
+            },
+        ];
+        for t in &tests {
+            match t.data {
+                super::Option::Some(got) => {
+                    debug_assert_eq!(t.want, got, "{}", t.name);
+                }
+                super::Option::None => {
+                    panic!("unexpected None");
+                }
+            }
         }
     }
 }
