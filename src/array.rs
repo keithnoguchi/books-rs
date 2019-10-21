@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-pub fn largest(a: &[i32; 5]) -> i32 {
-    let mut largest = a[0];
-    for &i in a.iter() {
+pub fn largest<'a, T: PartialOrd>(a: &'a[T; 5]) -> &'a T {
+    let mut largest = &a[0];
+    for i in a.iter() {
         if i > largest {
             largest = i;
         }
@@ -73,7 +73,7 @@ mod tests {
         }
     }
     #[test]
-    fn largest() {
+    fn largest_i32() {
         struct Test {
             a: [i32; 5],
             want: i32,
@@ -93,7 +93,31 @@ mod tests {
             },
         ];
         for t in &tests {
-            assert_eq!(t.want, super::largest(&t.a));
+            assert_eq!(&t.want, super::largest(&t.a));
+        }
+    }
+    #[test]
+    fn largest_char() {
+        struct Test {
+            a: [char; 5],
+            want: char,
+        }
+        let tests = [
+            Test {
+                a: ['a', 'b', 'c', 'd', 'e'],
+                want: 'e',
+            },
+            Test {
+                a: ['e', 'd', 'c', 'b', 'a'],
+                want: 'e',
+            },
+            Test {
+                a: ['a', 'c', 'b', 'e', 'd'],
+                want: 'e',
+            },
+        ];
+        for t in &tests {
+            assert_eq!(&t.want, super::largest(&t.a));
         }
     }
 }
