@@ -9,6 +9,11 @@ enum Option<T> {
     None,
 }
 
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -38,7 +43,7 @@ mod tests {
         }
     }
     #[test]
-    fn enum_option_u32() {
+    fn enum_option_some_u32() {
         struct Test {
             name: &'static str,
             data: super::Option<u32>,
@@ -63,6 +68,31 @@ mod tests {
                 }
                 super::Option::None => {
                     panic!("unexpected None");
+                }
+            }
+        }
+    }
+    #[test]
+    fn enum_result_ok_u32() {
+        struct Test {
+            name: &'static str,
+            data: super::Result<u32, String>,
+            want: u32,
+        }
+        let tests = [
+            Test {
+                name: "value 1",
+                data: super::Result::Ok(1),
+                want: 1,
+            },
+        ];
+        for t in &tests {
+            match t.data {
+                super::Result::Ok(v) => {
+                    debug_assert_eq!(t.want, v, "{}", t.name);
+                }
+                super::Result::Err(_) => {
+                    panic!("unexpected Result::Err() value");
                 }
             }
         }
