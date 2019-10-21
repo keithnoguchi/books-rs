@@ -1,9 +1,11 @@
 # rustbox
 
-Rust sandbox for fun!
+[Rust] in action through the [table driven] unit test.
 
 [![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbox)
 
+[Rust]: https://www.rust-lang.org
+[table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
 [CircleCI]: https://circleci.com/gh/keithnoguchi/rustbox.svg?style=svg
 
 # Test
