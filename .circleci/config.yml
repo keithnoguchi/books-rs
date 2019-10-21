@@ -31,7 +31,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: make fmt
+      - run: make fmt-arch64
   test-arch64:
     <<: *defaults
     steps:
