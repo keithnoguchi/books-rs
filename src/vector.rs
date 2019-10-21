@@ -2,7 +2,7 @@
 #[cfg(test)]
 mod tests {
     #[test]
-    fn iterate_char_vector_with_next() {
+    fn next_on_vector() {
         let a = vec!['a', 'b', 'c', 'd', 'e'];
         let mut i = a.iter();
         assert_eq!(i.next(), Some(&'a'));
@@ -15,7 +15,7 @@ mod tests {
         }
     }
     #[test]
-    fn vector_size_with_len() {
+    fn length_of_vector() {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
@@ -48,7 +48,7 @@ mod tests {
         }
     }
     #[test]
-    fn push_on_char_vector() {
+    fn push_on_vector() {
         struct Test {
             name: &'static str,
             data: Vec<char>,
@@ -80,6 +80,52 @@ mod tests {
                 t.data.push(*a);
             }
             debug_assert_eq!(t.data, t.want, "{}", t.name);
+        }
+    }
+    #[test]
+    fn pop_from_vector() {
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: Vec<Option<i32>>,
+        };
+        let mut tests = [
+            Test {
+                name: &"1 pop from the empty vector",
+                data: vec![],
+                want: vec![None],
+            },
+            Test {
+                name: &"4 pops from the empty vector",
+                data: vec![],
+                want: vec![None, None, None, None],
+            },
+            Test {
+                name: &"1 pop from the one entry vector",
+                data: vec![1],
+                want: vec![Some(1)],
+            },
+            Test {
+                name: &"4 pops from the one entry vector",
+                data: vec![1],
+                want: vec![Some(1), None, None, None],
+            },
+            Test {
+                name: &"1 pop from the four entries vector",
+                data: vec![1, 2, 3, 4],
+                want: vec![Some(4)],
+            },
+            Test {
+                name: &"4 pops from the four entries vector",
+                data: vec![1, 2, 3, 4],
+                want: vec![Some(4), Some(3), Some(2), Some(1)],
+            },
+        ];
+        for t in &mut tests {
+            for want in &t.want {
+                let got = t.data.pop();
+                debug_assert_eq!(&got, want, "{}", t.name);
+            }
         }
     }
 }
