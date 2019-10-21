@@ -48,7 +48,43 @@ mod tests {
         }
     }
     #[test]
-    fn push_on_vector() {
+    fn get_on_vector() {
+        struct Test {
+            name: &'static str,
+            data: Vec<i64>,
+            want: Vec<(usize, Option<&'static i64>)>,
+        };
+        let tests = [
+            Test {
+                name: &"get index 0 from the empty vector",
+                data: vec![],
+                want: vec![(0, None)],
+            },
+            Test {
+                name: &"get index 0, 1, 3, 4 from the empty vector",
+                data: vec![],
+                want: vec![(0, None),(1, None),(3, None),(4, None)],
+            },
+            Test {
+                name: &"get index 0 from the three entries vector",
+                data: vec![1, 2, 3],
+                want: vec![(0, Some(&1))],
+            },
+            Test {
+                name: &"get index 0, 1, 3, 4 from the three entries vector",
+                data: vec![1, 2, 3],
+                want: vec![(0, Some(&1)),(1, Some(&2)),(3, None),(4, None)],
+            },
+        ];
+        for t in &tests {
+            for (i, &want) in t.want.iter().enumerate() {
+                let got = t.data.get(want.0);
+                debug_assert_eq!(got, want.1, "{}", t.name);
+            }
+        }
+    }
+    #[test]
+    fn push_to_vector() {
         struct Test {
             name: &'static str,
             data: Vec<char>,
