@@ -16,6 +16,12 @@
 - [hashmap]: HashMap type
 - [generic]: Generics
 
+[array]: src/array.rs
+[vector]: src/vector.rs
+[string]: src/string.rs
+[hashmap]: src/hashmap.rs
+[generic]: src/generic.rs
+
 # Test
 
 ```sh
@@ -44,10 +50,12 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 $
 ```
 
-Happy Hacking!
+# References
 
-[array]: src/array.rs
-[vector]: src/vector.rs
-[string]: src/string.rs
-[hashmap]: src/hashmap.rs
-[generic]: src/generic.rs
+- [The book]: The Rust Programming Language
+- [The async book]: Asynchronous Programming in Rust
+
+[The book]: https://github.com/rust-lang/book/
+[The async book]: https://rust-lang.github.io/async-book/
+
+Happy Hacking!
