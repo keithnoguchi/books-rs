@@ -79,13 +79,11 @@ mod tests {
             data: super::Result<u32, String>,
             want: u32,
         }
-        let tests = [
-            Test {
-                name: "value 1",
-                data: super::Result::Ok(1),
-                want: 1,
-            },
-        ];
+        let tests = [Test {
+            name: "value 1",
+            data: super::Result::Ok(1),
+            want: 1,
+        }];
         for t in &tests {
             match t.data {
                 super::Result::Ok(v) => {
