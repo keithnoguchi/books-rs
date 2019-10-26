@@ -10,11 +10,11 @@
 
 # Modules
 
-- [array]: Standard array type
-- [vector]: Standard vector type
-- [string]: String type
-- [hashmap]: HashMap type
-- [generic]: Generics
+- [array]: Standard array type example
+- [vector]: Standard vector type example
+- [string]: String type example
+- [hashmap]: HashMap type example
+- [generic]: Generics example
 
 [array]: src/array.rs
 [vector]: src/vector.rs
