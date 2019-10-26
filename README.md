@@ -55,7 +55,7 @@ $
 - [The book]: The Rust Programming Language
 - [The async book]: Asynchronous Programming in Rust
 
-[The book]: https://github.com/rust-lang/book/
+[The book]: https://doc.rust-lang.org/stable/book/
 [The async book]: https://rust-lang.github.io/async-book/
 
 Happy Hacking!
