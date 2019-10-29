@@ -1,5 +1,9 @@
 # SPDX-License-Identifier: GPL-2.0
 FROM archlinux/base
 RUN pacman -Sy --noconfirm make gcc rust
+# Let's update the rustc and the like to include the latest features,
+# especially async, as explained in the async book:
+# https://rust-lang.github.io/async-book/01_getting_started/05_http_server_example.html
+RUN rustup update nightly
 WORKDIR /home/build
 CMD ["make"]
