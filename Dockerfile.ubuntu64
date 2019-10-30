@@ -1,6 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
 FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y make rustc cargo
+RUN apt-get update && apt-get install -y make curl
+# ubuntu18.04 doesn't provide the rustup through the standard package.
+#RUN apt-get update && apt-get install -y rustc cargo
+RUN curl https://sh.rustup.rs -sSf > rustup-init.sh
+RUN sh rustup-init.sh -y
 # Let's update the rustc and the like to include the latest features,
 # especially async, as explained in the async book:
 # https://rust-lang.github.io/async-book/01_getting_started/05_http_server_example.html
