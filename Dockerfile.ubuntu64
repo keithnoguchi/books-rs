@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
 FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y make curl gcc
-# ubuntu18.04 doesn't provide the rustup through the standard package.
+RUN apt-get update && apt-get install -y make gcc curl
 #RUN apt-get update && apt-get install -y rustc cargo
+# ubuntu18.04 doesn't provide the rustup through the standard package.
 RUN curl https://sh.rustup.rs -sSf > rustup-init.sh
 RUN sh rustup-init.sh -y
 # Let's update the rustc and the like to include the latest features,
