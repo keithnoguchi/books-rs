@@ -5,5 +5,6 @@ RUN pacman -Sy --noconfirm make gcc rust rustup
 # especially async, as explained in the async book:
 # https://rust-lang.github.io/async-book/01_getting_started/05_http_server_example.html
 RUN rustup update nightly
+RUN rustup default nightly
 WORKDIR /home/build
 CMD ["make"]
