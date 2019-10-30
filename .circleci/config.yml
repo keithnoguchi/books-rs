@@ -18,6 +18,12 @@ workflows:
       - test-ubuntu64:
           requires:
             - format
+      - run-arch64:
+          requires:
+            - test-arch64
+      - run-ubuntu64:
+          requires:
+            - test-ubuntu64
 jobs:
   checkout:
     <<: *defaults
@@ -44,3 +50,15 @@ jobs:
       - attach_workspace:
           at: .
       - run: make test-ubuntu64
+  run-arch64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make run-arch64
+  run-ubuntu64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make run-ubuntu64
