@@ -24,6 +24,12 @@ workflows:
       - run-ubuntu64:
           requires:
             - test-ubuntu64
+      - install-arch64:
+          requires:
+            - run-arch64
+      - install-ubuntu64:
+          requires:
+            - run-ubuntu64
 jobs:
   checkout:
     <<: *defaults
@@ -62,3 +68,15 @@ jobs:
       - attach_workspace:
           at: .
       - run: make run-ubuntu64
+  instsall-arch64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make instsall-arch64
+  instsall-ubuntu64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make instsall-ubuntu64
