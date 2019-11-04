@@ -56,8 +56,10 @@ $
 
 - [The book]: The Rust Programming Language
 - [The async book]: Asynchronous Programming in Rust
+- [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [The async book]: https://rust-lang.github.io/async-book/
+[Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/print.html
 
 Happy Hacking!
