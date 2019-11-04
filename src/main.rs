@@ -2,15 +2,11 @@
 //
 // https://rust-lang.github.io/async-book/print.html#applied-simple-http-server
 use {
-    hyper::{
-        Body, Client, Request, Response, Server, Uri,
-        service::service_fn,
-        rt::run,
-    },
     futures::{
         compat::Future01CompatExt,
         future::{FutureExt, TryFutureExt},
     },
+    hyper::{rt::run, service::service_fn, Body, Client, Request, Response, Server, Uri},
     std::net::SocketAddr,
 };
 
@@ -20,8 +16,8 @@ async fn serve_req(_req: Request<Body>) -> Result<Response<Body>, hyper::Error> 
 
 async fn run_server(addr: SocketAddr) {
     println!("Listening on http://{}", addr);
-    let serve_future = Server::bind(&addr)
-        .serve(|| service_fn(|req| serve_req(req).boxed().compat()));
+    let serve_future =
+        Server::bind(&addr).serve(|| service_fn(|req| serve_req(req).boxed().compat()));
 
     if let Err(e) = serve_future.compat().await {
         eprintln!("server error: {}", e);
