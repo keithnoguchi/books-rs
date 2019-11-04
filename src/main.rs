@@ -10,16 +10,16 @@ use {
     std::net::SocketAddr,
 };
 
-async fn serve_req(_req: Request<Body>) -> Result<Response<Body>, hyper::Error> {
+async fn serve_req(req: Request<Body>) -> Result<Response<Body>, hyper::Error> {
+    println!("Got request at {:?}", req.uri());
     Ok(Response::new(Body::from("hello, world")))
 }
 
 async fn run_server(addr: SocketAddr) {
     println!("Listening on http://{}", addr);
-    let serve_future =
-        Server::bind(&addr).serve(|| service_fn(|req| serve_req(req).boxed().compat()));
+    let f = Server::bind(&addr).serve(|| service_fn(|req| serve_req(req).boxed().compat()));
 
-    if let Err(e) = serve_future.compat().await {
+    if let Err(e) = f.compat().await {
         eprintln!("server error: {}", e);
     }
 }
