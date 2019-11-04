@@ -12,7 +12,11 @@ use {
 
 async fn serve_req(req: Request<Body>) -> Result<Response<Body>, hyper::Error> {
     println!("Got request at {:?}", req.uri());
-    Ok(Response::new(Body::from("hello, world")))
+    let url_str = "http://www.rust-lang.org/en-US/";
+    let url = url_str.parse::<Uri>().expect("failed to parse URL");
+    let res = Client::new().get(url).compat().await;
+    println!("request finished-- returning response");
+    res
 }
 
 async fn run_server(addr: SocketAddr) {
