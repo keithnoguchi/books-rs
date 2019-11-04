@@ -2,13 +2,13 @@
 
 [Rust lang] sandbox with the [table driven] unit tests.
 
-[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbox)
 [![DroneCI]](https://cloud.drone.io/keithnoguchi/rustbox)
+[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbox)
 
 [Rust lang]: https://www.rust-lang.org
 [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
-[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbox.svg?style=svg
 [DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbox/status.svg
+[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbox.svg?style=svg
 
 # Modules
 
