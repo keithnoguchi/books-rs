@@ -1,0 +1,27 @@
+kind: pipeline
+type: docker
+name: default
+steps:
+  - name: format
+    image: rustlang/rust:nightly
+    commands:
+      - make fmt
+  - name: test
+    image: rustlang/rust:nightly
+    commands:
+      - make test
+    depends_on:
+      - format
+  - name: document
+    image: rustlang/rust:nightly
+    commands:
+      - make doc
+    depends_on:
+      - format
+  - name: install
+    image: rustlang/rust:nightly
+    commands:
+      - make install
+    depends_on:
+      - test
+      - document
