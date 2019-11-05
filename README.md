@@ -18,6 +18,7 @@
 - [hashmap]: HashMap type example
 - [generic]: Generics example
 - [first]: [A Bad Singly-Linked Stack]
+- [second]: [An Ok Signly-Linked Stack]
 
 [array]: src/array.rs
 [vector]: src/vector.rs
@@ -25,7 +26,9 @@
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
 [first]: src/first.rs
+[second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
+[An Ok Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/second.html
 
 # Test
 

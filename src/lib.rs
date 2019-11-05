@@ -3,5 +3,6 @@ mod array;
 mod first;
 mod generic;
 mod hashmap;
+mod second;
 mod string;
 mod vector;
