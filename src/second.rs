@@ -64,6 +64,66 @@ mod tests {
                 data: vec![],
                 want: vec![None, None, None],
             },
+            Test {
+                name: &"one push and no pop",
+                data: vec![1],
+                want: vec![],
+            },
+            Test {
+                name: &"one push and one pop",
+                data: vec![1],
+                want: vec![Some(1)],
+            },
+            Test {
+                name: &"one push and two pops",
+                data: vec![1],
+                want: vec![Some(1), None],
+            },
+            Test {
+                name: &"two pushes and no pop",
+                data: vec![1, 2],
+                want: vec![],
+            },
+            Test {
+                name: &"two pushes and one pop",
+                data: vec![1, 2],
+                want: vec![Some(2)],
+            },
+            Test {
+                name: &"two pushes and two pops",
+                data: vec![1, 2],
+                want: vec![Some(2), Some(1)],
+            },
+            Test {
+                name: &"two pushes and three pops",
+                data: vec![1, 2],
+                want: vec![Some(2), Some(1), None],
+            },
+            Test {
+                name: &"three pushes and no pop",
+                data: vec![1, 2, 3],
+                want: vec![],
+            },
+            Test {
+                name: &"three pushes and one pop",
+                data: vec![1, 2, 3],
+                want: vec![Some(3)],
+            },
+            Test {
+                name: &"three pushes and two pops",
+                data: vec![1, 2, 3],
+                want: vec![Some(3), Some(2)],
+            },
+            Test {
+                name: &"three pushes and three pops",
+                data: vec![1, 2, 3],
+                want: vec![Some(3), Some(2), Some(1)],
+            },
+            Test {
+                name: &"three pushes and four pops",
+                data: vec![1, 2, 3],
+                want: vec![Some(3), Some(2), Some(1), None],
+            },
         ];
         for t in &tests {
             let mut l = List::new();
