@@ -61,12 +61,12 @@ mod test {
         }
         let tests = [
             Test {
-                name: &"single pop on the empty list",
+                name: &"single pop from the empty stack",
                 data: vec![],
                 want: vec![None],
             },
             Test {
-                name: &"three pops on the empty list",
+                name: &"three pops from the empty stack",
                 data: vec![],
                 want: vec![None, None, None],
             },
