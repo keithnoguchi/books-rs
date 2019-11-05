@@ -5,14 +5,14 @@ pub struct List {
     head: Link,
 }
 
-struct Node {
-    elem: i32,
-    next: Link,
-}
-
 enum Link {
     Empty,
     More(Box<Node>),
+}
+
+struct Node {
+    elem: i32,
+    next: Link,
 }
 
 impl List {
@@ -27,7 +27,7 @@ impl List {
         self.head = Link::More(new_node);
     }
     pub fn pop(&mut self) -> Option<i32> {
-        match mem::replace(&mut self.head, Link::Empty) {
+        match self.pop_node() {
             Link::Empty => None,
             Link::More(node) => {
                 self.head = node.next;
@@ -35,11 +35,14 @@ impl List {
             }
         }
     }
+    pub fn pop_node(&mut self) -> Link {
+        mem::replace(&mut self.head, Link::Empty)
+    }
 }
 
 impl Drop for List {
     fn drop(&mut self) {
-        let mut cur_link = mem::replace(&mut self.head, Link::Empty);
+        let mut cur_link = self.pop_node();
         while let Link::More(mut boxed_node) = cur_link {
             cur_link = mem::replace(&mut boxed_node.next, Link::Empty);
         }
