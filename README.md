@@ -17,12 +17,15 @@
 - [string]: String type example
 - [hashmap]: HashMap type example
 - [generic]: Generics example
+- [first]: [A Bad Singly-Linked Stack]
 
 [array]: src/array.rs
 [vector]: src/vector.rs
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
+[first]: src/first.rs
+[A Bad Signly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/print.html#a-bad-singly-linked-stack
 
 # Test
 
