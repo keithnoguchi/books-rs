@@ -37,6 +37,15 @@ impl List {
     }
 }
 
+impl Drop for List {
+    fn drop(&mut self) {
+        let mut cur_link = mem::replace(&mut self.head, Link::Empty);
+        while let Link::More(mut boxed_node) = cur_link {
+            cur_link = mem::replace(&mut boxed_node.next, Link::Empty);
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -118,7 +127,7 @@ mod test {
                 data: vec![1, 2, 3],
                 want: vec![Some(3), Some(2), Some(1), None],
             },
-    ];
+        ];
         for t in &tests {
             let mut l = List::new();
             for data in &t.data {
