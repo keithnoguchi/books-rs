@@ -36,3 +36,38 @@ impl List {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn push_and_pop() {
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: Vec<Option<i32>>,
+        }
+        let tests = [
+            Test {
+                name: &"single pop on empty list",
+                data: vec![],
+                want: vec![None],
+            },
+            Test {
+                name: &"three pop on empty list",
+                data: vec![],
+                want: vec![None, None, None],
+            },
+        ];
+        for t in &tests {
+            let mut l = List::new();
+            for data in &t.data {
+                l.push(data.clone());
+            }
+            for want in &t.want {
+                let got = l.pop();
+                debug_assert_eq!(want, &got, "{}", t.name);
+            }
+        }
+    }
+}
