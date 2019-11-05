@@ -25,7 +25,7 @@
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
 [first]: src/first.rs
-[A Bad Signly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/print.html#a-bad-singly-linked-stack
+[A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/print.html#a-bad-singly-linked-stack
 
 # Test
 
