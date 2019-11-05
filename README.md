@@ -25,7 +25,7 @@
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
 [first]: src/first.rs
-[A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/print.html#a-bad-singly-linked-stack
+[A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
 
 # Test
 
@@ -63,6 +63,6 @@ $
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [The async book]: https://rust-lang.github.io/async-book/
-[Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/print.html
+[Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 
 Happy Hacking!
