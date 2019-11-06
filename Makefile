@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
-.PHONY: check test clean run install doc fmt
-all: fmt test
+.PHONY: check test clean run install doc fmt lint
+all: fmt lint test
 check:
 	@cargo check
 test:
@@ -15,6 +15,8 @@ doc:
 	@cargo doc --all --open
 fmt:
 	@rustfmt --edition 2018 --check src/*.rs
+lint:
+	@cargo clippy
 # CI targets.
 .PHONY: arch64 ubuntu64
 arch64: arch64-image
