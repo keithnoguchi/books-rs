@@ -18,7 +18,7 @@
 - [hashmap]: HashMap type example
 - [generic]: Generics example
 - [first]: [A Bad Singly-Linked Stack]
-- [second]: [An Ok Signly-Linked Stack]
+- [second]: [An Ok Singly-Linked Stack]
 
 [array]: src/array.rs
 [vector]: src/vector.rs
