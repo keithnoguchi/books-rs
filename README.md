@@ -19,6 +19,7 @@
 - [generic]: Generics example
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
+- [boxed]: [Module alloc::boxed] example
 
 [array]: src/array.rs
 [vector]: src/vector.rs
@@ -29,6 +30,7 @@
 [second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
 [An Ok Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/second.html
+[boxed]: src/boxed.rs
 
 # Test
 
@@ -63,9 +65,13 @@ $
 - [The book]: The Rust Programming Language
 - [The async book]: Asynchronous Programming in Rust
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
+- [Crate alloc]: The Rust core allocation and collections library
+  - [Module alloc::boxed]: A pointer type for heap allocation
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [The async book]: https://rust-lang.github.io/async-book/
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
+[Crate alloc]: https://doc.rust-lang.org/alloc/index.html
+[Module alloc::boxed]: https://doc.rust-lang.org/alloc/boxed/index.html
 
 Happy Hacking!
