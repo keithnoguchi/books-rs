@@ -65,6 +65,7 @@ $
 # References
 
 - [The book]: The Rust Programming Language
+- [What's unique about Rust?]: RustLatam 2019 talk by Niko Matsakis
 - [Crate alloc]: The Rust core allocation and collections library
   - [Module alloc::boxed]: A pointer type for heap allocation
   - [Enum alloc::borrow::Cow]: A clone-on-write smart pointer
@@ -76,6 +77,7 @@ $
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
 
 [The book]: https://doc.rust-lang.org/stable/book/
+[What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
 [Crate alloc]: https://doc.rust-lang.org/alloc/index.html
 [Module alloc::boxed]: https://doc.rust-lang.org/alloc/boxed/index.html
 [Enum alloc::borrow::Cow]: https://doc.rust-lang.org/alloc/borrow/enum.Cow.html
