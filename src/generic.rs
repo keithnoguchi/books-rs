@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
+#[allow(dead_code)]
 struct Point<T> {
     x: T,
     y: T,
 }
 
+#[allow(dead_code)]
 enum Option<T> {
     Some(T),
     None,
 }
 
+#[allow(dead_code)]
 enum Result<T, E> {
     Ok(T),
     Err(E),

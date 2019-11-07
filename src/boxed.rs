@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 // https://doc.rust-lang.org/alloc/boxed/index.html
+#[allow(dead_code)]
 #[derive(Debug)]
 enum List<T> {
     Cons(T, Box<List<T>>),

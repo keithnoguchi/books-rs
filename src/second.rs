@@ -13,16 +13,19 @@ struct Node {
 }
 
 impl List {
+    #[allow(dead_code)]
     pub fn new() -> Self {
         List { head: None }
     }
+    #[allow(dead_code)]
     pub fn push(&mut self, elem: i32) {
         let new_node = Box::new(Node {
-            elem: elem,
+            elem,
             next: mem::replace(&mut self.head, None),
         });
         self.head = Some(new_node);
     }
+    #[allow(dead_code)]
     pub fn pop(&mut self) -> Option<i32> {
         match mem::replace(&mut self.head, None) {
             None => None,
