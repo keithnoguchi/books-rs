@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+use std::borrow::Borrow;
+use std::borrow::BorrowMut;
 use std::borrow::Cow;
 
 #[allow(dead_code)]
@@ -9,6 +11,16 @@ fn abs_all(input: &mut Cow<[i32]>) {
             input.to_mut()[i] = -v;
         }
     }
+}
+
+#[allow(dead_code)]
+fn borrow_check<T: Borrow<str>>(want: &str, s: T) {
+    assert_eq!(want, s.borrow());
+}
+
+#[allow(dead_code)]
+fn borrow_mut_check<T: BorrowMut<[i32]>>(mut v: T) {
+    assert_eq!(&mut [1, 2, 3], v.borrow_mut());
 }
 
 #[cfg(test)]
@@ -76,15 +88,19 @@ mod tests {
         }
     }
     // https://doc.rust-lang.org/alloc/borrow/trait.Borrow.html
-    use std::borrow::Borrow;
     #[test]
     fn borrow() {
         let s = "Hello".to_string();
-        borrow_check("Hello", s);
+        super::borrow_check("Hello", s);
         let s = "Hello";
-        borrow_check("Hello", s);
+        super::borrow_check("Hello", s);
     }
-    fn borrow_check<T: Borrow<str>>(want: &str, s: T) {
-        assert_eq!(want, s.borrow());
+    // https://doc.rust-lang.org/alloc/borrow/trait.BorrowMut.html
+    #[test]
+    fn borrow_mut() {
+        let v = vec![1, 2, 3];
+        super::borrow_mut_check(v);
+        let v = [1, 2, 3];
+        super::borrow_mut_check(v);
     }
 }
