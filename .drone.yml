@@ -6,18 +6,24 @@ steps:
     image: rustlang/rust:nightly
     commands:
       - make fmt
+  - name: lint
+    image: rustlang/rust:nightly
+    commands:
+      - make lint
   - name: test
     image: rustlang/rust:nightly
     commands:
       - make test
     depends_on:
       - format
+      - lint
   - name: document
     image: rustlang/rust:nightly
     commands:
       - make doc
     depends_on:
       - format
+      - lint
   - name: install
     image: rustlang/rust:nightly
     commands:
