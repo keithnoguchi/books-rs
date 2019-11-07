@@ -23,22 +23,22 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"empty vector size",
+                name: "empty vector size",
                 data: vec![],
                 want: 0,
             },
             Test {
-                name: &"one entry vector size",
+                name: "one entry vector size",
                 data: vec![1],
                 want: 1,
             },
             Test {
-                name: &"two entries vector size",
+                name: "two entries vector size",
                 data: vec![1, 2],
                 want: 2,
             },
             Test {
-                name: &"three entries vector size",
+                name: "three entries vector size",
                 data: vec![1, 2, 3],
                 want: 3,
             },
@@ -56,22 +56,22 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"get index 0 from the empty vector",
+                name: "get index 0 from the empty vector",
                 data: vec![],
                 want: vec![(0, None)],
             },
             Test {
-                name: &"get index 0, 1, 3, 4 from the empty vector",
+                name: "get index 0, 1, 3, 4 from the empty vector",
                 data: vec![],
                 want: vec![(0, None), (1, None), (3, None), (4, None)],
             },
             Test {
-                name: &"get index 0 from the three entries vector",
+                name: "get index 0 from the three entries vector",
                 data: vec![1, 2, 3],
                 want: vec![(0, Some(&1))],
             },
             Test {
-                name: &"get index 0, 1, 3, 4 from the three entries vector",
+                name: "get index 0, 1, 3, 4 from the three entries vector",
                 data: vec![1, 2, 3],
                 want: vec![(0, Some(&1)), (1, Some(&2)), (3, None), (4, None)],
             },
@@ -93,19 +93,19 @@ mod tests {
         }
         let mut tests = [
             Test {
-                name: &"push to the empty vector",
+                name: "push to the empty vector",
                 data: vec![],
                 push: vec!['a', 'b', 'c'],
                 want: vec!['a', 'b', 'c'],
             },
             Test {
-                name: &"push to the existing vector",
+                name: "push to the existing vector",
                 data: vec!['a', 'b', 'c'],
                 push: vec!['d', 'e', 'f'],
                 want: vec!['a', 'b', 'c', 'd', 'e', 'f'],
             },
             Test {
-                name: &"push the duplicate data",
+                name: "push the duplicate data",
                 data: vec!['a', 'b', 'c'],
                 push: vec!['a', 'b', 'c'],
                 want: vec!['a', 'b', 'c', 'a', 'b', 'c'],
@@ -127,32 +127,32 @@ mod tests {
         };
         let mut tests = [
             Test {
-                name: &"1 pop from the empty vector",
+                name: "1 pop from the empty vector",
                 data: vec![],
                 want: vec![None],
             },
             Test {
-                name: &"4 pops from the empty vector",
+                name: "4 pops from the empty vector",
                 data: vec![],
                 want: vec![None, None, None, None],
             },
             Test {
-                name: &"1 pop from the one entry vector",
+                name: "1 pop from the one entry vector",
                 data: vec![1],
                 want: vec![Some(1)],
             },
             Test {
-                name: &"4 pops from the one entry vector",
+                name: "4 pops from the one entry vector",
                 data: vec![1],
                 want: vec![Some(1), None, None, None],
             },
             Test {
-                name: &"1 pop from the four entries vector",
+                name: "1 pop from the four entries vector",
                 data: vec![1, 2, 3, 4],
                 want: vec![Some(4)],
             },
             Test {
-                name: &"4 pops from the four entries vector",
+                name: "4 pops from the four entries vector",
                 data: vec![1, 2, 3, 4],
                 want: vec![Some(4), Some(3), Some(2), Some(1)],
             },

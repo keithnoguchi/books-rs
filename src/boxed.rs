@@ -19,27 +19,27 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"nil entry",
+                name: "nil entry",
                 list: List::Nil,
-                want: &"Nil",
+                want: "Nil",
             },
             Test {
-                name: &"one list entry",
+                name: "one list entry",
                 list: List::Cons(1, Box::new(List::Nil)),
-                want: &"Cons(1, Nil)",
+                want: "Cons(1, Nil)",
             },
             Test {
-                name: &"two list entries",
+                name: "two list entries",
                 list: List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil)))),
-                want: &"Cons(1, Cons(2, Nil))",
+                want: "Cons(1, Cons(2, Nil))",
             },
             Test {
-                name: &"three list entries",
+                name: "three list entries",
                 list: List::Cons(
                     1,
                     Box::new(List::Cons(2, Box::new(List::Cons(3, Box::new(List::Nil))))),
                 ),
-                want: &"Cons(1, Cons(2, Cons(3, Nil)))",
+                want: "Cons(1, Cons(2, Cons(3, Nil)))",
             },
         ];
         for t in &tests {
@@ -55,17 +55,17 @@ mod tests {
         }
         let tests = [
             Test {
-                name: &"zero",
+                name: "zero",
                 data: 0,
                 want: 0,
             },
             Test {
-                name: &"number eight",
+                name: "number eight",
                 data: 8,
                 want: 8,
             },
             Test {
-                name: &"minus one",
+                name: "minus one",
                 data: -1,
                 want: -1,
             },

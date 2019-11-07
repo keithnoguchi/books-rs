@@ -36,19 +36,19 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"all positive integers",
+                name: "all positive integers",
                 data: [1, 2, 3],
-                want: &"[1, 2, 3]",
+                want: "[1, 2, 3]",
             },
             Test {
-                name: &"all negative integers",
+                name: "all negative integers",
                 data: [-1, -2, -3],
-                want: &"[1, 2, 3]",
+                want: "[1, 2, 3]",
             },
             Test {
-                name: &"mixed integers",
+                name: "mixed integers",
                 data: [1, -2, 3],
-                want: &"[1, 2, 3]",
+                want: "[1, 2, 3]",
             },
         ];
         for t in &tests {
@@ -66,19 +66,19 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"no data",
+                name: "no data",
                 data: vec![],
-                want: &"[]",
+                want: "[]",
             },
             Test {
-                name: &"all positive integers",
+                name: "all positive integers",
                 data: vec![0, 1, 2],
-                want: &"[0, 1, 2]",
+                want: "[0, 1, 2]",
             },
             Test {
-                name: &"all negative integers",
+                name: "all negative integers",
                 data: vec![-9, -1, -2],
-                want: &"[9, 1, 2]",
+                want: "[9, 1, 2]",
             },
         ];
         for t in &tests {

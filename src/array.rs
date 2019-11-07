@@ -36,31 +36,31 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"first entry only",
+                name: "first entry only",
                 data: [1, 2, 3, 4, 5],
                 range: (0, 1),
                 want: vec![1],
             },
             Test {
-                name: &"first and second entries",
+                name: "first and second entries",
                 data: [1, 2, 3, 4, 5],
                 range: (0, 2),
                 want: vec![1, 2],
             },
             Test {
-                name: &"last entry",
+                name: "last entry",
                 data: [1, 2, 3, 4, 5],
                 range: (4, 5),
                 want: vec![5],
             },
             Test {
-                name: &"last two entries",
+                name: "last two entries",
                 data: [1, 2, 3, 4, 5],
                 range: (3, 5),
                 want: vec![4, 5],
             },
             Test {
-                name: &"all entries",
+                name: "all entries",
                 data: [1, 2, 3, 4, 5],
                 range: (0, 5),
                 want: vec![1, 2, 3, 4, 5],

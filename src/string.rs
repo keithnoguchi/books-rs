@@ -11,22 +11,22 @@ mod tests {
         };
         let tests = [
             Test {
-                name: &"first character",
+                name: "first character",
                 data: String::from("This is an ASCII string"),
                 range: (0, 1),
-                want: &"T",
+                want: "T",
             },
             Test {
-                name: &"first and second character",
+                name: "first and second character",
                 data: String::from("This is an ASCII string"),
                 range: (0, 2),
-                want: &"Th",
+                want: "Th",
             },
             Test {
-                name: &"Whole string",
+                name: "Whole string",
                 data: String::from("This is an ASCII string"),
                 range: (0, 23),
-                want: &"This is an ASCII string",
+                want: "This is an ASCII string",
             },
         ];
         for t in &tests {

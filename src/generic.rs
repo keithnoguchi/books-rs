@@ -29,12 +29,12 @@ mod tests {
         }
         let tests = [
             Test {
-                name: &"Point(1, 2)",
+                name: "Point(1, 2)",
                 data: Point { x: 1, y: 2 },
                 want: (1, 2),
             },
             Test {
-                name: &"Point(2, 1)",
+                name: "Point(2, 1)",
                 data: Point { x: 2, y: 1 },
                 want: (2, 1),
             },
