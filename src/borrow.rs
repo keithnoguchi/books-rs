@@ -103,4 +103,17 @@ mod tests {
         let v = [1, 2, 3];
         super::borrow_mut_check(v);
     }
+    // https://doc.rust-lang.org/alloc/borrow/trait.ToOwned.html
+    #[test]
+    fn to_owned() {
+        let want: &str = "a";
+        let got: String = want.to_owned();
+        assert_eq!(want, got);
+        let want: &[i32] = &[1, 2];
+        let got: Vec<i32> = want.to_owned();
+        assert_eq!(want.len(), got.len());
+        for i in 0..got.len() {
+            assert_eq!(want[i], got[i]);
+        }
+    }
 }
