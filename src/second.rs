@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-use std::mem;
-
 pub struct List {
     head: Link,
 }
@@ -21,13 +19,13 @@ impl List {
     pub fn push(&mut self, elem: i32) {
         let new_node = Box::new(Node {
             elem,
-            next: mem::replace(&mut self.head, None),
+            next: self.head.take(),
         });
         self.head = Some(new_node);
     }
     #[allow(dead_code)]
     pub fn pop(&mut self) -> Option<i32> {
-        match mem::replace(&mut self.head, None) {
+        match self.head.take() {
             None => None,
             Some(node) => {
                 self.head = node.next;
@@ -39,9 +37,9 @@ impl List {
 
 impl Drop for List {
     fn drop(&mut self) {
-        let mut cur_link = mem::replace(&mut self.head, None);
+        let mut cur_link = self.head.take();
         while let Some(mut boxed_node) = cur_link {
-            cur_link = mem::replace(&mut boxed_node.next, None);
+            cur_link = boxed_node.next.take();
         }
     }
 }
