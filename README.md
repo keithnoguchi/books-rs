@@ -73,6 +73,7 @@ $
   - [Trait alloc::borrow::ToOwned]: A generalization of Clone to borrowed data
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The async book]: Asynchronous Programming in Rust
+- [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [Crate alloc]: https://doc.rust-lang.org/alloc/index.html
@@ -83,5 +84,7 @@ $
 [Trait alloc::borrow::ToOwned]: https://doc.rust-lang.org/alloc/borrow/trait.ToOwned.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
+[Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
+[Without Boats]: https://github.com/withoutboats
 
 Happy Hacking!
