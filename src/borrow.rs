@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-// https://doc.rust-lang.org/alloc/borrow/enum.Cow.html
 use std::borrow::Cow;
 
 #[allow(dead_code)]
@@ -14,6 +13,7 @@ fn abs_all(input: &mut Cow<[i32]>) {
 
 #[cfg(test)]
 mod tests {
+    // https://doc.rust-lang.org/alloc/borrow/enum.Cow.html
     use std::borrow::Cow;
     #[test]
     fn abs_all_array() {
@@ -74,5 +74,17 @@ mod tests {
             super::abs_all(&mut input);
             debug_assert_eq!(t.want, format!("{:?}", input), "{}", t.name);
         }
+    }
+    // https://doc.rust-lang.org/alloc/borrow/trait.Borrow.html
+    use std::borrow::Borrow;
+    #[test]
+    fn borrow() {
+        let s = "Hello".to_string();
+        borrow_check("Hello", s);
+        let s = "Hello";
+        borrow_check("Hello", s);
+    }
+    fn borrow_check<T: Borrow<str>>(want: &str, s: T) {
+        assert_eq!(want, s.borrow());
     }
 }
