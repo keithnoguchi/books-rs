@@ -46,160 +46,240 @@ mod tests {
     use super::List;
     #[test]
     fn push_and_pop() {
-        enum TestType {
-            I32(Test<i32>),
-            F32(Test<f32>),
+        enum Test {
+            I32(Type<i32>),
+            F32(Type<f32>),
+            Str(Type<String>),
         };
-        struct Test<T> {
+        struct Type<T> {
             name: &'static str,
             data: Vec<T>,
             want: Vec<Option<T>>,
         }
         let tests = vec![
-            TestType::I32(Test::<i32> {
-                name: "single pop from the empty stack",
+            Test::I32(Type::<i32> {
+                name: "single pop from the empty i32 stack",
                 data: vec![],
                 want: vec![None],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pops from the empty stack",
+            Test::I32(Type::<i32> {
+                name: "three pops from the empty i32 stack",
                 data: vec![],
                 want: vec![None, None, None],
             }),
-            TestType::I32(Test::<i32> {
-                name: "one push and no pop",
+            Test::I32(Type::<i32> {
+                name: "one push and no pop on i32 stack",
                 data: vec![1],
                 want: vec![],
             }),
-            TestType::I32(Test::<i32> {
-                name: "one push and one pop",
+            Test::I32(Type::<i32> {
+                name: "one push and one pop on i32 stack",
                 data: vec![1],
                 want: vec![Some(1)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "one push and two pops",
+            Test::I32(Type::<i32> {
+                name: "one push and two pops on i32 stack",
                 data: vec![1],
                 want: vec![Some(1), None],
             }),
-            TestType::I32(Test::<i32> {
-                name: "two pushes and no pop",
+            Test::I32(Type::<i32> {
+                name: "two pushes and no pop on i32 stack",
                 data: vec![1, 2],
                 want: vec![],
             }),
-            TestType::I32(Test::<i32> {
-                name: "two pushes and one pop",
+            Test::I32(Type::<i32> {
+                name: "two pushes and one pop on i32 stack",
                 data: vec![1, 2],
                 want: vec![Some(2)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "two pushes and two pops",
+            Test::I32(Type::<i32> {
+                name: "two pushes and two pops on i32 stack",
                 data: vec![1, 2],
                 want: vec![Some(2), Some(1)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "two pushes and three pops",
+            Test::I32(Type::<i32> {
+                name: "two pushes and three pops on i32 stack",
                 data: vec![1, 2],
                 want: vec![Some(2), Some(1), None],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pushes and no pop",
+            Test::I32(Type::<i32> {
+                name: "three pushes and no pop on i32 stack",
                 data: vec![1, 2, 3],
                 want: vec![],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pushes and one pop",
+            Test::I32(Type::<i32> {
+                name: "three pushes and one pop on i32 stack",
                 data: vec![1, 2, 3],
                 want: vec![Some(3)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pushes and two pops",
+            Test::I32(Type::<i32> {
+                name: "three pushes and two pops on i32 stack",
                 data: vec![1, 2, 3],
                 want: vec![Some(3), Some(2)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pushes and three pops",
+            Test::I32(Type::<i32> {
+                name: "three pushes and three pops on i32 stack",
                 data: vec![1, 2, 3],
                 want: vec![Some(3), Some(2), Some(1)],
             }),
-            TestType::I32(Test::<i32> {
-                name: "three pushes and four pops",
+            Test::I32(Type::<i32> {
+                name: "three pushes and four pops i32 stack",
                 data: vec![1, 2, 3],
                 want: vec![Some(3), Some(2), Some(1), None],
             }),
-            TestType::F32(Test::<f32> {
-                name: "single pop from the empty stack",
+            Test::F32(Type::<f32> {
+                name: "single pop from the empty f32 stack",
                 data: vec![],
                 want: vec![None],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pops from the empty stack",
+            Test::F32(Type::<f32> {
+                name: "three pops from the empty f32 stack",
                 data: vec![],
                 want: vec![None, None, None],
             }),
-            TestType::F32(Test::<f32> {
-                name: "one push and no pop",
+            Test::F32(Type::<f32> {
+                name: "one push and no pop on f32 stack",
                 data: vec![1.1],
                 want: vec![],
             }),
-            TestType::F32(Test::<f32> {
-                name: "one push and one pop",
+            Test::F32(Type::<f32> {
+                name: "one push and one pop on f32 stack",
                 data: vec![1.1],
                 want: vec![Some(1.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "one push and two pops",
+            Test::F32(Type::<f32> {
+                name: "one push and two pops on f32 stack",
                 data: vec![1.1],
                 want: vec![Some(1.1), None],
             }),
-            TestType::F32(Test::<f32> {
-                name: "two pushes and no pop",
+            Test::F32(Type::<f32> {
+                name: "two pushes and no pop on f32 stack",
                 data: vec![1.1, 2.1],
                 want: vec![],
             }),
-            TestType::F32(Test::<f32> {
-                name: "two pushes and one pop",
+            Test::F32(Type::<f32> {
+                name: "two pushes and one pop on f32 stack",
                 data: vec![1.1, 2.1],
                 want: vec![Some(2.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "two pushes and two pops",
+            Test::F32(Type::<f32> {
+                name: "two pushes and two pops on f32 stack",
                 data: vec![1.1, 2.1],
                 want: vec![Some(2.1), Some(1.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "two pushes and three pops",
+            Test::F32(Type::<f32> {
+                name: "two pushes and three pops on f32 stack",
                 data: vec![1.1, 2.1],
                 want: vec![Some(2.1), Some(1.1), None],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pushes and no pop",
+            Test::F32(Type::<f32> {
+                name: "three pushes and no pop on f32 stack",
                 data: vec![1.1, 2.1, 3.1],
                 want: vec![],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pushes and one pop",
+            Test::F32(Type::<f32> {
+                name: "three pushes and one pop on f32 stack",
                 data: vec![1.1, 2.1, 3.1],
                 want: vec![Some(3.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pushes and two pops",
+            Test::F32(Type::<f32> {
+                name: "three pushes and two pops on f32 stack",
                 data: vec![1.1, 2.1, 3.1],
                 want: vec![Some(3.1), Some(2.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pushes and three pops",
+            Test::F32(Type::<f32> {
+                name: "three pushes and three pops on f32 stack",
                 data: vec![1.1, 2.1, 3.1],
                 want: vec![Some(3.1), Some(2.1), Some(1.1)],
             }),
-            TestType::F32(Test::<f32> {
-                name: "three pushes and four pops",
+            Test::F32(Type::<f32> {
+                name: "three pushes and four pops on f32 stack",
                 data: vec![1.1, 2.1, 3.1],
                 want: vec![Some(3.1), Some(2.1), Some(1.1), None],
+            }),
+            Test::Str(Type::<String> {
+                name: "single pop from the empty String stack",
+                data: vec![],
+                want: vec![None],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pops from the empty String stack",
+                data: vec![],
+                want: vec![None, None, None],
+            }),
+            Test::Str(Type::<String> {
+                name: "one push and no pop on String stack",
+                data: vec!["I".to_string()],
+                want: vec![],
+            }),
+            Test::Str(Type::<String> {
+                name: "one push and one pop on String stack",
+                data: vec!["I".to_string()],
+                want: vec![Some("I".to_string())],
+            }),
+            Test::Str(Type::<String> {
+                name: "one push and two pops on String stack",
+                data: vec!["I".to_string()],
+                want: vec![Some("I".to_string()), None],
+            }),
+            Test::Str(Type::<String> {
+                name: "two pushes and no pop on String stack",
+                data: vec!["I".to_string(), "II".to_string()],
+                want: vec![],
+            }),
+            Test::Str(Type::<String> {
+                name: "two pushes and one pop on String stack",
+                data: vec!["I".to_string(), "II".to_string()],
+                want: vec![Some("II".to_string())],
+            }),
+            Test::Str(Type::<String> {
+                name: "two pushes and two pops on String stack",
+                data: vec!["I".to_string(), "II".to_string()],
+                want: vec![Some("II".to_string()), Some("I".to_string())],
+            }),
+            Test::Str(Type::<String> {
+                name: "two pushes and three pops on String stack",
+                data: vec!["I".to_string(), "II".to_string()],
+                want: vec![Some("II".to_string()), Some("I".to_string()), None],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pushes and no pop on String stack",
+                data: vec!["I".to_string(), "II".to_string(), "III".to_string()],
+                want: vec![],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pushes and one pop on String stack",
+                data: vec!["I".to_string(), "II".to_string(), "III".to_string()],
+                want: vec![Some("III".to_string())],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pushes and two pops on String stack",
+                data: vec!["I".to_string(), "II".to_string(), "III".to_string()],
+                want: vec![Some("III".to_string()), Some("II".to_string())],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pushes and three pops on String stack",
+                data: vec!["I".to_string(), "II".to_string(), "III".to_string()],
+                want: vec![
+                    Some("III".to_string()),
+                    Some("II".to_string()),
+                    Some("I".to_string()),
+                ],
+            }),
+            Test::Str(Type::<String> {
+                name: "three pushes and four pops on String stack",
+                data: vec!["I".to_string(), "II".to_string(), "III".to_string()],
+                want: vec![
+                    Some("III".to_string()),
+                    Some("II".to_string()),
+                    Some("I".to_string()),
+                    None,
+                ],
             }),
         ];
         for t in &tests {
             match t {
-                TestType::I32(t) => {
+                Test::I32(t) => {
                     let mut list = List::<i32>::new();
                     for data in &t.data {
                         list.push(data.clone());
@@ -209,8 +289,18 @@ mod tests {
                         debug_assert_eq!(want, &got, "{}", t.name);
                     }
                 }
-                TestType::F32(t) => {
+                Test::F32(t) => {
                     let mut list = List::<f32>::new();
+                    for data in &t.data {
+                        list.push(data.clone());
+                    }
+                    for want in &t.want {
+                        let got = list.pop();
+                        debug_assert_eq!(want, &got, "{}", t.name);
+                    }
+                }
+                Test::Str(t) => {
+                    let mut list = List::<String>::new();
                     for data in &t.data {
                         list.push(data.clone());
                     }
