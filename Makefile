@@ -16,7 +16,7 @@ doc:
 fmt:
 	@rustfmt --edition 2018 --check src/*.rs
 lint:
-	@cargo clippy
+	@cargo clippy -- -D warnings
 # CI targets.
 .PHONY: arch64 ubuntu64
 arch64: arch64-image
