@@ -12,12 +12,17 @@ workflows:
       - format:
           requires:
             - checkout
+      - lint:
+          requires:
+            - checkout
       - test-arch64:
           requires:
             - format
+            - lint
       - test-ubuntu64:
           requires:
             - format
+            - lint
       - install-arch64:
           requires:
             - test-arch64
@@ -38,6 +43,12 @@ jobs:
       - attach_workspace:
           at: .
       - run: make fmt-arch64
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make lint-arch64
   test-arch64:
     <<: *defaults
     steps:
