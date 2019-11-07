@@ -44,7 +44,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.want, t.data.len(), "{}", t.want);
+            debug_assert_eq!(t.want, t.data.len(), "{}", t.name);
         }
     }
     #[test]

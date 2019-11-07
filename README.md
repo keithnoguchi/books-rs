@@ -18,7 +18,7 @@
 - [hashmap]: HashMap type example
 - [generic]: Generics example
 - [boxed]: [Module alloc::boxed] example
-- [borrow]: [Enum alloc::borrow::Cow] example
+- [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
@@ -68,6 +68,7 @@ $
 - [Crate alloc]: The Rust core allocation and collections library
   - [Module alloc::boxed]: A pointer type for heap allocation
   - [Enum alloc::borrow::Cow]: A clone-on-write smart pointer
+  - [Trait alloc::borrow::Borrow]: A trait for borrowing data
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The async book]: Asynchronous Programming in Rust
 
@@ -75,6 +76,7 @@ $
 [Crate alloc]: https://doc.rust-lang.org/alloc/index.html
 [Module alloc::boxed]: https://doc.rust-lang.org/alloc/boxed/index.html
 [Enum alloc::borrow::Cow]: https://doc.rust-lang.org/alloc/borrow/enum.Cow.html
+[Trait alloc::borrow::Borrow]: https://doc.rust-lang.org/alloc/borrow/trait.Borrow.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
 
