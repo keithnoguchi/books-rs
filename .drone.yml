@@ -3,7 +3,7 @@ type: docker
 name: default
 steps:
   - name: format
-    image: rustlang/rust:1.39.0
+    image: rustlang/rust:1.39
     commands:
       - make fmt
   - name: lint
@@ -12,21 +12,21 @@ steps:
       - rustup component add clippy
       - make lint
   - name: test
-    image: rustlang/rust:1.39.0
+    image: rustlang/rust:1.39
     commands:
       - make test
     depends_on:
       - format
       - lint
   - name: document
-    image: rustlang/rust:1.39.0
+    image: rustlang/rust:1.39
     commands:
       - make doc
     depends_on:
       - format
       - lint
   - name: install
-    image: rustlang/rust:1.39.0
+    image: rustlang/rust:1.39
     commands:
       - make install
     depends_on:
