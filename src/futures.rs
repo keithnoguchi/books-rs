@@ -4,8 +4,6 @@ mod test {
     // https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/macro.join.html
     #[test]
     fn join() {
-        use futures::executor::block_on;
-        use futures::join;
         struct Test {
             name: &'static str,
             a: i32,
@@ -27,10 +25,51 @@ mod test {
             },
         ];
         for t in &tests {
+            use futures::executor::block_on;
+            use futures::join;
             let a = async { t.a };
             let b = async { t.b };
             block_on(async {
-                debug_assert_eq!(join!(a, b), t.want, "{}", t.name);
+                debug_assert_eq!(t.want, join!(a, b), "{}", t.name);
+            })
+        }
+    }
+    // https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/macro.select.html
+    #[test]
+    fn select() {
+        struct Test {
+            name: &'static str,
+            a: i32,
+            b: i32,
+            want: i32,
+        }
+        let tests = [
+            Test {
+                name: "wait for 4 + 1 = 5",
+                a: 4,
+                b: 1,
+                want: 5,
+            },
+            Test {
+                name: "wait for 0 + 3 = 3",
+                a: 0,
+                b: 3,
+                want: 3,
+            },
+        ];
+        for t in &tests {
+            use futures::executor::block_on;
+            use futures::future;
+            use futures::select;
+            let mut a = future::ready(t.a);
+            let mut b = future::pending::<()>();
+
+            block_on(async {
+                let got = select! {
+                    got = a => got + t.b,
+                    _ = b => 0,
+                };
+                debug_assert_eq!(t.want, got, "{}", t.name);
             })
         }
     }
