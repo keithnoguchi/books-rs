@@ -88,5 +88,8 @@ $
 [The async book]: https://rust-lang.github.io/async-book/
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
 [Without Boats]: https://github.com/withoutboats
+[Crate crossbeam]: https://docs.rs/crossbeam/0.7.3/crossbeam/
+[Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
+[Crate diesel]: https://diesel.rs/guides/getting-started/
 
 Happy Hacking!
