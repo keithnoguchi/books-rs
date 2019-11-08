@@ -3,6 +3,7 @@ mod array;
 mod borrow;
 mod boxed;
 mod first;
+mod futures;
 mod generic;
 mod hashmap;
 mod second;

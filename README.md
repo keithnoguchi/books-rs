@@ -19,6 +19,7 @@
 - [generic]: Generics example
 - [boxed]: [Module alloc::boxed] example
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
+- [futures]: [Crate futures] example
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
@@ -29,6 +30,7 @@
 [generic]: src/generic.rs
 [boxed]: src/boxed.rs
 [borrow]: src/borrow.rs
+[futures]: src/futures.rs
 [first]: src/first.rs
 [second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
@@ -75,6 +77,8 @@ $
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The async book]: Asynchronous Programming in Rust
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
+- [Crate futures]: Zero-cost asynchronous programming in Rust
+  - [Crate futures tests]: futures tests
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
@@ -87,6 +91,8 @@ $
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
+[Crate futures]: https://rust-lang-nursery.github.io/futures-rs/
+[Crate futures tests]: https://github.com/rust-lang-nursery/futures-rs/tree/master/futures/tests
 [Niko Matsakis]: https://twitter.com/nikomatsakis
 [Without Boats]: https://github.com/withoutboats
 [Crate crossbeam]: https://docs.rs/crossbeam/0.7.3/crossbeam/
