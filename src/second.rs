@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+pub struct IntoIter<T>(List<T>);
+
 pub struct List<T> {
     head: Link<T>,
 }
@@ -38,6 +40,10 @@ impl<T> List<T> {
     pub fn peek_mut(&mut self) -> Option<&mut T> {
         self.head.as_mut().map(|node| &mut node.elem)
     }
+    #[allow(dead_code)]
+    pub fn into_iter(self) -> IntoIter<T> {
+        IntoIter(self)
+    }
 }
 
 impl<T> Drop for List<T> {
@@ -49,11 +55,18 @@ impl<T> Drop for List<T> {
     }
 }
 
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.pop()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::List;
     #[test]
-    fn push_and_pop() {
+    fn push_peek_and_pop() {
         enum Test {
             I32(Type<i32>),
             F32(Type<f32>),
@@ -351,6 +364,46 @@ mod tests {
                     }
                 }
             };
+        }
+    }
+    #[test]
+    fn into_iter() {
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: Vec<Option<i32>>,
+        }
+        let tests = [
+            Test {
+                name: "no value",
+                data: vec![],
+                want: vec![],
+            },
+            Test {
+                name: "no value with three None check",
+                data: vec![],
+                want: vec![None, None, None],
+            },
+            Test {
+                name: "three values",
+                data: vec![1, 2, 3],
+                want: vec![Some(3), Some(2), Some(1)],
+            },
+            Test {
+                name: "three values with four check",
+                data: vec![1, 2, 3],
+                want: vec![Some(3), Some(2), Some(1), None],
+            },
+        ];
+        for t in &tests {
+            let mut list = List::new();
+            for data in &t.data {
+                list.push(data.clone());
+            }
+            let mut iter = list.into_iter();
+            for want in &t.want {
+                debug_assert_eq!(want, &iter.next(), "{}", t.name);
+            }
         }
     }
 }
