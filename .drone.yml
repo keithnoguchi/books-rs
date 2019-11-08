@@ -9,6 +9,7 @@ steps:
   - name: lint
     image: rustlang/rust:nightly
     commands:
+      - rustup component add clippy
       - make lint
   - name: test
     image: rustlang/rust:nightly

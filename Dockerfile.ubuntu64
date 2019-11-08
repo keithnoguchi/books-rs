@@ -11,5 +11,6 @@ RUN sh rustup-init.sh -y
 ENV PATH "/root/.cargo/bin:${PATH}"
 RUN rustup update nightly
 RUN rustup default nightly
+RUN rustup component add clippy
 WORKDIR /home/build
 CMD ["make"]

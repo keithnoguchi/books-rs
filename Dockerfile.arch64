@@ -6,5 +6,6 @@ RUN pacman -Sy --noconfirm make gcc rustup
 # https://rust-lang.github.io/async-book/01_getting_started/05_http_server_example.html
 RUN rustup update nightly
 RUN rustup default nightly
+RUN rustup component add clippy
 WORKDIR /home/build
 CMD ["make"]
