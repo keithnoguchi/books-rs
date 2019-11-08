@@ -65,7 +65,7 @@ $
 # References
 
 - [The book]: The Rust Programming Language
-- [What's unique about Rust?]: RustLatam 2019 talk by Niko Matsakis
+- [What's unique about Rust?]: RustLatam 2019 Opening Keynote by [Niko Matsakis]
 - [Crate alloc]: The Rust core allocation and collections library
   - [Module alloc::boxed]: A pointer type for heap allocation
   - [Enum alloc::borrow::Cow]: A clone-on-write smart pointer
@@ -87,6 +87,7 @@ $
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
+[Niko Matsakis]: https://twitter.com/nikomatsakis
 [Without Boats]: https://github.com/withoutboats
 [Crate crossbeam]: https://docs.rs/crossbeam/0.7.3/crossbeam/
 [Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
