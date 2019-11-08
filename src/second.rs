@@ -299,6 +299,14 @@ mod tests {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
                     }
+                    match list.peek() {
+                        None => (),
+                        _ => {
+                            let some_value = 10000;
+                            list.peek_mut().map(|value| *value = some_value);
+                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                        }
+                    }
                 }
                 Test::F32(t) => {
                     let mut list = List::<f32>::new();
@@ -312,6 +320,14 @@ mod tests {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
                     }
+                    match list.peek() {
+                        None => (),
+                        _ => {
+                            let some_value = 10000.1;
+                            list.peek_mut().map(|value| *value = some_value);
+                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                        }
+                    }
                 }
                 Test::Str(t) => {
                     let mut list = List::<String>::new();
@@ -324,6 +340,14 @@ mod tests {
                     for want in &t.want {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
+                    }
+                    match list.peek() {
+                        None => (),
+                        _ => {
+                            let some_value = "XXXXX".to_string();
+                            list.peek_mut().map(|value| *value = some_value.clone());
+                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                        }
                     }
                 }
             };
