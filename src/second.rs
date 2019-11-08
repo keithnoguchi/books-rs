@@ -30,6 +30,14 @@ impl<T> List<T> {
             node.elem
         })
     }
+    #[allow(dead_code)]
+    pub fn peek(&self) -> Option<&T> {
+        self.head.as_ref().map(|node| &node.elem)
+    }
+    #[allow(dead_code)]
+    pub fn peek_mut(&mut self) -> Option<&mut T> {
+        self.head.as_mut().map(|node| &mut node.elem)
+    }
 }
 
 impl<T> Drop for List<T> {
@@ -281,9 +289,12 @@ mod tests {
             match t {
                 Test::I32(t) => {
                     let mut list = List::<i32>::new();
+                    debug_assert_eq!(None, list.peek(), "{}", t.name);
+                    debug_assert_eq!(None, list.peek_mut(), "{}", t.name);
                     for data in &t.data {
                         list.push(data.clone());
                     }
+                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
@@ -291,9 +302,12 @@ mod tests {
                 }
                 Test::F32(t) => {
                     let mut list = List::<f32>::new();
+                    debug_assert_eq!(None, list.peek());
+                    debug_assert_eq!(None, list.peek_mut());
                     for data in &t.data {
                         list.push(data.clone());
                     }
+                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
@@ -301,9 +315,12 @@ mod tests {
                 }
                 Test::Str(t) => {
                     let mut list = List::<String>::new();
+                    debug_assert_eq!(None, list.peek());
+                    debug_assert_eq!(None, list.peek_mut());
                     for data in &t.data {
                         list.push(data.clone());
                     }
+                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
                         debug_assert_eq!(want, &got, "{}", t.name);
