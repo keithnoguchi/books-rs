@@ -5,6 +5,7 @@ steps:
   - name: format
     image: rust:1.39
     commands:
+      - rustup component add rustfmt
       - make fmt
   - name: lint
     image: rust:1.39
