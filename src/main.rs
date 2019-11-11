@@ -1,12 +1,25 @@
 // SPDX-License-Identifier: GPL-2.0
 use futures::executor::block_on;
-use futures::join;
+
+struct Song {
+    name: String,
+}
 
 fn main() {
-    // https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/macro.join.html#examples
-    let a = async { 1i32 };
-    let b = async { 2i32 };
-    block_on(async {
-        assert_eq!(join!(a, b), (1, 2));
-    })
+    let song = block_on(learn_song());
+    block_on(sing_song(song));
+    block_on(dance());
+}
+
+async fn learn_song() -> Song {
+    let name = String::from("You're my sunshine");
+    Song { name }
+}
+
+async fn sing_song(song: Song) {
+    println!("sing {}", song.name);
+}
+
+async fn dance() {
+    println!("let's dance");
 }
