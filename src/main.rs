@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 use futures::{self, executor::block_on};
-use std::{thread, time};
 
 struct Song {
     name: String,
@@ -23,17 +22,16 @@ async fn learn_and_sing() {
 
 async fn learn_song() -> Song {
     let name = String::from("You're my sunshine");
-    // XXX This won't work, as it will block the entire thread
-    // instead of the async tasks.
-    let delay = time::Duration::from_secs(1);
-    thread::sleep(delay);
+    for _ in 1..1000 {
+        print!(".")
+    }
     Song { name }
 }
 
 async fn sing_song(song: Song) {
-    eprintln!("sing {}", song.name);
+    println!("sing {}", song.name);
 }
 
 async fn dance() {
-    eprintln!("let's dance");
+    println!("let's dance");
 }

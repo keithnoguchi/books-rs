@@ -8,5 +8,6 @@ mod generic;
 mod hashmap;
 mod ptr;
 mod second;
+mod simple;
 mod string;
 mod vector;
