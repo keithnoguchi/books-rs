@@ -6,6 +6,7 @@ mod first;
 mod futures;
 mod generic;
 mod hashmap;
+mod ptr;
 mod second;
 mod string;
 mod vector;

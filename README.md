@@ -20,6 +20,7 @@
 - [boxed]: [Module alloc::boxed] example
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
 - [futures]: [Crate futures] example
+- [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
@@ -31,6 +32,7 @@
 [boxed]: src/boxed.rs
 [borrow]: src/borrow.rs
 [futures]: src/futures.rs
+[ptr]: src/ptr.rs
 [first]: src/first.rs
 [second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
@@ -88,6 +90,8 @@ $
 [Trait alloc::borrow::Borrow]: https://doc.rust-lang.org/alloc/borrow/trait.Borrow.html
 [Trait alloc::borrow::BorrowMut]: https://doc.rust-lang.org/alloc/borrow/trait.BorrowMut.html
 [Trait alloc::borrow::ToOwned]: https://doc.rust-lang.org/alloc/borrow/trait.ToOwned.html
+[Primitive Type pointer]: https://doc.rust-lang.org/std/primitive.pointer.html
+[Module std::ptr]: https://doc.rust-lang.org/std/ptr/index.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
