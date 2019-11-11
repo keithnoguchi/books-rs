@@ -10,4 +10,5 @@ mod ptr;
 mod second;
 mod simple;
 mod string;
+mod timer;
 mod vector;
