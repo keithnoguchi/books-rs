@@ -79,6 +79,10 @@ $
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The async book]: Asynchronous Programming in Rust
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
+- [Crate std]: The Rust Standard Library
+  - [Module std::ptr]: Manually manage memory through raw pointers
+  - [Module std::future]: Asynchronous values
+  - [Module std::task]: Types and Traits for working with asynchronous tasks
 - [Crate futures]: Zero-cost asynchronous programming in Rust
   - [Crate futures tests]: futures tests
 
@@ -94,7 +98,11 @@ $
 [Module std::ptr]: https://doc.rust-lang.org/std/ptr/index.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
+[Crate std]: https://doc.rust-lang.org/std/index.html
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
+[Crate std]: https://doc.rust-lang.org/std/index.html
+[Module std::future]: https://doc.rust-lang.org/std/future/index.html
+[Module std::task]: https://doc.rust-lang.org/std/task/index.html
 [Crate futures]: https://rust-lang-nursery.github.io/futures-rs/
 [Crate futures tests]: https://github.com/rust-lang-nursery/futures-rs/tree/master/futures/tests
 [Niko Matsakis]: https://twitter.com/nikomatsakis
