@@ -1,5 +1,6 @@
 /// SPDX-License-Identifier: GPL-2.0
-use futures::{channel::mpsc, sink::SinkExt};
+use futures::{channel::mpsc, sink::SinkExt, stream};
+use std::pin;
 
 #[allow(dead_code)]
 async fn send(data: Vec<i32>) -> mpsc::Receiver<i32> {
@@ -10,6 +11,16 @@ async fn send(data: Vec<i32>) -> mpsc::Receiver<i32> {
     }
     drop(tx);
     rx
+}
+
+#[allow(dead_code)]
+async fn sum_with_next(mut stream: pin::Pin<&mut dyn stream::Stream<Item = i32>>) -> i32 {
+    use futures::stream::StreamExt; // for `next`
+    let mut sum = 0;
+    while let Some(item) = stream.next().await {
+        sum += item;
+    }
+    sum
 }
 
 #[cfg(test)]
