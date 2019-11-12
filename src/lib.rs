@@ -10,6 +10,7 @@ mod hashmap;
 mod ptr;
 mod second;
 mod simple;
+mod stream;
 mod string;
 pub mod timer;
 mod vector;
