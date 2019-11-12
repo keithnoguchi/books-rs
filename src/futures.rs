@@ -2,14 +2,15 @@
 use std::future;
 
 #[allow(dead_code)]
-async fn foo() -> u8 {
-    5
+async fn foo(x: u8) -> u8 {
+    x
 }
 
 #[allow(dead_code)]
 fn bar() -> impl future::Future<Output = u8> {
     async {
-        let x: u8 = foo().await;
+        let y = 5u8;
+        let x: u8 = foo(y).await;
         x + 5
     }
 }
@@ -19,8 +20,7 @@ mod test {
     // https://rust-lang.github.io/async-book/03_async_await/01_chapter.html
     #[test]
     fn async_bar_foo() {
-        use futures::executor::block_on;
-        assert_eq!(10, block_on(super::bar()));
+        assert_eq!(10, futures::executor::block_on(super::bar()));
     }
     // https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/macro.join.html
     #[test]
