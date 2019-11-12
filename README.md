@@ -85,6 +85,7 @@ $
   - [Module std::task]: Types and Traits for working with asynchronous tasks
 - [Crate futures]: Zero-cost asynchronous programming in Rust
   - [Crate futures tests]: futures tests
+- [Crate Metal I/O]: A lightweight I/O library for Rust
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
@@ -107,6 +108,7 @@ $
 [Crate futures tests]: https://github.com/rust-lang-nursery/futures-rs/tree/master/futures/tests
 [Niko Matsakis]: https://twitter.com/nikomatsakis
 [Without Boats]: https://github.com/withoutboats
+[Crate Metal I/O]: https://github.com/tokio-rs/mio
 [Crate crossbeam]: https://docs.rs/crossbeam/0.7.3/crossbeam/
 [Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
 [Crate diesel]: https://diesel.rs/guides/getting-started/
