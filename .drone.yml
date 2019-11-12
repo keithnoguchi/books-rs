@@ -33,3 +33,9 @@ steps:
     depends_on:
       - test
       - document
+  - name: run
+    image: rust:1.39
+    commands:
+      - make run
+    depends_on:
+      - install
