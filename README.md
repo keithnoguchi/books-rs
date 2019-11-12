@@ -17,10 +17,13 @@
 - [string]: String type example
 - [hashmap]: HashMap type example
 - [generic]: Generics example
+- [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
 - [futures]: [Crate futures] example
-- [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
+- [stream]: [Module futures::stream] example
+- [timer]: [Build a Timer] example
+- [exec]: [Build an Executor] example
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
@@ -29,10 +32,13 @@
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
+[ptr]: src/ptr.rs
 [boxed]: src/boxed.rs
 [borrow]: src/borrow.rs
 [futures]: src/futures.rs
-[ptr]: src/ptr.rs
+[stream]: src/stream.rs
+[timer]: src/timer.rs
+[exec]: src/exec.rs
 [first]: src/first.rs
 [second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
@@ -99,13 +105,15 @@ $
 [Module std::ptr]: https://doc.rust-lang.org/std/ptr/index.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
 [The async book]: https://rust-lang.github.io/async-book/
-[Crate std]: https://doc.rust-lang.org/std/index.html
+[Build a Timer]:  https://rust-lang.github.io/async-book/02_execution/03_wakeups.html#applied-build-a-timer
+[Build an Executor]: https://rust-lang.github.io/async-book/02_execution/04_executor.html
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE
 [Crate std]: https://doc.rust-lang.org/std/index.html
 [Module std::future]: https://doc.rust-lang.org/std/future/index.html
 [Module std::task]: https://doc.rust-lang.org/std/task/index.html
-[Crate futures]: https://rust-lang-nursery.github.io/futures-rs/
+[Crate futures]: https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/index.html
 [Crate futures tests]: https://github.com/rust-lang-nursery/futures-rs/tree/master/futures/tests
+[Module futures::stream]: https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/stream/index.html
 [Niko Matsakis]: https://twitter.com/nikomatsakis
 [Without Boats]: https://github.com/withoutboats
 [Crate Metal I/O]: https://github.com/tokio-rs/mio
