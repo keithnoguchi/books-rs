@@ -16,14 +16,37 @@ async fn send(data: Vec<i32>) -> mpsc::Receiver<i32> {
 mod tests {
     #[test]
     fn stream() {
-        use futures::stream::StreamExt;
-        let test = async {
-            let data = vec![1, 2];
-            let mut rx = super::send(data).await;
-            assert_eq!(Some(1i32), rx.next().await);
-            assert_eq!(Some(2i32), rx.next().await);
-            assert_eq!(None, rx.next().await);
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: Vec<Option<i32>>,
         };
-        futures::executor::block_on(test);
+        let tests = [
+            Test {
+                name: "send 1i32",
+                data: vec![1],
+                want: vec![Some(1), None],
+            },
+            Test {
+                name: "send 1 and 2",
+                data: vec![1, 2],
+                want: vec![Some(1), Some(2), None],
+            },
+            Test {
+                name: "send 1, 2, and 3",
+                data: vec![1, 2, 3],
+                want: vec![Some(1), Some(2), Some(3), None],
+            },
+        ];
+        for t in &tests {
+            let test = async {
+                use futures::stream::StreamExt;
+                let mut rx = super::send(t.data.clone()).await;
+                for want in &t.want {
+                    debug_assert_eq!(*want, rx.next().await, "{}", t.name);
+                }
+            };
+            futures::executor::block_on(test);
+        }
     }
 }
