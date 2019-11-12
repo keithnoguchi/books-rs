@@ -23,18 +23,18 @@ workflows:
           requires:
             - format
             - lint
-      - install-arch64:
-          requires:
-            - test-arch64
-      - install-ubuntu64:
-          requires:
-            - test-ubuntu64
       - run-arch64:
           requires:
-            - install-arch64
+            - test-arch64
       - run-ubuntu64:
           requires:
-            - install-ubuntu64
+            - test-ubuntu64
+      - install-arch64:
+          requires:
+            - run-arch64
+      - install-ubuntu64:
+          requires:
+            - run-ubuntu64
 jobs:
   checkout:
     <<: *defaults
@@ -67,18 +67,6 @@ jobs:
       - attach_workspace:
           at: .
       - run: make test-ubuntu64
-  install-arch64:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run: make install-arch64
-  install-ubuntu64:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: .
-      - run: make install-ubuntu64
   run-arch64:
     <<: *defaults
     steps:
@@ -91,3 +79,15 @@ jobs:
       - attach_workspace:
           at: .
       - run: make run-ubuntu64
+  install-arch64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make install-arch64
+  install-ubuntu64:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make install-ubuntu64
