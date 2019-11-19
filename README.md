@@ -91,6 +91,8 @@ $
   - [Module std::task]: Types and Traits for working with asynchronous tasks
 - [Crate futures]: Zero-cost asynchronous programming in Rust
   - [Crate futures tests]: futures tests
+  - [Module futures::stream]: Asynchronous streams
+  - [Module futures::compat]: Interop between futures 0.1 and 0.3
 - [Crate Metal I/O]: A lightweight I/O library for Rust
 
 [The book]: https://doc.rust-lang.org/stable/book/
@@ -114,6 +116,7 @@ $
 [Crate futures]: https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/index.html
 [Crate futures tests]: https://github.com/rust-lang-nursery/futures-rs/tree/master/futures/tests
 [Module futures::stream]: https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/stream/index.html
+[Module futures::compat]: https://rust-lang-nursery.github.io/futures-api-docs/0.3.0-alpha.19/futures/compat/index.html
 [Niko Matsakis]: https://twitter.com/nikomatsakis
 [Without Boats]: https://github.com/withoutboats
 [Crate Metal I/O]: https://github.com/tokio-rs/mio
