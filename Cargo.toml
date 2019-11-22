@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 futures = { version = "0.3", features = ["compat"] }
+hyper = "0.12.9"

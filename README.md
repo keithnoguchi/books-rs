@@ -22,8 +22,6 @@
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
 - [futures]: [Crate futures] example
 - [stream]: [Module futures::stream] example
-- [timer]: [Build a Timer] example
-- [exec]: [Build an Executor] example
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
@@ -37,8 +35,6 @@
 [borrow]: src/borrow.rs
 [futures]: src/futures.rs
 [stream]: src/stream.rs
-[timer]: src/timer.rs
-[exec]: src/exec.rs
 [first]: src/first.rs
 [second]: src/second.rs
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html

@@ -2,7 +2,6 @@
 mod array;
 mod borrow;
 mod boxed;
-pub mod exec;
 mod first;
 mod futures;
 mod generic;
@@ -12,5 +11,4 @@ mod second;
 mod simple;
 mod stream;
 mod string;
-pub mod timer;
 mod vector;
