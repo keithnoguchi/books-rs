@@ -23,18 +23,12 @@ workflows:
           requires:
             - format
             - lint
-      - run-arch64:
-          requires:
-            - test-arch64
-      - run-ubuntu64:
-          requires:
-            - test-ubuntu64
       - install-arch64:
           requires:
-            - run-arch64
+            - test-arch64
       - install-ubuntu64:
           requires:
-            - run-ubuntu64
+            - test-ubuntu64
 jobs:
   checkout:
     <<: *defaults

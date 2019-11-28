@@ -26,16 +26,10 @@ steps:
     depends_on:
       - format
       - lint
-  - name: run
-    image: rust:1.39
-    commands:
-      - make run
-    depends_on:
-      - test
-      - document
   - name: install
     image: rust:1.39
     commands:
       - make install
     depends_on:
-      - run
+      - test
+      - document
