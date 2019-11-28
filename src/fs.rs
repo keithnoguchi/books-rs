@@ -56,7 +56,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn create_and_write() -> Result<(), Box<dyn std::error::Error>> {
+    fn create_write_and_read() -> Result<(), Box<dyn std::error::Error>> {
         const NAME: &str = "create_and_write";
         struct Test {
             file: &'static str,
@@ -90,14 +90,23 @@ mod tests {
         ];
         for t in &tests {
             use std::fs::{self, File};
+            use std::io::Read;
             let file = format!("{}-{}", NAME, t.file);
             let f = File::create(&file)?;
             {
-                use std::io::{BufWriter, Write};
                 // Use blocks, so that the BufWriter will flushes the buffer
                 // before removing the file below.
+                use std::io::{BufWriter, Write};
                 let mut w = BufWriter::new(f);
                 w.write(&t.data)?;
+            }
+            let mut f = File::open(&file)?;
+            // Initialize the buffer with 0 so that f.read() will be happy.
+            let mut got = [0; 100];
+            let n = f.read(&mut got)?;
+            debug_assert_eq!(100, n, "{}: unexpected read length", file);
+            for (i, got) in t.data.iter().enumerate() {
+                debug_assert_eq!(t.data[i], *got, "{}: unexpected read data", file);
             }
             fs::remove_file(&file)?;
         }
