@@ -2,8 +2,8 @@
 #[cfg(test)]
 mod tests {
     #[test]
-    fn open_and_create_with_match() -> Result<(), std::io::Error> {
-        const NAME: &str = "open_and_create_with_match";
+    fn open_and_create() -> Result<(), std::io::Error> {
+        const NAME: &str = "open_and_create";
         let tests = [
             "test.txt",
             "test1.txt",
@@ -35,8 +35,8 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn open_and_create() -> Result<(), std::io::Error> {
-        const NAME: &str = "open_and_create";
+    fn open_and_create_unwrap_or_else() -> Result<(), std::io::Error> {
+        const NAME: &str = "open_and_create_unwrap_or_else";
         let tests = [
             "test.txt",
             "test1.txt",
