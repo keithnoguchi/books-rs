@@ -58,34 +58,35 @@ mod tests {
     #[test]
     fn create_write_and_read() -> Result<(), Box<dyn std::error::Error>> {
         const NAME: &str = "create_and_write";
+        const BUFSIZ: usize = 100;
         struct Test {
             file: &'static str,
-            data: [u8; 100],
+            data: [u8; BUFSIZ],
         }
         let tests = [
             Test {
                 file: "testa.txt",
-                data: [b'a'; 100],
+                data: [b'a'; BUFSIZ],
             },
             Test {
                 file: "testb.txt",
-                data: [b'b'; 100],
+                data: [b'b'; BUFSIZ],
             },
             Test {
                 file: "testc.txt",
-                data: [b'c'; 100],
+                data: [b'c'; BUFSIZ],
             },
             Test {
                 file: "testd.txt",
-                data: [b'd'; 100],
+                data: [b'd'; BUFSIZ],
             },
             Test {
                 file: "teste.txt",
-                data: [b'e'; 100],
+                data: [b'e'; BUFSIZ],
             },
             Test {
                 file: "testf.txt",
-                data: [b'f'; 100],
+                data: [b'f'; BUFSIZ],
             },
         ];
         for t in &tests {
@@ -102,9 +103,9 @@ mod tests {
             }
             let mut f = File::open(&file)?;
             // Initialize the buffer with 0 so that f.read() will be happy.
-            let mut got = [0; 100];
+            let mut got = [0; BUFSIZ];
             let n = f.read(&mut got)?;
-            debug_assert_eq!(100, n, "{}: unexpected read length", file);
+            debug_assert_eq!(BUFSIZ, n, "{}: unexpected read length", file);
             for (i, got) in t.data.iter().enumerate() {
                 debug_assert_eq!(t.data[i], *got, "{}: unexpected read data", file);
             }
