@@ -55,4 +55,22 @@ mod tests {
         }
         Ok(())
     }
+    #[test]
+    fn create_and_write() -> Result<(), Box<dyn std::error::Error>> {
+        const NAME: &str = "create_and_write";
+        let tests = [
+            "test.txt",
+            "test1.txt",
+            "test2.txt",
+            "test3.txt",
+            "test4.txt",
+        ];
+        for t in &tests {
+            use std::fs::{self, File};
+            let file = format!("{}-{}", NAME, t);
+            let _f = File::create(&file)?;
+            fs::remove_file(&file)?;
+        }
+        Ok(())
+    }
 }
