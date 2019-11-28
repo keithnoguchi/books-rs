@@ -74,17 +74,31 @@ mod tests {
                 data: b'b',
                 bufsiz: 100,
             },
+            Test {
+                name: "1024 bytes 'x'",
+                data: b'x',
+                bufsiz: 1024,
+            },
+            Test {
+                name: "1MiB bytes 'y'",
+                data: b'y',
+                bufsiz: 1024 * 1024,
+            },
+            Test {
+                name: "4MiB 'z'",
+                data: b'z',
+                bufsiz: 4 * 1024 * 1024,
+            },
         ];
         for t in &tests {
-            use std::fs::{self, File};
-            use std::io::Read;
+            use std::fs::File;
+            use std::io::prelude::*;
             let file = format!("{}-{}", NAME, t.data);
             let f = File::create(&file)?;
             {
                 // Use blocks, so that the BufWriter will flushes the buffer
                 // before removing the file below.
-                use std::io::{BufWriter, Write};
-                let mut w = BufWriter::new(f);
+                let mut w = std::io::BufWriter::new(f);
                 let data = vec![t.data; t.bufsiz];
                 w.write(&data)?;
             }
@@ -96,7 +110,7 @@ mod tests {
             for got in &got {
                 debug_assert_eq!(t.data, *got, "{}: unexpected read data", t.name);
             }
-            fs::remove_file(&file)?;
+            std::fs::remove_file(&file)?;
         }
         Ok(())
     }
