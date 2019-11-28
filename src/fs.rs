@@ -29,13 +29,8 @@ mod tests {
                     }
                 },
             };
-            match fs::remove_file(file.clone()) {
-                Ok(_) => continue,
-                Err(err) => {
-                    eprintln!("{}: remove_file: {:?}", file, err);
-                    return Err(err);
-                }
-            };
+            let msg = format!("{}: remove_file", file);
+            fs::remove_file(file.clone()).expect(&msg);
         }
         Ok(())
     }
@@ -59,17 +54,8 @@ mod tests {
                     panic!(format!("{}: {:?}", file, err));
                 })
             });
-            // Can't use unwrap_or_else here because it expects
-            // unit type and doesn't allow return Err(err).  And
-            // also, expect macro expectes the string slice, which
-            // doesn't work well with the following error message.
-            fs::remove_file(file.clone()) {
-                Ok(_) => continue,
-                Err(err) => {
-                    eprintln!("{}: remove_file: {:?}", file, err);
-                    return Err(err);
-                }
-            };
+            let msg = format!("{}: remove_file", file);
+            fs::remove_file(file.clone()).expect(&msg);
         }
         Ok(())
     }
