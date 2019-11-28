@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #[cfg(test)]
 mod tests {
+    use std::error::Error;
     #[test]
-    fn open_and_create() -> Result<(), std::io::Error> {
+    fn open_and_create() -> Result<(), Box<dyn Error>> {
         const NAME: &str = "open_and_create";
         let tests = [
             "test.txt",
@@ -31,7 +32,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn open_and_create_unwrap_or_else() -> Result<(), std::io::Error> {
+    fn open_and_create_unwrap_or_else() -> Result<(), Box<dyn Error>> {
         const NAME: &str = "open_and_create_unwrap_or_else";
         let tests = [
             "test.txt",
@@ -56,7 +57,7 @@ mod tests {
         Ok(())
     }
     #[test]
-    fn create_write_and_read() -> Result<(), Box<dyn std::error::Error>> {
+    fn create_write_and_read() -> Result<(), Box<dyn Error>> {
         const NAME: &str = "create_and_write";
         struct Test {
             name: &'static str,
