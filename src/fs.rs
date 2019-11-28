@@ -58,17 +58,47 @@ mod tests {
     #[test]
     fn create_and_write() -> Result<(), Box<dyn std::error::Error>> {
         const NAME: &str = "create_and_write";
+        struct Test {
+            file: &'static str,
+            data: [u8; 100],
+        }
         let tests = [
-            "test.txt",
-            "test1.txt",
-            "test2.txt",
-            "test3.txt",
-            "test4.txt",
+            Test {
+                file: "testa.txt",
+                data: [b'a'; 100],
+            },
+            Test {
+                file: "testb.txt",
+                data: [b'b'; 100],
+            },
+            Test {
+                file: "testc.txt",
+                data: [b'c'; 100],
+            },
+            Test {
+                file: "testd.txt",
+                data: [b'd'; 100],
+            },
+            Test {
+                file: "teste.txt",
+                data: [b'e'; 100],
+            },
+            Test {
+                file: "testf.txt",
+                data: [b'f'; 100],
+            },
         ];
         for t in &tests {
             use std::fs::{self, File};
-            let file = format!("{}-{}", NAME, t);
-            let _f = File::create(&file)?;
+            let file = format!("{}-{}", NAME, t.file);
+            let f = File::create(&file)?;
+            {
+                use std::io::{BufWriter, Write};
+                // Use blocks, so that the BufWriter will flushes the buffer
+                // before removing the file below.
+                let mut w = BufWriter::new(f);
+                w.write(&t.data)?;
+            }
             fs::remove_file(&file)?;
         }
         Ok(())
