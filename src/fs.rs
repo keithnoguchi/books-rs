@@ -58,56 +58,43 @@ mod tests {
     #[test]
     fn create_write_and_read() -> Result<(), Box<dyn std::error::Error>> {
         const NAME: &str = "create_and_write";
-        const BUFSIZ: usize = 100;
         struct Test {
-            file: &'static str,
-            data: [u8; BUFSIZ],
+            name: &'static str,
+            data: u8,
+            bufsiz: usize,
         }
         let tests = [
             Test {
-                file: "testa.txt",
-                data: [b'a'; BUFSIZ],
+                name: "1 bytes 'a'",
+                data: b'a',
+                bufsiz: 1,
             },
             Test {
-                file: "testb.txt",
-                data: [b'b'; BUFSIZ],
-            },
-            Test {
-                file: "testc.txt",
-                data: [b'c'; BUFSIZ],
-            },
-            Test {
-                file: "testd.txt",
-                data: [b'd'; BUFSIZ],
-            },
-            Test {
-                file: "teste.txt",
-                data: [b'e'; BUFSIZ],
-            },
-            Test {
-                file: "testf.txt",
-                data: [b'f'; BUFSIZ],
+                name: "100 bytes 'b'",
+                data: b'b',
+                bufsiz: 100,
             },
         ];
         for t in &tests {
             use std::fs::{self, File};
             use std::io::Read;
-            let file = format!("{}-{}", NAME, t.file);
+            let file = format!("{}-{}", NAME, t.data);
             let f = File::create(&file)?;
             {
                 // Use blocks, so that the BufWriter will flushes the buffer
                 // before removing the file below.
                 use std::io::{BufWriter, Write};
                 let mut w = BufWriter::new(f);
-                w.write(&t.data)?;
+                let data = vec![t.data; t.bufsiz];
+                w.write(&data)?;
             }
             let mut f = File::open(&file)?;
             // Initialize the buffer with 0 so that f.read() will be happy.
-            let mut got = [0; BUFSIZ];
+            let mut got = vec![0u8; t.bufsiz];
             let n = f.read(&mut got)?;
-            debug_assert_eq!(BUFSIZ, n, "{}: unexpected read length", file);
-            for (i, got) in t.data.iter().enumerate() {
-                debug_assert_eq!(t.data[i], *got, "{}: unexpected read data", file);
+            debug_assert_eq!(t.bufsiz, n, "{}: unexpected read length", t.name);
+            for got in &got {
+                debug_assert_eq!(t.data, *got, "{}: unexpected read data", t.name);
             }
             fs::remove_file(&file)?;
         }
