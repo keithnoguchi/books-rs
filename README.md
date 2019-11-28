@@ -17,6 +17,7 @@
 - [string]: String type example
 - [hashmap]: HashMap type example
 - [generic]: Generics example
+- [fs]: std::fs examples
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
@@ -30,6 +31,7 @@
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
+[fs]: src/fs.rs
 [ptr]: src/ptr.rs
 [boxed]: src/boxed.rs
 [borrow]: src/borrow.rs
