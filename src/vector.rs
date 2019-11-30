@@ -1,13 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
+use std::io;
+
 #[allow(dead_code)]
-fn largest(list: &[i32]) -> Option<i32> {
-    let mut largest = list.get(0)?;
-    for i in list {
-        if i > largest {
-            largest = i;
+fn largest(list: &[i32]) -> Result<i32, io::Error> {
+    if let Some(mut largest) = list.get(0) {
+        for i in list {
+            if i > largest {
+                largest = i;
+            }
         }
-    }
-    Some(*largest)
+        return Ok(*largest);
+    };
+    Err(io::Error::from(io::ErrorKind::InvalidInput))
 }
 
 #[cfg(test)]
@@ -181,42 +185,50 @@ mod tests {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
-            want: Option<i32>,
+            want: i32,
         }
         let tests = [
             Test {
                 name: "single element vector",
                 data: vec![1],
-                want: Some(1),
+                want: 1,
             },
             Test {
                 name: "ascending two elements vector",
                 data: vec![1, 2],
-                want: Some(2),
+                want: 2,
             },
             Test {
                 name: "descending two elements vector",
                 data: vec![2, 1],
-                want: Some(2),
+                want: 2,
             },
             Test {
                 name: "ascending five elements vector",
                 data: vec![1, 2, 3, 4, 5],
-                want: Some(5),
+                want: 5,
             },
             Test {
                 name: "decending five elements vector",
                 data: vec![5, 4, 3, 2, 1],
-                want: Some(5),
+                want: 5,
             },
             Test {
                 name: "unsorted five elements vector",
                 data: vec![1, 5, 3, 2, 4],
-                want: Some(5),
+                want: 5,
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.want, largest(&t.data), "largest_i32: {}", t.name);
+            match largest(&t.data) {
+                Err(err) => {
+                    let msg = format!("largest_i32({}): {}", t.name, err);
+                    panic!("{}", msg)
+                }
+                Ok(got) => {
+                    debug_assert_eq!(t.want, got, "largest_i32: {}", t.name);
+                }
+            }
         }
     }
 }
