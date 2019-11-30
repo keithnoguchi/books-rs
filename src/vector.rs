@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0
 #[allow(dead_code)]
-fn largest(list: &[i32]) -> i32 {
-    let mut largest = list[0];
+fn largest(list: &[i32]) -> Option<i32> {
+    let mut largest = list.get(0)?;
     for i in list {
-        if *i > largest {
-            largest = *i;
+        if i > largest {
+            largest = i;
         }
     }
-    largest
+    Some(*largest)
 }
 
 #[cfg(test)]
@@ -181,38 +181,38 @@ mod tests {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
-            want: i32,
+            want: Option<i32>,
         }
         let tests = [
             Test {
                 name: "single element vector",
                 data: vec![1],
-                want: 1,
+                want: Some(1),
             },
             Test {
                 name: "ascending two elements vector",
                 data: vec![1, 2],
-                want: 2,
+                want: Some(2),
             },
             Test {
                 name: "descending two elements vector",
                 data: vec![2, 1],
-                want: 2,
+                want: Some(2),
             },
             Test {
                 name: "ascending five elements vector",
                 data: vec![1, 2, 3, 4, 5],
-                want: 5,
+                want: Some(5),
             },
             Test {
                 name: "decending five elements vector",
                 data: vec![5, 4, 3, 2, 1],
-                want: 5,
+                want: Some(5),
             },
             Test {
                 name: "unsorted five elements vector",
                 data: vec![1, 5, 3, 2, 4],
-                want: 5,
+                want: Some(5),
             },
         ];
         for t in &tests {
