@@ -3,15 +3,17 @@ use std::io;
 
 #[allow(dead_code)]
 fn largest(list: &[i32]) -> Result<i32, io::Error> {
-    if let Some(mut largest) = list.get(0) {
-        for i in list {
-            if i > largest {
-                largest = i;
+    match list.get(0) {
+        None => Err(io::Error::from(io::ErrorKind::InvalidInput)),
+        Some(mut largest) => {
+            for i in list {
+                if i > largest {
+                    largest = i;
+                }
             }
+            Ok(*largest)
         }
-        return Ok(*largest);
-    };
-    Err(io::Error::from(io::ErrorKind::InvalidInput))
+    }
 }
 
 #[cfg(test)]
@@ -181,7 +183,8 @@ mod tests {
         }
     }
     #[test]
-    fn largest_i32() {
+    fn largest_ok_i32() {
+        const NAME: &str = "largest_ok_i32";
         struct Test {
             name: &'static str,
             data: Vec<i32>,
@@ -222,11 +225,36 @@ mod tests {
         for t in &tests {
             match largest(&t.data) {
                 Err(err) => {
-                    let msg = format!("largest_i32({}): {}", t.name, err);
-                    panic!("{}", msg)
+                    let msg = format!("{}({}): {}", NAME, t.name, err);
+                    panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "largest_i32: {}", t.name);
+                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
+    #[test]
+    fn largest_err_i32() {
+        const NAME: &str = "largest_err_i32";
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: std::io::ErrorKind,
+        }
+        let tests = [Test {
+            name: "empty i32 vector",
+            data: vec![],
+            want: std::io::ErrorKind::InvalidInput,
+        }];
+        for t in &tests {
+            match largest(&t.data) {
+                Ok(_) => {
+                    let msg = format!("{}({}): unexpected success", NAME, t.name);
+                    panic!(msg)
+                }
+                Err(err) => {
+                    debug_assert_eq!(t.want, err.kind(), "{}({})", NAME, t.name);
                 }
             }
         }
