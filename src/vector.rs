@@ -1,6 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
+#[allow(dead_code)]
+fn largest(list: &[i32]) -> i32 {
+    let mut largest = list[0];
+    for i in list {
+        if *i > largest {
+            largest = *i;
+        }
+    }
+    largest
+}
+
 #[cfg(test)]
 mod tests {
+    use super::*;
     #[test]
     fn next() {
         let a = vec!['a', 'b', 'c', 'd', 'e'];
@@ -162,6 +174,49 @@ mod tests {
                 let got = t.data.pop();
                 debug_assert_eq!(want, &got, "{}", t.name);
             }
+        }
+    }
+    #[test]
+    fn largest_i32() {
+        struct Test {
+            name: &'static str,
+            data: Vec<i32>,
+            want: i32,
+        }
+        let tests = [
+            Test {
+                name: "single element vector",
+                data: vec![1],
+                want: 1,
+            },
+            Test {
+                name: "ascending two elements vector",
+                data: vec![1, 2],
+                want: 2,
+            },
+            Test {
+                name: "descending two elements vector",
+                data: vec![2, 1],
+                want: 2,
+            },
+            Test {
+                name: "ascending five elements vector",
+                data: vec![1, 2, 3, 4, 5],
+                want: 5,
+            },
+            Test {
+                name: "decending five elements vector",
+                data: vec![5, 4, 3, 2, 1],
+                want: 5,
+            },
+            Test {
+                name: "unsorted five elements vector",
+                data: vec![1, 5, 3, 2, 4],
+                want: 5,
+            },
+        ];
+        for t in &tests {
+            debug_assert_eq!(t.want, largest(&t.data), "largest_i32: {}", t.name);
         }
     }
 }
