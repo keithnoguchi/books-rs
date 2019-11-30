@@ -1,10 +1,44 @@
 // SPDX-License-Identifier: GPL-2.0
-use std::io;
+use std::{cmp, io};
+
+#[derive(Debug)]
+enum Error {
+    Io(io::Error),
+    #[allow(dead_code)]
+    Other,
+}
+
+impl From<io::ErrorKind> for Error {
+    fn from(kind: io::ErrorKind) -> Self {
+        Error::Io(io::Error::from(kind))
+    }
+}
+
+impl cmp::PartialEq for Error {
+    fn eq(&self, other: &Self) -> bool {
+        match self {
+            Error::Io(ref err) => {
+                if let Error::Io(ref other) = other {
+                    other.kind() == err.kind()
+                } else {
+                    false
+                }
+            }
+            Error::Other => {
+                if let Error::Other = other {
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+}
 
 #[allow(dead_code)]
-fn largest(list: &[i32]) -> Result<i32, io::Error> {
+fn largest(list: &[i32]) -> Result<i32, Error> {
     match list.get(0) {
-        None => Err(io::Error::from(io::ErrorKind::InvalidInput)),
+        None => Err(Error::from(io::ErrorKind::InvalidInput)),
         Some(mut largest) => {
             for i in list {
                 if i > largest {
@@ -225,7 +259,7 @@ mod tests {
         for t in &tests {
             match largest(&t.data) {
                 Err(err) => {
-                    let msg = format!("{}({}): {}", NAME, t.name, err);
+                    let msg = format!("{}({}): {:?}", NAME, t.name, err);
                     panic!("{}", msg);
                 }
                 Ok(got) => {
@@ -240,12 +274,12 @@ mod tests {
         struct Test {
             name: &'static str,
             data: Vec<i32>,
-            want: std::io::ErrorKind,
+            want: Error,
         }
         let tests = [Test {
             name: "empty i32 vector",
             data: vec![],
-            want: std::io::ErrorKind::InvalidInput,
+            want: Error::from(std::io::ErrorKind::InvalidInput),
         }];
         for t in &tests {
             match largest(&t.data) {
@@ -254,7 +288,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err.kind(), "{}({})", NAME, t.name);
+                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
