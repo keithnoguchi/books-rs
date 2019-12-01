@@ -20,6 +20,24 @@ fn greeting(name: &str) -> String {
     format!("Hello, {}!", name)
 }
 
+struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    #[allow(dead_code)]
+    fn new(value: i32) -> Self {
+        if value < 1 || value > 100 {
+            panic!("the value should be in 1..101");
+        }
+        Self { value }
+    }
+    #[allow(dead_code)]
+    fn value(&self) -> i32 {
+        self.value
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -66,6 +84,14 @@ mod tests {
         ];
         for t in &tests {
             assert!(super::greeting(t).contains(t), "{}: {}", NAME, t);
+        }
+    }
+    #[test]
+    #[should_panic(expected = "the value should be in 1..101")]
+    fn panic_guess_with_invalid_value() {
+        let tests = [32i32, 99, -1];
+        for t in &tests {
+            super::Guess::new(*t);
         }
     }
 }
