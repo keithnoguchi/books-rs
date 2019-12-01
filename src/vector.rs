@@ -302,4 +302,81 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn largest_ok_f32() {
+        const NAME: &str = "largest_ok_f32";
+        struct Test {
+            name: &'static str,
+            data: Vec<f32>,
+            want: f32,
+        }
+        let tests = [
+            Test {
+                name: "single element vector",
+                data: vec![1.1],
+                want: 1.1,
+            },
+            Test {
+                name: "ascending two elements vector",
+                data: vec![1.1, 2.1],
+                want: 2.1,
+            },
+            Test {
+                name: "descending two elements vector",
+                data: vec![2.9, 1.1],
+                want: 2.9,
+            },
+            Test {
+                name: "ascending five elements vector",
+                data: vec![1.1, 2.1, 3.1, 4.1, 5.1],
+                want: 5.1,
+            },
+            Test {
+                name: "decending five elements vector",
+                data: vec![5.9, 4.9, 3.9, 2.9, 1.9],
+                want: 5.9,
+            },
+            Test {
+                name: "unsorted five elements vector",
+                data: vec![1.5, 5.5, 3.5, 2.5, 4.5],
+                want: 5.5,
+            },
+        ];
+        for t in &tests {
+            match largest::<f32>(&t.data) {
+                Err(err) => {
+                    let msg = format!("{}({}): {}", NAME, t.name, err);
+                    panic!("{}", msg);
+                }
+                Ok(got) => {
+                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
+    #[test]
+    fn largest_err_f32() {
+        const NAME: &str = "largest_err_f32";
+        struct Test {
+            name: &'static str,
+            data: Vec<f32>,
+            want: Error,
+        }
+        let tests = [Test {
+            name: "empty f32 vector",
+            data: vec![],
+            want: Error::from(std::io::ErrorKind::InvalidInput),
+        }];
+        for t in &tests {
+            match largest::<f32>(&t.data) {
+                Ok(_) => {
+                    let msg = format!("{}({}): unexpected success", NAME, t.name);
+                    panic!(msg)
+                }
+                Err(err) => {
+                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
 }
