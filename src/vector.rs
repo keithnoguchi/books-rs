@@ -379,4 +379,81 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn largest_ok_char() {
+        const NAME: &str = "largest_ok_char";
+        struct Test {
+            name: &'static str,
+            data: Vec<char>,
+            want: char,
+        }
+        let tests = [
+            Test {
+                name: "single element vector",
+                data: vec!['a'],
+                want: 'a',
+            },
+            Test {
+                name: "ascending two elements vector",
+                data: vec!['a', 'b'],
+                want: 'b',
+            },
+            Test {
+                name: "descending two elements vector",
+                data: vec!['b', 'a'],
+                want: 'b',
+            },
+            Test {
+                name: "ascending five elements vector",
+                data: vec!['a', 'b', 'c', 'd', 'e'],
+                want: 'e',
+            },
+            Test {
+                name: "decending five elements vector",
+                data: vec!['e', 'd', 'c', 'b', 'a'],
+                want: 'e',
+            },
+            Test {
+                name: "unsorted five elements vector",
+                data: vec!['a', 'e', 'b', 'c', 'd'],
+                want: 'e',
+            },
+        ];
+        for t in &tests {
+            match largest::<char>(&t.data) {
+                Err(err) => {
+                    let msg = format!("{}({}): {}", NAME, t.name, err);
+                    panic!("{}", msg);
+                }
+                Ok(got) => {
+                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
+    #[test]
+    fn largest_err_char() {
+        const NAME: &str = "largest_err_char";
+        struct Test {
+            name: &'static str,
+            data: Vec<char>,
+            want: Error,
+        }
+        let tests = [Test {
+            name: "empty char vector",
+            data: vec![],
+            want: Error::from(std::io::ErrorKind::InvalidInput),
+        }];
+        for t in &tests {
+            match largest::<char>(&t.data) {
+                Ok(_) => {
+                    let msg = format!("{}({}): unexpected success", NAME, t.name);
+                    panic!(msg)
+                }
+                Err(err) => {
+                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
 }
