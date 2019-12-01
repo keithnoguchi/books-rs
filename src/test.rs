@@ -53,7 +53,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.want, t.r1.can_hold(&t.r2), "{}: {}", NAME, t.name);
+            assert_eq!(t.want, t.r1.can_hold(&t.r2), "{}: {}", NAME, t.name);
         }
     }
     #[test]

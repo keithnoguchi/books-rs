@@ -141,7 +141,7 @@ mod test {
             }
             for want in &t.want {
                 let got = l.pop();
-                debug_assert_eq!(want, &got, "{}", t.name);
+                assert_eq!(want, &got, "{}", t.name);
             }
         }
     }

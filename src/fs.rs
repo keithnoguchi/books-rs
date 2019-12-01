@@ -46,7 +46,7 @@ mod tests {
             use std::io::ErrorKind;
             let file = format!("{}-{}", NAME, t);
             let _f = File::open(&file).unwrap_or_else(|err| {
-                debug_assert_eq!(ErrorKind::NotFound, err.kind(), "{}", file);
+                assert_eq!(ErrorKind::NotFound, err.kind(), "{}", file);
                 File::create(&file).unwrap_or_else(|err| {
                     panic!(format!("{}: {:?}", file, err));
                 })
@@ -107,9 +107,9 @@ mod tests {
             // Initialize the buffer with 0 so that f.read() will be happy.
             let mut got = vec![0u8; t.bufsiz];
             let n = f.read(&mut got)?;
-            debug_assert_eq!(t.bufsiz, n, "{}: unexpected read length", t.name);
+            assert_eq!(t.bufsiz, n, "{}: unexpected read length", t.name);
             for got in &got {
-                debug_assert_eq!(t.data, *got, "{}: unexpected read data", t.name);
+                assert_eq!(t.data, *got, "{}: unexpected read data", t.name);
             }
             std::fs::remove_file(&file)?;
         }

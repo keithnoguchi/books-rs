@@ -302,64 +302,64 @@ mod tests {
             match t {
                 Test::I32(t) => {
                     let mut list = List::<i32>::new();
-                    debug_assert_eq!(None, list.peek(), "{}", t.name);
-                    debug_assert_eq!(None, list.peek_mut(), "{}", t.name);
+                    assert_eq!(None, list.peek(), "{}", t.name);
+                    assert_eq!(None, list.peek_mut(), "{}", t.name);
                     for data in &t.data {
                         list.push(data.clone());
                     }
-                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
+                    assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
-                        debug_assert_eq!(want, &got, "{}", t.name);
+                        assert_eq!(want, &got, "{}", t.name);
                     }
                     match list.peek() {
                         None => (),
                         _ => {
                             let some_value = 10000;
                             list.peek_mut().map(|value| *value = some_value);
-                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                            assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
                         }
                     }
                 }
                 Test::F32(t) => {
                     let mut list = List::<f32>::new();
-                    debug_assert_eq!(None, list.peek());
-                    debug_assert_eq!(None, list.peek_mut());
+                    assert_eq!(None, list.peek());
+                    assert_eq!(None, list.peek_mut());
                     for data in &t.data {
                         list.push(data.clone());
                     }
-                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
+                    assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
-                        debug_assert_eq!(want, &got, "{}", t.name);
+                        assert_eq!(want, &got, "{}", t.name);
                     }
                     match list.peek() {
                         None => (),
                         _ => {
                             let some_value = 10000.1;
                             list.peek_mut().map(|value| *value = some_value);
-                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                            assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
                         }
                     }
                 }
                 Test::Str(t) => {
                     let mut list = List::<String>::new();
-                    debug_assert_eq!(None, list.peek());
-                    debug_assert_eq!(None, list.peek_mut());
+                    assert_eq!(None, list.peek());
+                    assert_eq!(None, list.peek_mut());
                     for data in &t.data {
                         list.push(data.clone());
                     }
-                    debug_assert_eq!(t.data.last(), list.peek(), "{}", t.name);
+                    assert_eq!(t.data.last(), list.peek(), "{}", t.name);
                     for want in &t.want {
                         let got = list.pop();
-                        debug_assert_eq!(want, &got, "{}", t.name);
+                        assert_eq!(want, &got, "{}", t.name);
                     }
                     match list.peek() {
                         None => (),
                         _ => {
                             let some_value = "XXXXX".to_string();
                             list.peek_mut().map(|value| *value = some_value.clone());
-                            debug_assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
+                            assert_eq!(&some_value, list.peek().unwrap(), "{}", t.name);
                         }
                     }
                 }
@@ -402,7 +402,7 @@ mod tests {
             }
             let mut iter = list.into_iter();
             for want in &t.want {
-                debug_assert_eq!(want, &iter.next(), "{}", t.name);
+                assert_eq!(want, &iter.next(), "{}", t.name);
             }
         }
     }

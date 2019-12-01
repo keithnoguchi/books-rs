@@ -44,7 +44,7 @@ mod tests {
         ];
         for t in &tests {
             let got = map.get(&t.key);
-            debug_assert_eq!(t.want, got.unwrap(), "{}", t.name);
+            assert_eq!(t.want, got.unwrap(), "{}", t.name);
         }
     }
 }

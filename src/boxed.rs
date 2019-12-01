@@ -43,7 +43,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.want, format!("{:?}", t.list), "{}", t.name);
+            assert_eq!(t.want, format!("{:?}", t.list), "{}", t.name);
         }
     }
     #[test]
@@ -72,7 +72,7 @@ mod tests {
         ];
         for t in &tests {
             let boxed: Box<i8> = Box::new(t.data);
-            debug_assert_eq!(t.want, *boxed, "{}", t.name);
+            assert_eq!(t.want, *boxed, "{}", t.name);
         }
     }
 }

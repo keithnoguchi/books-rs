@@ -54,7 +54,7 @@ mod tests {
         for t in &tests {
             let mut input = Cow::from(&t.data[..]);
             super::abs_all(&mut input);
-            debug_assert_eq!(t.want, format!("{:?}", input), "{}", t.name);
+            assert_eq!(t.want, format!("{:?}", input), "{}", t.name);
         }
     }
     #[test]
@@ -84,7 +84,7 @@ mod tests {
         for t in &tests {
             let mut input = Cow::from(&t.data);
             super::abs_all(&mut input);
-            debug_assert_eq!(t.want, format!("{:?}", input), "{}", t.name);
+            assert_eq!(t.want, format!("{:?}", input), "{}", t.name);
         }
     }
     // https://doc.rust-lang.org/alloc/borrow/trait.Borrow.html

@@ -69,7 +69,7 @@ mod tests {
         for t in &tests {
             let got = &t.data[t.range.0..t.range.1];
             for (i, want) in t.want.iter().enumerate() {
-                debug_assert_eq!(want, &got[i], "{}", t.name);
+                assert_eq!(want, &got[i], "{}", t.name);
             }
         }
     }

@@ -41,8 +41,8 @@ mod tests {
         ];
         for t in &tests {
             let got = &t.data;
-            debug_assert_eq!(t.want.0, got.x, "{}: x", t.name);
-            debug_assert_eq!(t.want.1, got.y, "{}: y", t.name);
+            assert_eq!(t.want.0, got.x, "{}: x", t.name);
+            assert_eq!(t.want.1, got.y, "{}: y", t.name);
         }
     }
     #[test]
@@ -67,7 +67,7 @@ mod tests {
         for t in &tests {
             match t.data {
                 super::Option::Some(got) => {
-                    debug_assert_eq!(t.want, got, "{}", t.name);
+                    assert_eq!(t.want, got, "{}", t.name);
                 }
                 super::Option::None => {
                     panic!("unexpected None");
@@ -90,7 +90,7 @@ mod tests {
         for t in &tests {
             match t.data {
                 super::Result::Ok(v) => {
-                    debug_assert_eq!(t.want, v, "{}", t.name);
+                    assert_eq!(t.want, v, "{}", t.name);
                 }
                 super::Result::Err(_) => {
                     panic!("unexpected Result::Err() value");

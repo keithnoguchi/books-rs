@@ -120,7 +120,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            debug_assert_eq!(t.want, t.data.len(), "{}", t.name);
+            assert_eq!(t.want, t.data.len(), "{}", t.name);
         }
     }
     #[test]
@@ -155,7 +155,7 @@ mod tests {
         for t in &tests {
             for want in t.want.iter() {
                 let got = t.data.get(want.0);
-                debug_assert_eq!(want.1, got, "{}", t.name);
+                assert_eq!(want.1, got, "{}", t.name);
             }
         }
     }
@@ -191,7 +191,7 @@ mod tests {
             for a in t.push.iter() {
                 t.data.push(*a);
             }
-            debug_assert_eq!(t.want, t.data, "{}", t.name);
+            assert_eq!(t.want, t.data, "{}", t.name);
         }
     }
     #[test]
@@ -236,7 +236,7 @@ mod tests {
         for t in &mut tests {
             for want in &t.want {
                 let got = t.data.pop();
-                debug_assert_eq!(want, &got, "{}", t.name);
+                assert_eq!(want, &got, "{}", t.name);
             }
         }
     }
@@ -287,7 +287,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -312,7 +312,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -364,7 +364,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -389,7 +389,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -441,7 +441,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -466,7 +466,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -536,7 +536,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -561,7 +561,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -613,7 +613,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -638,7 +638,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -690,7 +690,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -715,7 +715,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -767,7 +767,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -792,7 +792,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -862,7 +862,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
+                    assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -887,7 +887,7 @@ mod tests {
                     panic!(msg)
                 }
                 Err(err) => {
-                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                    assert_eq!(t.want, err, "{}({})", NAME, t.name);
                 }
             }
         }

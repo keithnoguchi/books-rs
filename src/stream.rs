@@ -54,7 +54,7 @@ mod tests {
                 use futures::stream::StreamExt;
                 let mut rx = super::send(t.data.clone()).await;
                 for want in &t.want {
-                    debug_assert_eq!(*want, rx.next().await, "{}", t.name);
+                    assert_eq!(*want, rx.next().await, "{}", t.name);
                 }
             };
             futures::executor::block_on(test);

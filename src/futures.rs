@@ -51,7 +51,7 @@ mod test {
             let a = async { t.a };
             let b = async { t.b };
             block_on(async {
-                debug_assert_eq!(t.want, join!(a, b), "{}", t.name);
+                assert_eq!(t.want, join!(a, b), "{}", t.name);
             })
         }
     }
@@ -90,7 +90,7 @@ mod test {
                     got = a => got + t.b,
                     _ = b => 0,
                 };
-                debug_assert_eq!(t.want, got, "{}", t.name);
+                assert_eq!(t.want, got, "{}", t.name);
             })
         }
     }

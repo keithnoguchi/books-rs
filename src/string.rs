@@ -31,7 +31,7 @@ mod tests {
         ];
         for t in &tests {
             let got = &t.data[t.range.0..t.range.1];
-            debug_assert_eq!(t.want, got, "{}", t.name);
+            assert_eq!(t.want, got, "{}", t.name);
         }
     }
 }

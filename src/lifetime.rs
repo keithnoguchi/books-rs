@@ -116,7 +116,7 @@ mod tests {
         ];
         for t in &tests {
             let got = super::longest(&t.a, t.b);
-            debug_assert_eq!(t.want, got, "longest: {}", t.name);
+            assert_eq!(t.want, got, "longest: {}", t.name);
         }
     }
     #[test]
@@ -194,7 +194,7 @@ mod tests {
         ];
         for t in &tests {
             let got = super::longest_with_an_announcement(&t.a, &t.b, &t.announcement);
-            debug_assert_eq!(t.want, got, "{}: {}", NAME, t.name);
+            assert_eq!(t.want, got, "{}: {}", NAME, t.name);
         }
     }
 }
