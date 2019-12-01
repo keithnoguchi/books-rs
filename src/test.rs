@@ -15,6 +15,11 @@ impl Rectangle {
     }
 }
 
+#[allow(dead_code)]
+fn greeting(name: &str) -> String {
+    format!("Hello, {}!", name)
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -49,6 +54,18 @@ mod tests {
         ];
         for t in &tests {
             debug_assert_eq!(t.want, t.r1.can_hold(&t.r2), "{}: {}", NAME, t.name);
+        }
+    }
+    #[test]
+    fn greeting_contains() {
+        const NAME: &str = "greeting_contains";
+        let tests = [
+            String::from("Alice"),
+            String::from("Bob"),
+            String::from("Keith"),
+        ];
+        for t in &tests {
+            assert!(super::greeting(t).contains(t), "{}: {}", NAME, t);
         }
     }
 }
