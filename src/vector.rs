@@ -45,20 +45,20 @@ impl cmp::PartialEq for Error {
 }
 
 #[allow(dead_code)]
-fn largest<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
+fn largest<T: PartialOrd>(list: &[T]) -> Result<&T, Error> {
     if let Some(mut largest) = list.get(0) {
         for value in list {
             if value > largest {
                 largest = value
             }
         }
-        return Ok(largest.clone());
+        return Ok(largest);
     }
     Err(Error::from(io::ErrorKind::InvalidInput))
 }
 
 #[allow(dead_code)]
-fn largest_iter<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
+fn largest_iter<T: PartialOrd>(list: &[T]) -> Result<&T, Error> {
     let mut i = list.iter();
     if let Some(mut largest) = i.next() {
         loop {
@@ -68,7 +68,7 @@ fn largest_iter<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
                 }
                 continue;
             }
-            return Ok(largest.clone());
+            return Ok(largest);
         }
     }
     Err(Error::from(io::ErrorKind::InvalidInput))
@@ -287,7 +287,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -364,7 +364,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -441,7 +441,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -536,7 +536,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -613,7 +613,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -690,7 +690,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -767,7 +767,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
@@ -862,7 +862,7 @@ mod tests {
                     panic!("{}", msg);
                 }
                 Ok(got) => {
-                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                    debug_assert_eq!(&t.want, got, "{}({})", NAME, t.name);
                 }
             }
         }
