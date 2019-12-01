@@ -56,8 +56,20 @@ mod tests {
             },
         ];
         for t in &tests {
-            let got = super::longest(t.a.as_str(), t.b);
+            let got = super::longest(&t.a, t.b);
             debug_assert_eq!(t.want, got, "longest: {}", t.name);
         }
+    }
+    #[test]
+    fn longest_lifetime() {
+        let string1 = String::from("long string is long");
+        let result;
+        {
+            let string2 = String::from("xyz");
+            result = super::longest(&string1, &string2);
+            assert_eq!(string1, result);
+        }
+        // This will violate the lifetime annotation.
+        //assert_eq!(string1, result);
     }
 }
