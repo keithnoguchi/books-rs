@@ -8,6 +8,19 @@ fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
     }
 }
 
+#[allow(dead_code)]
+fn longest_local<'a>(a: &'a str, b: &'a str) -> &'a str {
+    if a.len() > b.len() {
+        String::from("this is really long string")
+    } else {
+        String::from("this is yet longer string")
+        // This will cause error due to returning the local
+        // variable.
+        //}
+    };
+    a
+}
+
 #[rustfmt::skip]
 #[cfg(test)]
 mod tests {
@@ -71,5 +84,13 @@ mod tests {
         }
         // This will violate the lifetime annotation.
         //assert_eq!(string1, result);
+    }
+    #[test]
+    fn longest_local() {
+        let string1 = String::from("here you go!");
+        let string2 = String::from("abc");
+        let want = String::from("here you go!");
+        let result = super::longest_local(&string1, &string2);
+        assert_eq!(&want, result);
     }
 }
