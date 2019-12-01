@@ -94,6 +94,7 @@ $
   - [Module futures::stream]: Asynchronous streams
   - [Module futures::compat]: Interop between futures 0.1 and 0.3
 - [Crate Metal I/O]: A lightweight I/O library for Rust
+- [The Unstable Book]: The book all about the cutting edge features!
 
 [The book]: https://doc.rust-lang.org/stable/book/
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
@@ -123,5 +124,6 @@ $
 [Crate crossbeam]: https://docs.rs/crossbeam/0.7.3/crossbeam/
 [Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
 [Crate diesel]: https://diesel.rs/guides/getting-started/
+[the unstable book]: https://doc.rust-lang.org/nightly/unstable-book/
 
 Happy Hacking!
