@@ -46,17 +46,15 @@ impl cmp::PartialEq for Error {
 
 #[allow(dead_code)]
 fn largest<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
-    match list.get(0) {
-        None => Err(Error::from(io::ErrorKind::InvalidInput)),
-        Some(mut largest) => {
-            for i in list {
-                if i > largest {
-                    largest = i;
-                }
+    if let Some(mut largest) = list.get(0) {
+        for i in list {
+            if i > largest {
+                largest = i;
             }
-            Ok(largest.clone())
         }
+        return Ok(largest.clone());
     }
+    Err(Error::from(io::ErrorKind::InvalidInput))
 }
 
 #[cfg(test)]
