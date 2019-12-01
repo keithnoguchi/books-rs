@@ -13,4 +13,5 @@ mod second;
 mod simple;
 mod stream;
 mod string;
+mod test;
 mod vector;
