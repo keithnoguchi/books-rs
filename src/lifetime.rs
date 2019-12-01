@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
 #[allow(dead_code)]
-struct ImportantExcerpt<'a> {
+struct ImportantExcerpt<'a, 'b> {
     part: &'a str,
+    part2: &'b str,
 }
 
-impl<'a, 'b> ImportantExcerpt<'a> {
+impl<'a, 'b, 'c> ImportantExcerpt<'a, 'b> {
     #[allow(dead_code)]
-    fn new(part: &'a str) -> Self {
-        Self { part }
+    fn new(part: &'a str, part2: &'b str) -> Self {
+        Self { part, part2 }
     }
     #[allow(dead_code)]
     // no lifetime annotation for self because of
@@ -26,7 +27,7 @@ impl<'a, 'b> ImportantExcerpt<'a> {
     // we need the explicit lifetime annotation to override the
     // lifetime elision, which is using 'a for the return value,
     // which is different from the actual code.
-    fn announcement(&self, announcement: &'b str) -> &'b str {
+    fn announcement(&self, announcement: &'c str) -> &'c str {
         announcement
     }
 }
@@ -130,14 +131,19 @@ mod tests {
         let excerpt;
         {
             let novel = String::from("Call me Ishmael.  Some years ago...");
-            let first_sentence = novel
-                .split('.')
-                .next()
-                .expect("Can't find the '.'");
-            excerpt = super::ImportantExcerpt::new(first_sentence);
+            {
+                let sentences: Vec<&str> = novel
+                    .split('.')
+                    .collect();
+                assert_eq!(5, sentences.len());
+                let first = sentences[0];
+                let second = sentences[1];
+                excerpt = super::ImportantExcerpt::new(first, second);
+            }
             assert_eq!("Call me Ishmael", excerpt.part);
+            assert_eq!("  Some years ago", excerpt.part2);
         }
-        // This can't work due to lifetime annotation.
+        // Can't work because 'excerpt' outlives 'novel'.
         //assert_eq!("Call me Ishmael", excerpt.part);
     }
 }
