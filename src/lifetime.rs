@@ -4,10 +4,30 @@ struct ImportantExcerpt<'a> {
     part: &'a str,
 }
 
-impl<'a> ImportantExcerpt<'a> {
+impl<'a, 'b> ImportantExcerpt<'a> {
     #[allow(dead_code)]
     fn new(part: &'a str) -> Self {
         Self { part }
+    }
+    #[allow(dead_code)]
+    // no lifetime annotation for self because of
+    // the lifetime elision.
+    fn level(&self) -> i32 {
+        5
+    }
+    #[allow(dead_code)]
+    // no lifetime annotation for self, announcement, nor
+    // return values because of the lifetime elision.
+    fn announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+    #[allow(dead_code)]
+    // we need the explicit lifetime annotation to override the
+    // lifetime elision, which is using 'a for the return value,
+    // which is different from the actual code.
+    fn announcement(&self, announcement: &'b str) -> &'b str {
+        announcement
     }
 }
 
