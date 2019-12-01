@@ -54,6 +54,19 @@ fn longest_local<'a>(a: &'a str, b: &'a str) -> &'a str {
     a
 }
 
+#[allow(dead_code)]
+fn longest_with_an_announcement<'a, T>(a: &'a str, b: &'a str, ann: T) -> &'a str
+where
+    T: std::fmt::Display,
+{
+    println!("Announcement: {}", ann);
+    if a.len() > b.len() {
+        a
+    } else {
+        b
+    }
+}
+
 #[rustfmt::skip]
 #[cfg(test)]
 mod tests {
@@ -145,5 +158,43 @@ mod tests {
         }
         // Can't work because 'excerpt' outlives 'novel'.
         //assert_eq!("Call me Ishmael", excerpt.part);
+    }
+    #[test]
+    fn longest_with_an_announcement() {
+        const NAME: &str = "longest_with_an_annoucement";
+        struct Test {
+            name: &'static str,
+            a: String,
+            b: String,
+            announcement: String,
+            want: &'static str,
+        }
+        let tests = [
+            Test {
+                name: "a is longer",
+                a: String::from("here is the long string"),
+                b: String::from("short string"),
+                announcement: String::from("a is longer"),
+                want: "here is the long string",
+            },
+            Test {
+                name: "b is longer",
+                a: String::from("short string"),
+                b: String::from("b is longer than a"),
+                announcement: String::from("b is longer"),
+                want: "b is longer than a",
+            },
+            Test {
+                name: "a and b is the same length",
+                a: String::from("a"),
+                b: String::from("b"),
+                announcement: String::from("a and b is same length, hence b"),
+                want: "b",
+            },
+        ];
+        for t in &tests {
+            let got = super::longest_with_an_announcement(&t.a, &t.b, &t.announcement);
+            debug_assert_eq!(t.want, got, "{}: {}", NAME, t.name);
+        }
     }
 }
