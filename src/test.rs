@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+pub fn add_two(x: i32) -> i32 {
+    x + 2
+}
+
 struct Rectangle {
     length: u32,
     width: u32,

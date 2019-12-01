@@ -15,3 +15,5 @@ mod stream;
 mod string;
 mod test;
 mod vector;
+
+pub use test::add_two;
