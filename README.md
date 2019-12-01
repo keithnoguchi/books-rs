@@ -17,6 +17,7 @@
 - [string]: String type example
 - [hashmap]: HashMap type example
 - [generic]: Generics example
+- [lifetime]: Generic lifetime examples
 - [fs]: std::fs examples
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
@@ -31,6 +32,7 @@
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
+[lifetime]: src/lifetime.rs
 [fs]: src/fs.rs
 [ptr]: src/ptr.rs
 [boxed]: src/boxed.rs

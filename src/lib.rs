@@ -7,6 +7,7 @@ mod fs;
 mod futures;
 mod generic;
 mod hashmap;
+mod lifetime;
 mod ptr;
 mod second;
 mod simple;
