@@ -47,6 +47,9 @@ impl cmp::PartialEq for Error {
 #[allow(dead_code)]
 fn largest<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
     if let Some(mut largest) = list.get(0) {
+        // We can't use list[1..] here as list doesn't support
+        // std::marker::Sized.  Let's come back later after
+        // reading Chapter 19: Advanced Features.
         for i in list {
             if i > largest {
                 largest = i;
