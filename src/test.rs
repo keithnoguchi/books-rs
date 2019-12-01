@@ -38,6 +38,19 @@ impl Guess {
     }
 }
 
+struct Guess2(i32);
+
+impl Guess2 {
+    #[allow(dead_code)]
+    fn new(value: i32) -> Result<Self, String> {
+        if value < 1 || value > 100 {
+            Err(String::from("invalid value"))
+        } else {
+            Ok(Self(value))
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]
@@ -92,6 +105,24 @@ mod tests {
         let tests = [32i32, 99, -1];
         for t in &tests {
             super::Guess::new(*t);
+        }
+    }
+    #[test]
+    fn guess2_return_ok() -> Result<(), String> {
+        let tests = [32i32, 99, 100, 1];
+        for t in &tests {
+            super::Guess2::new(*t)?;
+        }
+        Ok(())
+    }
+    #[test]
+    fn guess2_return_err() {
+        let tests = [-1i32, 101, 200, 0];
+        for t in &tests {
+            if let Ok(_) = super::Guess2::new(*t) {
+                let msg = format!("{}: unexpected success", t);
+                panic!(msg);
+            }
         }
     }
 }
