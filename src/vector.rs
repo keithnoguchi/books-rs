@@ -45,7 +45,7 @@ impl cmp::PartialEq for Error {
 }
 
 #[allow(dead_code)]
-fn largest<T: PartialOrd + Copy>(list: &[T]) -> Result<T, Error> {
+fn largest<T: PartialOrd + Clone>(list: &[T]) -> Result<T, Error> {
     match list.get(0) {
         None => Err(Error::from(io::ErrorKind::InvalidInput)),
         Some(mut largest) => {
@@ -54,7 +54,7 @@ fn largest<T: PartialOrd + Copy>(list: &[T]) -> Result<T, Error> {
                     largest = i;
                 }
             }
-            Ok(*largest)
+            Ok(largest.clone())
         }
     }
 }
@@ -446,6 +446,101 @@ mod tests {
         }];
         for t in &tests {
             match largest::<char>(&t.data) {
+                Ok(_) => {
+                    let msg = format!("{}({}): unexpected success", NAME, t.name);
+                    panic!(msg)
+                }
+                Err(err) => {
+                    debug_assert_eq!(t.want, err, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
+    #[test]
+    fn largest_ok_string() {
+        const NAME: &str = "largest_ok_string";
+        struct Test {
+            name: &'static str,
+            data: Vec<String>,
+            want: String,
+        }
+        let tests = [
+            Test {
+                name: "single element vector",
+                data: vec!["a".to_string()],
+                want: "a".to_string(),
+            },
+            Test {
+                name: "ascending two elements vector",
+                data: vec!["a".to_string(), "b".to_string()],
+                want: "b".to_string(),
+            },
+            Test {
+                name: "descending two elements vector",
+                data: vec!["b".to_string(), "a".to_string()],
+                want: "b".to_string(),
+            },
+            Test {
+                name: "ascending five elements vector",
+                data: vec![
+                    "a".to_string(),
+                    "b".to_string(),
+                    "c".to_string(),
+                    "d".to_string(),
+                    "e".to_string(),
+                ],
+                want: "e".to_string(),
+            },
+            Test {
+                name: "decending five elements vector",
+                data: vec![
+                    "e".to_string(),
+                    "d".to_string(),
+                    "c".to_string(),
+                    "b".to_string(),
+                    "a".to_string(),
+                ],
+                want: "e".to_string(),
+            },
+            Test {
+                name: "unsorted five elements vector",
+                data: vec![
+                    "a".to_string(),
+                    "e".to_string(),
+                    "b".to_string(),
+                    "c".to_string(),
+                    "d".to_string(),
+                ],
+                want: "e".to_string(),
+            },
+        ];
+        for t in &tests {
+            match largest::<String>(&t.data) {
+                Err(err) => {
+                    let msg = format!("{}({}): {}", NAME, t.name, err);
+                    panic!("{}", msg);
+                }
+                Ok(got) => {
+                    debug_assert_eq!(t.want, got, "{}({})", NAME, t.name);
+                }
+            }
+        }
+    }
+    #[test]
+    fn largest_err_string() {
+        const NAME: &str = "largest_err_string";
+        struct Test {
+            name: &'static str,
+            data: Vec<String>,
+            want: Error,
+        }
+        let tests = [Test {
+            name: "empty string vector",
+            data: vec![],
+            want: Error::from(std::io::ErrorKind::InvalidInput),
+        }];
+        for t in &tests {
+            match largest::<String>(&t.data) {
                 Ok(_) => {
                     let msg = format!("{}({}): unexpected success", NAME, t.name);
                     panic!(msg)
