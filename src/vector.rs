@@ -45,7 +45,7 @@ impl cmp::PartialEq for Error {
 }
 
 #[allow(dead_code)]
-fn largest(list: &[i32]) -> Result<i32, Error> {
+fn largest<T: PartialOrd + Copy>(list: &[T]) -> Result<T, Error> {
     match list.get(0) {
         None => Err(Error::from(io::ErrorKind::InvalidInput)),
         Some(mut largest) => {
@@ -266,7 +266,7 @@ mod tests {
             },
         ];
         for t in &tests {
-            match largest(&t.data) {
+            match largest::<i32>(&t.data) {
                 Err(err) => {
                     let msg = format!("{}({}): {}", NAME, t.name, err);
                     panic!("{}", msg);
@@ -291,7 +291,7 @@ mod tests {
             want: Error::from(std::io::ErrorKind::InvalidInput),
         }];
         for t in &tests {
-            match largest(&t.data) {
+            match largest::<i32>(&t.data) {
                 Ok(_) => {
                     let msg = format!("{}({}): unexpected success", NAME, t.name);
                     panic!(msg)
