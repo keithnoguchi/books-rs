@@ -1,5 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
 #[allow(dead_code)]
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+impl<'a> ImportantExcerpt<'a> {
+    #[allow(dead_code)]
+    fn new(part: &'a str) -> Self {
+        Self { part }
+    }
+}
+
+#[allow(dead_code)]
 fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
     if a.len() > b.len() {
         a
@@ -92,5 +104,20 @@ mod tests {
         let want = String::from("here you go!");
         let result = super::longest_local(&string1, &string2);
         assert_eq!(&want, result);
+    }
+    #[test]
+    fn lifetime_in_struct() {
+        let excerpt;
+        {
+            let novel = String::from("Call me Ishmael.  Some years ago...");
+            let first_sentence = novel
+                .split('.')
+                .next()
+                .expect("Can't find the '.'");
+            excerpt = super::ImportantExcerpt::new(first_sentence);
+            assert_eq!("Call me Ishmael", excerpt.part);
+        }
+        // This can't work due to lifetime annotation.
+        //assert_eq!("Call me Ishmael", excerpt.part);
     }
 }
