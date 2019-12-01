@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+pub use test::add_two;
+
 mod array;
 mod borrow;
 mod boxed;
@@ -15,5 +17,3 @@ mod stream;
 mod string;
 mod test;
 mod vector;
-
-pub use test::add_two;

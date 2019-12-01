@@ -1,4 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+use rustbox;
+
+mod common;
+
 #[test]
 fn add_two() {
     struct Test {
@@ -23,6 +27,7 @@ fn add_two() {
             want: 0,
         },
     ];
+    common::setup();
     for t in &tests {
         assert_eq!(t.want, rustbox::add_two(t.data), "{}", t.name);
     }

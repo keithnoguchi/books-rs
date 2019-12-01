@@ -18,6 +18,8 @@
 - [hashmap]: HashMap type example
 - [generic]: Generics example
 - [lifetime]: Generic lifetime examples
+- [test]: Unit and Integration test examples
+  - [tests/integration_test]: Integration test examples
 - [fs]: std::fs examples
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
@@ -33,6 +35,8 @@
 [hashmap]: src/hashmap.rs
 [generic]: src/generic.rs
 [lifetime]: src/lifetime.rs
+[test]: src/test.rs
+[tests/integration_test]: tests/integration_test.rs
 [fs]: src/fs.rs
 [ptr]: src/ptr.rs
 [boxed]: src/boxed.rs
