@@ -1,11 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0
-use std::{cmp, io};
+use std::{cmp, fmt, io};
 
 #[derive(Debug)]
 enum Error {
     Io(io::Error),
     #[allow(dead_code)]
     Other,
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Error::Io(ref err) => err.fmt(f),
+            Error::Other => write!(f, "other error"),
+        }
+    }
 }
 
 impl From<io::ErrorKind> for Error {
@@ -259,7 +268,7 @@ mod tests {
         for t in &tests {
             match largest(&t.data) {
                 Err(err) => {
-                    let msg = format!("{}({}): {:?}", NAME, t.name, err);
+                    let msg = format!("{}({}): {}", NAME, t.name, err);
                     panic!("{}", msg);
                 }
                 Ok(got) => {
