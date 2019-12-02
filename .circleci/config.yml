@@ -15,14 +15,19 @@ workflows:
       - lint:
           requires:
             - checkout
+      - doc:
+          requires:
+            - checkout
       - test-arch64:
           requires:
             - format
             - lint
+            - doc
       - test-ubuntu64:
           requires:
             - format
             - lint
+            - doc
       - install-arch64:
           requires:
             - test-arch64
@@ -49,6 +54,12 @@ jobs:
       - attach_workspace:
           at: .
       - run: make lint-arch64
+  doc:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run: make doc-all-arch64
   test-arch64:
     <<: *defaults
     steps:

@@ -22,7 +22,7 @@ steps:
   - name: document
     image: rust:1.39
     commands:
-      - make doc
+      - make doc-all
     depends_on:
       - format
       - lint

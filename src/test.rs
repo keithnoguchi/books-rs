@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+//! Chapter 11 Writing Automated Tests
+
 /// Adds two to the number given.
 ///
 /// # Examples
