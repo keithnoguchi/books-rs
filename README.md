@@ -18,7 +18,7 @@
 - [hashmap]: HashMap type example
 - [generic]: Generics example
 - [lifetime]: Generic lifetime examples
-- [test]: Unit and Integration test examples
+- [chapter11]: Writing Automated Tests
   - [tests/integration_test]: Integration test examples
 - [fs]: std::fs examples
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
