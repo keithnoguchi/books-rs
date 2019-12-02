@@ -12,6 +12,7 @@ mod array;
 pub mod ch09;
 pub mod ch10;
 pub mod ch11;
+pub mod ch12;
 pub mod ch14;
 mod fs;
 mod hashmap;
