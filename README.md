@@ -64,7 +64,7 @@ in this crate:
 [futures]: async/src/futures.rs
 [stream]: async/src/stream.rs
 
-# List crate
+## List crate
 
 [list] crate presents the examples provided by [the List Book], The Unofficial
 Too Many List Book, with the [table driven] unit tests.  Here are the modules
