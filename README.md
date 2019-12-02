@@ -36,7 +36,7 @@
 [hashmap]: src/hashmap.rs
 [generic]: src/ch10/generic.rs
 [lifetime]: src/ch10/lifetime.rs
-[chap11]: src/ch11.rs
+[ch11]: src/ch11.rs
 [tests/integration_test]: tests/integration_test.rs
 [fs]: src/fs.rs
 [ptr]: src/ptr.rs
