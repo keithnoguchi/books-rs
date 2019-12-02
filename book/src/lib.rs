@@ -5,9 +5,11 @@
 //! [the rust programming language]: https://doc.rust-lang.org/stable/book/
 //! [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
 
+pub use ch09::Error;
 pub use ch11::add_two;
 
 mod array;
+pub mod ch09;
 pub mod ch10;
 pub mod ch11;
 pub mod ch14;
