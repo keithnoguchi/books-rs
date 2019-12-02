@@ -1,14 +1,15 @@
-# rustbox
+# rustbook
 
-[Rust lang] sandbox with the [table driven] unit tests.
+Rust examples from multiple [Rust lang] books with the [table driven]
+unit tests.
 
-[![DroneCI]](https://cloud.drone.io/keithnoguchi/rustbox)
-[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbox)
+[![DroneCI]](https://cloud.drone.io/keithnoguchi/rustbook)
+[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbook)
 
 [Rust lang]: https://www.rust-lang.org
 [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
-[DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbox/status.svg
-[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbox.svg?style=svg
+[DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbook/status.svg
+[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbook.svg?style=svg
 
 # Crates
 
@@ -22,11 +23,12 @@ crate:
 - [vector]: Standard vector type example
 - [string]: String type example
 - [hashmap]: HashMap type example
-- ch10: Chapter 10: Generic Types, Traits, and Lifetimes
+- ch10: Generic Types, Traits, and Lifetimes
   - [generic]: Generic types examples
   - [lifetime]: Lifetime examples
-- [ch11]: Chapter 11: Writing Automated Tests
+- [ch11]: Writing Automated Tests
   - [tests/integration_test]: Integration test examples
+- [ch14]: More About Cargo and Crates.io
 - [fs]: std::fs examples
 
 [the book]: https://doc.rust-lang.org/stable/book/
@@ -38,6 +40,7 @@ crate:
 [generic]: book/src/ch10/generic.rs
 [lifetime]: book/src/ch10/lifetime.rs
 [ch11]: book/src/ch11.rs
+[ch14]: book/src/ch14.rs
 [tests/integration_test]: book/tests/integration_test.rs
 [fs]: book/src/fs.rs
 
@@ -80,29 +83,27 @@ in this crate:
 # Test
 
 ```sh
-$ make test
-    Finished dev [unoptimized + debuginfo] target(s) in 0.03s
-     Running target/debug/deps/rustbox-9e9575d91e3bd718
+$ make test 2>/dev/null | head -20
 
-running 8 tests
-test array::tests::largest ... ok
-test vector::tests::get ... ok
-test array::tests::slice ... ok
-test array::tests::next ... ok
-test vector::tests::next ... ok
-test vector::tests::len ... ok
-test vector::tests::pop ... ok
-test vector::tests::push ... ok
+running 13 tests
+test borrow::tests::abs_all_array ... ok
+test borrow::tests::borrow ... ok
+test borrow::tests::borrow_mut ... ok
+test borrow::tests::abs_all_vector ... ok
+test boxed::tests::recursive_list ... ok
+test borrow::tests::to_owned ... ok
+test futures::test::async_bar_foo ... ok
+test boxed::tests::stack_to_heap ... ok
+test futures::test::join ... ok
+test ptr::tests::null_ptr ... ok
+test futures::test::select ... ok
+test stream::tests::stream ... ok
+test ptr::tests::reference ... ok
 
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
-   Doc-tests rustbox
 
 running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
-
-$
 ```
 
 # References
