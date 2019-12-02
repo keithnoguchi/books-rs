@@ -51,7 +51,7 @@ crate:
 
 ## Async crate
 
-[async] crate presents the examples provided by [the Async Book], the Async
+[async] crate presents the examples provided in [the Async Book], the Async
 Programming Book, with the [table driven] unit tests.  Here are the modules
 in this crate:
 
@@ -69,9 +69,17 @@ in this crate:
 [futures]: async/src/futures.rs
 [stream]: async/src/stream.rs
 
+## Tokio crate
+
+[tokio-getting-started] crate presents the examples provided in
+[tokio Getting Started Guide].
+
+[tokio-getting-started]: tokio/Cargo.toml
+[tokio getting started guide]: https://tokio.rs/docs/overview/
+
 ## List crate
 
-[list] crate presents the examples provided by [the List Book], The Unofficial
+[list] crate presents the examples provided in [the List Book], The Unofficial
 Too Many List Book, with the [table driven] unit tests.  Here are the modules
 in this crate:
 

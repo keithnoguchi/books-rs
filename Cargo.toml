@@ -4,5 +4,6 @@
 members = [
    "book",
    "async",
+   "tokio",
    "list",
 ]
