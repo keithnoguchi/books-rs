@@ -10,7 +10,9 @@ clean:
 run:
 	@cargo run --bin book
 install:
-	@cargo install --force --path .
+	@for i in book async; do \
+		cargo install --force --path $$i; \
+	done
 update:
 	@cargo update
 doc:

@@ -46,7 +46,7 @@ crate:
 
 ## Async crate
 
-[async] crate presents the examples provided by [the Async Book], The Async
+[async] crate presents the examples provided by [the Async Book], the Async
 Programming Book, with the [table driven] unit tests.  Here are the modules
 in this crate:
 
