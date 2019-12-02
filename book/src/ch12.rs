@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 //! An I/O Project: Building a Command Line Program
 use super::Error;
-use std::io::ErrorKind;
+use std::{fs, io::ErrorKind};
 
-/// Config contains the filename to parse.
+/// Config encapsulates the filename to parse.
 #[derive(Debug, PartialEq)]
 pub struct Config {
     filename: String,
@@ -21,6 +21,13 @@ impl Config {
     pub fn filename(&self) -> &str {
         &self.filename
     }
+}
+
+/// run reads a file provided by Config.filename() and returns
+/// the contents throught Result<String, Error>.
+pub fn run(cfg: Config) -> Result<String, Error> {
+    let contents = fs::read_to_string(cfg.filename())?;
+    Ok(contents)
 }
 
 #[cfg(test)]
