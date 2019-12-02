@@ -16,10 +16,10 @@
 - [vector]: Standard vector type example
 - [string]: String type example
 - [hashmap]: HashMap type example
-- chapter10: Generic Types, Traits, and Lifetimes
+- ch10: Chapter 10: Generic Types, Traits, and Lifetimes
   - [generic]: Generic types examples
   - [lifetime]: Lifetime examples
-- [chapter11]: Writing Automated Tests
+- [ch11]: Chapter 11: Writing Automated Tests
   - [tests/integration_test]: Integration test examples
 - [fs]: std::fs examples
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
@@ -34,9 +34,9 @@
 [vector]: src/vector.rs
 [string]: src/string.rs
 [hashmap]: src/hashmap.rs
-[generic]: src/chapter10/generic.rs
-[lifetime]: src/chapter10/lifetime.rs
-[chapter11]: src/chapter11.rs
+[generic]: src/ch10/generic.rs
+[lifetime]: src/ch10/lifetime.rs
+[chap11]: src/ch11.rs
 [tests/integration_test]: tests/integration_test.rs
 [fs]: src/fs.rs
 [ptr]: src/ptr.rs

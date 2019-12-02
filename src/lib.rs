@@ -7,13 +7,13 @@
 //! [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
 //!
 
-pub use chapter11::add_two;
+pub use ch11::add_two;
 
 mod array;
 mod borrow;
 mod boxed;
-pub mod chapter10;
-pub mod chapter11;
+pub mod ch10;
+pub mod ch11;
 mod first;
 mod fs;
 mod futures;
