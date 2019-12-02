@@ -9,6 +9,7 @@ fn main() -> Result<(), Error> {
         return Err(Error::from(ErrorKind::InvalidInput));
     }
     let filename = &args[1];
-    let _contents = fs::read_to_string(filename)?;
+    let contents = fs::read_to_string(filename)?;
+    println!("With text:\n{}", contents);
     Ok(())
 }
