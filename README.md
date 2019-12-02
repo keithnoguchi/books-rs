@@ -29,6 +29,7 @@ crate:
   - [lifetime]: Lifetime examples
 - [ch11]: Writing Automated Tests
   - [tests/integration_test]: Integration test examples
+- [ch12]: An I/O Project: Building a Command Line Program
 - [ch14]: More About Cargo and Crates.io
 - [fs]: std::fs examples
 
@@ -42,6 +43,7 @@ crate:
 [generic]: book/src/ch10/generic.rs
 [lifetime]: book/src/ch10/lifetime.rs
 [ch11]: book/src/ch11.rs
+[ch12]: book/src/ch12.rs
 [ch14]: book/src/ch14.rs
 [tests/integration_test]: book/tests/integration_test.rs
 [fs]: book/src/fs.rs
