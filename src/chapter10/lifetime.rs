@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+//! Lifetime examples
+
 #[allow(dead_code)]
 struct ImportantExcerpt<'a, 'b> {
     part: &'a str,
