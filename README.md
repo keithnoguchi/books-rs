@@ -10,7 +10,13 @@
 [DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbox/status.svg
 [CircleCI]: https://circleci.com/gh/keithnoguchi/rustbox.svg?style=svg
 
-# Modules
+# Crates
+
+## Book crate
+
+[book] crate presents the examples provided in [the Book], the Rust Programming
+Language, with the [table driven] unit tests.  Here are the modules in this
+crate:
 
 - [array]: Standard array type example
 - [vector]: Standard vector type example
@@ -22,30 +28,52 @@
 - [ch11]: Chapter 11: Writing Automated Tests
   - [tests/integration_test]: Integration test examples
 - [fs]: std::fs examples
+
+[the book]: https://doc.rust-lang.org/stable/book/
+[book]: book/Cargo.toml
+[array]: book/src/array.rs
+[vector]: book/src/vector.rs
+[string]: book/src/string.rs
+[hashmap]: book/src/hashmap.rs
+[generic]: book/src/ch10/generic.rs
+[lifetime]: book/src/ch10/lifetime.rs
+[ch11]: book/src/ch11.rs
+[tests/integration_test]: book/tests/integration_test.rs
+[fs]: book/src/fs.rs
+
+## Async crate
+
+[async] crate presents the examples provided by [the Async Book], The Async
+Programming Book, with the [table driven] unit tests.  Here are the modules
+in this crate:
+
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
 - [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
 - [futures]: [Crate futures] example
 - [stream]: [Module futures::stream] example
+
+[the async book]: https://rust-lang.github.io/async-book/
+[async]: async/Cargo.toml
+[ptr]: async/src/ptr.rs
+[boxed]: async/src/boxed.rs
+[borrow]: async/src/borrow.rs
+[futures]: async/src/futures.rs
+[stream]: async/src/stream.rs
+
+# List crate
+
+[list] crate presents the examples provided by [the List Book], The Unofficial
+Too Many List Book, with the [table driven] unit tests.  Here are the modules
+in this crate:
+
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
-[array]: src/array.rs
-[vector]: src/vector.rs
-[string]: src/string.rs
-[hashmap]: src/hashmap.rs
-[generic]: src/ch10/generic.rs
-[lifetime]: src/ch10/lifetime.rs
-[ch11]: src/ch11.rs
-[tests/integration_test]: tests/integration_test.rs
-[fs]: src/fs.rs
-[ptr]: src/ptr.rs
-[boxed]: src/boxed.rs
-[borrow]: src/borrow.rs
-[futures]: src/futures.rs
-[stream]: src/stream.rs
-[first]: src/first.rs
-[second]: src/second.rs
+[list]: list/Cargo.toml
+[first]: list/src/first.rs
+[second]: list/src/second.rs
+[the list book]: http://rust-unofficial.github.io/too-many-lists/
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
 [An Ok Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/second.html
 
@@ -87,7 +115,6 @@ $
   - [Trait alloc::borrow::Borrow]: A trait for borrowing data
   - [Trait alloc::borrow::BorrowMut]: A trait for mutably borrowing data
   - [Trait alloc::borrow::ToOwned]: A generalization of Clone to borrowed data
-- [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The async book]: Asynchronous Programming in Rust
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
 - [Crate std]: The Rust Standard Library
@@ -99,9 +126,9 @@ $
   - [Module futures::stream]: Asynchronous streams
   - [Module futures::compat]: Interop between futures 0.1 and 0.3
 - [Crate Metal I/O]: A lightweight I/O library for Rust
+- [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The Unstable Book]: The book all about the cutting edge features!
 
-[The book]: https://doc.rust-lang.org/stable/book/
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
 [Crate alloc]: https://doc.rust-lang.org/alloc/index.html
 [Module alloc::boxed]: https://doc.rust-lang.org/alloc/boxed/index.html
@@ -112,7 +139,6 @@ $
 [Primitive Type pointer]: https://doc.rust-lang.org/std/primitive.pointer.html
 [Module std::ptr]: https://doc.rust-lang.org/std/ptr/index.html
 [Too Many Linked Lists]: http://rust-unofficial.github.io/too-many-lists/
-[The async book]: https://rust-lang.github.io/async-book/
 [Build a Timer]:  https://rust-lang.github.io/async-book/02_execution/03_wakeups.html#applied-build-a-timer
 [Build an Executor]: https://rust-lang.github.io/async-book/02_execution/04_executor.html
 [Zero-Cost Async IO]: https://www.youtube.com/watch?v=skos4B5x7qE

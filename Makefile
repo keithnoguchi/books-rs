@@ -8,19 +8,19 @@ test:
 clean:
 	@cargo clean
 run:
-	@cargo run
+	@cargo run --bin book
 install:
 	@cargo install --force --path .
 update:
 	@cargo update
 doc:
-	cargo doc --open
+	@cargo doc --open &
 doc-all: doc-book doc-std
-	@cargo doc --all --open
+	@cargo doc --all --open &
 doc-%:
 	@rustup doc --$* &
 fmt:
-	@rustfmt --edition 2018 --check src/*.rs
+	@rustfmt --edition 2018 --check **/src/*.rs
 lint:
 	@cargo clippy -- -D warnings
 # CI targets.

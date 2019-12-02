@@ -1,11 +1,8 @@
-[package]
-name = "rustbox"
-version = "0.1.0"
-authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
-edition = "2018"
+# SPDX-License-Identifier: GPL-2.0
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-futures = { version = "0.3", features = ["compat"] }
-hyper = "0.12.9"
+members = [
+   "book",
+   "async",
+   "list",
+]
