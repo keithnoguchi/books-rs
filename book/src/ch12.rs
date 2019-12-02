@@ -78,4 +78,28 @@ mod tests {
             }
         }
     }
+    #[test]
+    fn config_filename() {
+        struct Test {
+            config: Config,
+            want: &'static str,
+        }
+        let tests = [
+            Test {
+                config: Config {
+                    filename: String::from("some file"),
+                },
+                want: "some file",
+            },
+            Test {
+                config: Config {
+                    filename: String::from(""),
+                },
+                want: "",
+            },
+        ];
+        for t in &tests {
+            assert_eq!(t.want, t.config.filename());
+        }
+    }
 }
