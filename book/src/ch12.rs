@@ -35,14 +35,28 @@ mod tests {
         }
         let tests = [
             Test {
+                args: vec![],
+                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
+            },
+            Test {
+                args: vec![String::from("no filename")],
+                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
+            },
+            Test {
                 args: vec![String::from("with filename"), String::from("filename")],
                 want: Ok(Config {
                     filename: String::from("filename"),
                 }),
             },
             Test {
-                args: vec![String::from("no filename")],
-                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
+                args: vec![
+                    String::from("with more than filename"),
+                    String::from("filename2"),
+                    String::from("additional argument"),
+                ],
+                want: Ok(Config {
+                    filename: String::from("filename2"),
+                }),
             },
         ];
         for t in &tests {
