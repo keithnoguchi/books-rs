@@ -24,7 +24,7 @@ crate:
 - [string]: String type example
 - [hashmap]: HashMap type example
 - [ch09]: Error Handling
-- ch10: Generic Types, Traits, and Lifetimes
+- [ch10]: Generic Types, Traits, and Lifetimes
   - [generic]: Generic types examples
   - [lifetime]: Lifetime examples
 - [ch11]: Writing Automated Tests
@@ -40,6 +40,7 @@ crate:
 [string]: book/src/string.rs
 [hashmap]: book/src/hashmap.rs
 [ch09]: book/src/ch09.rs
+[ch10]: book/src/ch10/mod.rs
 [generic]: book/src/ch10/generic.rs
 [lifetime]: book/src/ch10/lifetime.rs
 [ch11]: book/src/ch11.rs
