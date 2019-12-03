@@ -7,8 +7,9 @@ use the_book::Error;
 fn main() -> Result<(), Error> {
     let args: Vec<String> = env::args().collect();
     let cfg = Config::new(&args).unwrap_or_else(|err| usage(err));
-    let contents = ch12::run(cfg).unwrap_or_else(|err| usage(err));
-    println!("With text:\n{}", contents);
+    if let Err(err) = ch12::run(cfg) {
+        usage(err);
+    }
     Ok(())
 }
 

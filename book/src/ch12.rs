@@ -30,9 +30,24 @@ impl Config {
 
 /// run reads a file provided by Config.filename() and returns
 /// the contents throught Result<String, Error>.
-pub fn run(cfg: Config) -> Result<String, Error> {
+pub fn run(cfg: Config) -> Result<(), Error> {
     let contents = fs::read_to_string(cfg.filename())?;
-    Ok(contents)
+    for line in search(cfg.query(), &contents) {
+        println!("{}", line);
+    }
+    Ok(())
+}
+
+/// search takes `query` as a first parameter and returns the line
+/// in case it's in `line`.
+fn search<'a>(query: &str, data: &'a str) -> Vec<&'a str> {
+    let mut result = Vec::<&str>::new();
+    for line in data.lines() {
+        if line.contains(query) {
+            result.push(line);
+        }
+    }
+    result
 }
 
 #[cfg(test)]
@@ -151,6 +166,34 @@ mod tests {
         ];
         for t in &tests {
             assert_eq!(t.want, t.config.filename());
+        }
+    }
+    #[test]
+    fn search_string() {
+        struct Test {
+            query: &'static str,
+            data: &'static str,
+            want: Vec<&'static str>,
+        }
+        let tests = [
+            Test {
+                query: "",
+                data: "",
+                want: vec![],
+            },
+            Test {
+                query: "line",
+                data: "
+This is a line.
+Another line.
+and another line.
+",
+                want: vec!["This is a line.", "Another line.", "and another line."],
+            },
+        ];
+        for t in &tests {
+            let got = search(t.query, t.data);
+            assert_eq!(t.want, got);
         }
     }
 }
