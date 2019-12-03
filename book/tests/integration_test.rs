@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-use book;
+use the_book;
 
 mod common;
 
@@ -29,6 +29,6 @@ fn add_two() {
     ];
     common::setup();
     for t in &tests {
-        assert_eq!(t.want, book::add_two(t.data), "{}", t.name);
+        assert_eq!(t.want, the_book::add_two(t.data), "{}", t.name);
     }
 }

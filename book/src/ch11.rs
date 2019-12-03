@@ -7,7 +7,7 @@
 ///
 /// ```
 /// let arg = 5;
-/// let answer = book::add_two(arg);
+/// let answer = the_book::add_two(arg);
 /// assert_eq!(7, answer);
 /// ```
 pub fn add_two(x: i32) -> i32 {

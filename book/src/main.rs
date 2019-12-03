@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 // https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html
-use book::ch12::{self, Config};
-use book::Error;
 use std::{env, process};
+use the_book::ch12::{self, Config};
+use the_book::Error;
 
 fn main() -> Result<(), Error> {
     let args: Vec<String> = env::args().collect();
@@ -13,7 +13,7 @@ fn main() -> Result<(), Error> {
 }
 
 fn usage(err: Error) -> ! {
-    const PROGNAME: &str = "book";
+    const PROGNAME: &str = "the-book";
     use std::io;
     match err {
         Error::Io(err) => match err.kind() {

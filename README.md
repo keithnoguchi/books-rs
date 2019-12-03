@@ -13,9 +13,9 @@ unit tests.
 
 # Crates
 
-## Book crate
+## the-book crate
 
-[book] crate presents the examples provided in [the Book], the Rust Programming
+[the-book] crate presents the examples provided in [the Book], the Rust Programming
 Language, with the [table driven] unit tests.  Here are the modules in this
 crate:
 
@@ -34,7 +34,7 @@ crate:
 - [fs]: std::fs examples
 
 [the book]: https://doc.rust-lang.org/stable/book/
-[book]: book/Cargo.toml
+[the-book]: book/Cargo.toml
 [array]: book/src/array.rs
 [vector]: book/src/vector.rs
 [string]: book/src/string.rs
@@ -49,9 +49,9 @@ crate:
 [tests/integration_test]: book/tests/integration_test.rs
 [fs]: book/src/fs.rs
 
-## Async crate
+## async-book crate
 
-[async] crate presents the examples provided in [the Async Book], the Async
+[async-book] crate presents the examples provided in [the Async Book], the Async
 Programming Book, with the [table driven] unit tests.  Here are the modules
 in this crate:
 
@@ -62,31 +62,31 @@ in this crate:
 - [stream]: [Module futures::stream] example
 
 [the async book]: https://rust-lang.github.io/async-book/
-[async]: async/Cargo.toml
+[async-book]: async/Cargo.toml
 [ptr]: async/src/ptr.rs
 [boxed]: async/src/boxed.rs
 [borrow]: async/src/borrow.rs
 [futures]: async/src/futures.rs
 [stream]: async/src/stream.rs
 
-## Tokio crate
+## tokio-book crate
 
-[tokio-getting-started] crate presents the examples provided in
+[tokio-took] crate presents the examples provided in
 [tokio Getting Started Guide].
 
-[tokio-getting-started]: tokio/Cargo.toml
+[tokio-book]: tokio/Cargo.toml
 [tokio getting started guide]: https://tokio.rs/docs/overview/
 
-## List crate
+## list-book crate
 
-[list] crate presents the examples provided in [the List Book], The Unofficial
+[list-book] crate presents the examples provided in [the List Book], The Unofficial
 Too Many List Book, with the [table driven] unit tests.  Here are the modules
 in this crate:
 
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
 
-[list]: list/Cargo.toml
+[list-book]: list/Cargo.toml
 [first]: list/src/first.rs
 [second]: list/src/second.rs
 [the list book]: http://rust-unofficial.github.io/too-many-lists/
