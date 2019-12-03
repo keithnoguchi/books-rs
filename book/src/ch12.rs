@@ -3,7 +3,25 @@
 use super::Error;
 use std::{fs, io::ErrorKind};
 
-/// Config encapsulates the filename to parse.
+/// Config to capture command line arguments for the I/O project.
+///
+/// # Examples
+/// ```
+/// use the_book::ch09::Error;
+/// use the_book::ch12::Config;
+///
+/// fn main() -> Result<(), Error> {
+///     let args = vec![
+///         String::from("the_book"),
+///         String::from("some query"),
+///         String::from("some filename"),
+///     ];
+///     let config = Config::new(&args)?;
+///     assert_eq!("some query", config.query());
+///     assert_eq!("some filename", config.filename());
+///     Ok(())
+/// }
+/// ```
 #[derive(Debug, PartialEq)]
 pub struct Config {
     query: String,
@@ -40,7 +58,28 @@ pub fn run(cfg: Config) -> Result<(), Error> {
 
 /// search takes `query` as a first parameter and returns the line
 /// in case it's in `line`.
-fn search<'a>(query: &str, data: &'a str) -> Vec<&'a str> {
+///
+/// # Examples
+/// ```
+/// use the_book::ch12::search;
+///
+/// let data = "\
+/// something here,
+/// and some there.";
+///
+/// let query = "some";
+/// let want = vec!["something here,", "and some there."];
+/// assert_eq!(want, search(query, data));
+///
+/// let query = "another";
+/// let want: Vec<&str> = vec![];
+/// assert_eq!(want, search(query, data));
+///
+/// let query = "Some";
+/// let want: Vec<&str> = vec![];
+/// assert_eq!(want, search(query, data));
+/// ```
+pub fn search<'a>(query: &str, data: &'a str) -> Vec<&'a str> {
     let mut result = Vec::<&str>::new();
     for line in data.lines() {
         if line.contains(query) {
