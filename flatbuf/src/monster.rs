@@ -120,9 +120,15 @@ mod tests {
     }
     #[test]
     fn serialize_and_deserialize_monster() {
+        use super::sample::get_root_as_monster;
         let mut builder = FlatBufferBuilder::new();
         let godzilla = super::Monster::create(&mut builder, "godzilla");
         builder.finish(godzilla, None);
-        let _buf = builder.finished_data(); // Of type `&[u8]`
+        let buf = builder.finished_data(); // Of type `&[u8]`
+        let monster = get_root_as_monster(buf);
+        match monster.name() {
+            Some(got) => assert_eq!("godzilla", got),
+            _ => panic!("unexpected None"),
+        };
     }
 }
