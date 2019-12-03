@@ -3,32 +3,47 @@ type: docker
 name: default
 steps:
   - name: format
-    image: rust:1.39
+    image: archlinux/base
     commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers
+      - rustup update stable
+      - rustup default stable
       - rustup component add rustfmt
       - make fmt
   - name: lint
-    image: rust:1.39
+    image: archlinux/base
     commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers
+      - rustup update stable
+      - rustup default stable
       - rustup component add clippy
       - make lint
   - name: test
-    image: rust:1.39
+    image: archlinux/base
     commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers
+      - rustup update stable
+      - rustup default stable
       - make test
     depends_on:
       - format
       - lint
   - name: document
-    image: rust:1.39
+    image: archlinux/base
     commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers
+      - rustup update stable
+      - rustup default stable
       - make doc-all
     depends_on:
       - format
       - lint
   - name: install
-    image: rust:1.39
+    image: archlinux/base
     commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers
+      - rustup update stable
+      - rustup default stable
       - make install
     depends_on:
       - test

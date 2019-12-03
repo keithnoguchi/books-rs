@@ -1,0 +1,5 @@
+// SPDX-License-Identifier: GPL-2.0
+//! [Flatbuffer tutorial](https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html).
+
+pub mod model;
+pub mod monster;

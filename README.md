@@ -93,6 +93,16 @@ in this crate:
 [A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
 [An Ok Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/second.html
 
+## flatbuf-tutorial
+
+[flatbuf-tutorial] crate presents the [FlatBuffers tutorial] with some unit test.
+
+- [monster]: Monster example
+
+[flatbuf-tutorial]: flatbuf/Cargo.toml
+[monster]: flatbuf/src/monster.rs
+[flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html]
+
 # Test
 
 ```sh

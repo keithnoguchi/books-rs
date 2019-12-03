@@ -1,15 +1,17 @@
 # SPDX-License-Identifier: GPL-2.0
-.PHONY: check test clean run install update doc doc-all fmt lint
+.PHONY: build check test clean run install update doc doc-all fmt lint
 all: fmt lint test
-check:
+build:
+	@cd flatbuf/schema && flatc -r *.fbs
+check: build
 	@cargo check
-test:
+test: build
 	@cargo test
 clean:
 	@cargo clean
-run:
+run: build
 	@cargo run --bin book
-install:
+install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \
 	done
@@ -21,9 +23,9 @@ doc-all: doc-book doc-std
 	@cargo doc --all --open &
 doc-%:
 	@rustup doc --$* &
-fmt:
+fmt: build
 	@rustfmt --edition 2018 --check **/src/*.rs
-lint:
+lint: build
 	@cargo clippy -- -D warnings
 # CI targets.
 .PHONY: arch64 ubuntu64
