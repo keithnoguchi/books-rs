@@ -131,4 +131,20 @@ mod tests {
             _ => panic!("unexpected None"),
         };
     }
+    #[test]
+    fn multiple_monsters() {
+        use super::sample::get_root_as_monster;
+        let monsters = ["godzilla", "minilla", "ore"];
+        for name in &monsters {
+            let mut builder = FlatBufferBuilder::new();
+            let monster = super::Monster::create(&mut builder, name);
+            builder.finish(monster, None);
+            let buf = builder.finished_data();
+            let monster = get_root_as_monster(buf);
+            match monster.name() {
+                Some(got) => assert_eq!(name, &got),
+                _ => panic!("unexpected None"),
+            }
+        }
+    }
 }
