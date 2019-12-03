@@ -152,6 +152,8 @@ running 0 tests
 - [Crate Metal I/O]: A lightweight I/O library for Rust
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The Unstable Book]: The book all about the cutting edge features!
+- [FlatBuffers tutorial]:
+  - [crate flatc-rust]: Programmatical way to invoke flatc command
 
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
 [Crate alloc]: https://doc.rust-lang.org/alloc/index.html
@@ -180,5 +182,7 @@ running 0 tests
 [Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
 [Crate diesel]: https://diesel.rs/guides/getting-started/
 [the unstable book]: https://doc.rust-lang.org/nightly/unstable-book/
+[Flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html
+[crate flatc-rust]: https://docs.rs/flatc-rust/0.1.2/flatc_rust/#examples
 
 Happy Hacking!
