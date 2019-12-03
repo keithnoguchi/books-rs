@@ -6,17 +6,22 @@ use std::{fs, io::ErrorKind};
 /// Config encapsulates the filename to parse.
 #[derive(Debug, PartialEq)]
 pub struct Config {
+    query: String,
     filename: String,
 }
 
 impl Config {
     pub fn new(args: &[String]) -> Result<Self, Error> {
-        if args.len() < 2 {
+        if args.len() < 3 {
             Err(Error::from(ErrorKind::InvalidInput))
         } else {
-            let filename = args[1].clone();
-            Ok(Self { filename })
+            let query = args[1].clone();
+            let filename = args[2].clone();
+            Ok(Self { query, filename })
         }
+    }
+    pub fn query(&self) -> &str {
+        &self.query
     }
     pub fn filename(&self) -> &str {
         &self.filename
@@ -50,19 +55,30 @@ mod tests {
                 want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
             },
             Test {
-                args: vec![String::from("with filename"), String::from("filename")],
+                args: vec![String::from("with query"), String::from("query")],
+                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
+            },
+            Test {
+                args: vec![
+                    String::from("with query and filename"),
+                    String::from("query"),
+                    String::from("filename"),
+                ],
                 want: Ok(Config {
+                    query: String::from("query"),
                     filename: String::from("filename"),
                 }),
             },
             Test {
                 args: vec![
-                    String::from("with more than filename"),
-                    String::from("filename2"),
-                    String::from("additional argument"),
+                    String::from("with more than query and filename"),
+                    String::from("query"),
+                    String::from("filename"),
+                    String::from("another argument"),
                 ],
                 want: Ok(Config {
-                    filename: String::from("filename2"),
+                    query: String::from("query"),
+                    filename: String::from("filename"),
                 }),
             },
         ];
@@ -86,6 +102,32 @@ mod tests {
         }
     }
     #[test]
+    fn config_query() {
+        struct Test {
+            config: Config,
+            want: &'static str,
+        }
+        let tests = [
+            Test {
+                config: Config {
+                    query: String::from("some query"),
+                    filename: String::from("some file"),
+                },
+                want: "some query",
+            },
+            Test {
+                config: Config {
+                    query: String::from(""),
+                    filename: String::from("some filename"),
+                },
+                want: "",
+            },
+        ];
+        for t in &tests {
+            assert_eq!(t.want, t.config.query());
+        }
+    }
+    #[test]
     fn config_filename() {
         struct Test {
             config: Config,
@@ -94,12 +136,14 @@ mod tests {
         let tests = [
             Test {
                 config: Config {
+                    query: String::from("some query"),
                     filename: String::from("some file"),
                 },
                 want: "some file",
             },
             Test {
                 config: Config {
+                    query: String::from("some query"),
                     filename: String::from(""),
                 },
                 want: "",
