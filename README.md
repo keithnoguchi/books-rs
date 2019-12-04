@@ -152,6 +152,7 @@ running 0 tests
 - [Too Many Linked Lists]: Learning Rust with Entirely Too Many Linked List
 - [The Unstable Book]: The book all about the cutting edge features!
 - [FlatBuffers tutorial]:
+  - [Writing Flatbuffers schema]
   - [crate flatc-rust]: Programmatical way to invoke flatc command
 
 [What's unique about Rust?]: https://www.youtube.com/watch?v=jQOZX0xkrWA
@@ -182,6 +183,7 @@ running 0 tests
 [Crate diesel]: https://diesel.rs/guides/getting-started/
 [the unstable book]: https://doc.rust-lang.org/nightly/unstable-book/
 [flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html
+[writing flatbuffers schema]: https://google.github.io/flatbuffers/flatbuffers_guide_writing_schema.html
 [crate flatc-rust]: https://docs.rs/flatc-rust/0.1.2/flatc_rust/#examples
 
 Happy Hacking!
