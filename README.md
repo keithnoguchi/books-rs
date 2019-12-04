@@ -101,7 +101,6 @@ in this crate:
 
 [flatbuf-tutorial]: flatbuf/Cargo.toml
 [monster]: flatbuf/src/monster.rs
-[flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html]
 
 # Test
 
@@ -182,7 +181,7 @@ running 0 tests
 [Crate parking_lot]: https://docs.rs/parking_lot/0.1.0/parking_lot/
 [Crate diesel]: https://diesel.rs/guides/getting-started/
 [the unstable book]: https://doc.rust-lang.org/nightly/unstable-book/
-[Flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html
+[flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html
 [crate flatc-rust]: https://docs.rs/flatc-rust/0.1.2/flatc_rust/#examples
 
 Happy Hacking!
