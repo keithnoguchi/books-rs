@@ -3,6 +3,7 @@
 
 members = [
    "book",
+   "style",
    "async",
    "tokio",
    "list",

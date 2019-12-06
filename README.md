@@ -49,6 +49,13 @@ crate:
 [tests/integration_test]: book/tests/integration_test.rs
 [fs]: book/src/fs.rs
 
+## style-book crate
+
+[style-book] crate is for the examples presented in Rust [the style guide].
+
+[the style book]: https://doc.rust-lang.org/1.0.0/style/README.html
+[style-book]: style/Cargo.toml
+
 ## async-book crate
 
 [async-book] crate presents the examples provided in [the Async Book], the Async

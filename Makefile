@@ -10,7 +10,7 @@ test: build
 clean:
 	@cargo clean
 run: build
-	@cargo run --bin book
+	@cargo run --bin style-book
 install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \
