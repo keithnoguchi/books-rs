@@ -78,7 +78,7 @@ in this crate:
 
 ## tokio-book crate
 
-[tokio-took] crate presents the examples provided in
+[tokio-book] crate presents the examples provided in
 [tokio Getting Started Guide].
 
 [tokio-book]: tokio/Cargo.toml
