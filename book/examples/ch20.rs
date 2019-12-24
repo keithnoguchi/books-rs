@@ -5,5 +5,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let wq = WorkQueue::new(1);
     wq.exec(|| {
         println!("Hello WorkQueue!");
+        Ok(())
     })
 }

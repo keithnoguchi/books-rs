@@ -20,9 +20,8 @@ install: build
 update:
 	@cargo update
 doc:
-	@cargo doc --open &
-doc-all: doc-book doc-std
 	@cargo doc --all --open &
+doc-all: doc-book doc-std doc
 doc-%:
 	@rustup doc --$* &
 fmt: build

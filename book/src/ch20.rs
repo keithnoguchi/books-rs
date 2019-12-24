@@ -6,6 +6,8 @@ pub struct WorkQueue {
     workers: Vec<Worker>,
 }
 
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+
 impl WorkQueue {
     /// `new` creates the `size` number of workers' queue.
     ///
@@ -39,15 +41,15 @@ impl WorkQueue {
     /// for _ in 0..10 {
     ///     wq.exec(|| {
     ///         println!("Hello WorkQueue");
+    ///         Ok(())
     ///     });
     /// }
     /// ```
-    pub fn exec<F>(&self, f: F) -> Result<(), Box<dyn std::error::Error>>
+    pub fn exec<F>(&self, f: F) -> Result<()>
     where
-        F: FnOnce() + Send + 'static,
+        F: FnOnce() -> Result<()> + Send + 'static,
     {
-        f();
-        Ok(())
+        f()
     }
 }
 
@@ -65,6 +67,7 @@ mod tests {
         let wq = WorkQueue::new(1);
         wq.exec(|| {
             println!("hello");
+            Ok(())
         });
     }
 }
