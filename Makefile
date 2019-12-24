@@ -11,6 +11,7 @@ clean:
 	@cargo clean
 run: build
 	@cargo run --bin style-book
+	@cargo run --package the-book --example ch12 -- SPDX Makefile
 	@cargo run --package the-book --example ch20
 install: build
 	@for i in book async; do \
@@ -25,7 +26,7 @@ doc-all: doc-book doc-std
 doc-%:
 	@rustup doc --$* &
 fmt: build
-	@rustfmt --edition 2018 --check **/src/*.rs
+	@rustfmt --edition 2018 --check **/src/*.rs **/examples/*.rs
 lint: build
 	@cargo clippy -- -D warnings
 # CI targets.

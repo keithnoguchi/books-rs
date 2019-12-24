@@ -31,6 +31,7 @@ crate:
   - [tests/integration_test]: Integration test examples
 - [ch12]: An I/O Project: Building a Command Line Program
 - [ch14]: More About Cargo and Crates.io
+- [ch20]: Final Project: Building a Multithreaded Web Server
 - [fs]: std::fs examples
 
 [the book]: https://doc.rust-lang.org/stable/book/
@@ -46,6 +47,7 @@ crate:
 [ch11]: book/src/ch11.rs
 [ch12]: book/src/ch12.rs
 [ch14]: book/src/ch14.rs
+[ch20]: book/src/ch20.rs
 [tests/integration_test]: book/tests/integration_test.rs
 [fs]: book/src/fs.rs
 

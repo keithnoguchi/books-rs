@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: GPL-2.0
-// https://doc.rust-lang.org/stable/book/ch12-00-an-io-project.html
+//! An I/O Project: Building a Command Line Program
 use std::{env, process};
+
 use the_book::ch12::{self, Config};
 use the_book::Error;
 
