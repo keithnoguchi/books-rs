@@ -2,7 +2,7 @@
 use the_book::ch20::WorkQueue;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let wq = WorkQueue::new(1);
+    let wq = WorkQueue::new(10);
     wq.exec(|| {
         println!("Hello WorkQueue!");
         Ok(())

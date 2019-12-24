@@ -26,8 +26,8 @@ impl WorkQueue {
     pub fn new(size: usize) -> Self {
         assert!(size != 0);
         let mut workers = Vec::with_capacity(size);
-        for _ in 0..size {
-            workers.push(Worker {});
+        for id in 0..size {
+            workers.push(Worker { id });
         }
         Self { size, workers }
     }
@@ -78,7 +78,18 @@ impl WorkQueue {
     }
 }
 
-struct Worker;
+impl Drop for WorkQueue {
+    fn drop(&mut self) {
+        for w in &self.workers {
+            println!("dropping {:?}", w);
+        }
+    }
+}
+
+#[derive(Debug)]
+struct Worker {
+    id: usize,
+}
 
 #[cfg(test)]
 mod tests {
