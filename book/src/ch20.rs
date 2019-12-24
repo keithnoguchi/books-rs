@@ -1,6 +1,6 @@
 //! Chapter 20 Final Project: Building a Multithreaded Web Server
-use std::fmt::{self, Debug, Formatter};
 use std::sync::{mpsc, Arc, Mutex};
+use std::thread::{self, JoinHandle};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 type Message<T> = Box<dyn FnOnce() -> Result<T> + Send + 'static>;
@@ -11,7 +11,7 @@ where
     T: Send + 'static,
 {
     size: usize,
-    workers: Vec<Worker<T>>,
+    workers: Vec<Worker>,
     tx: mpsc::Sender<Message<T>>,
 }
 
@@ -39,7 +39,7 @@ where
         let (tx, rx) = mpsc::channel();
         let rx = Arc::new(Mutex::new(rx));
         for id in 0..size {
-            workers.push(Worker::new(id, &rx));
+            workers.push(Worker::new(id, rx.clone()));
         }
         Self { size, workers, tx }
     }
@@ -102,32 +102,21 @@ where
     }
 }
 
-struct Worker<T>
-where
-    T: Send + 'static,
-{
+#[derive(Debug)]
+struct Worker {
     id: usize,
-    _rx: Arc<Mutex<mpsc::Receiver<Message<T>>>>,
+    worker: JoinHandle<()>,
 }
 
-impl<T> Worker<T>
-where
-    T: Send + 'static,
-{
-    fn new(id: usize, rx: &Arc<Mutex<mpsc::Receiver<Message<T>>>>) -> Self {
-        Self {
-            id,
-            _rx: rx.clone(),
-        }
-    }
-}
-
-impl<T> Debug for Worker<T>
-where
-    T: Send + 'static,
-{
-    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
-        write!(fmt, "Worker[{}]", self.id)
+impl Worker {
+    fn new<T: 'static>(id: usize, rx: Arc<Mutex<mpsc::Receiver<Message<T>>>>) -> Self {
+        let worker = thread::spawn(move || loop {
+            let msg = rx.lock().unwrap().recv().unwrap();
+            println!("handling...");
+            msg().unwrap();
+            println!("handled...");
+        });
+        Self { id, worker }
     }
 }
 
