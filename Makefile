@@ -11,6 +11,7 @@ clean:
 	@cargo clean
 run: build
 	@cargo run --bin style-book
+	@cargo run --package the-book --example ch20
 install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \
