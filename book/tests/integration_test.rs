@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: GPL-2.0
-use the_book;
-
 mod common;
 
 #[test]

@@ -1,15 +1,15 @@
-# rustbook
+# rustbooks
 
 Rust examples from multiple [Rust lang] books with the [table driven]
-unit tests.
+unit test.
 
-[![DroneCI]](https://cloud.drone.io/keithnoguchi/rustbook)
-[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbook)
+[![DroneCI]](https://cloud.drone.io/keithnoguchi/rustbooks)
+[![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/rustbooks)
 
 [Rust lang]: https://www.rust-lang.org
 [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
-[DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbook/status.svg
-[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbook.svg?style=svg
+[DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/rustbooks/status.svg
+[CircleCI]: https://circleci.com/gh/keithnoguchi/rustbooks.svg?style=svg
 
 # Crates
 

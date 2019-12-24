@@ -7,12 +7,13 @@ use std::{fs, io::ErrorKind};
 ///
 /// # Examples
 /// ```
-/// use the_book::ch09::Error;
-/// use the_book::ch12::Config;
+/// use the_book as book;
+/// use book::ch09::Error;
+/// use book::ch12::Config;
 ///
 /// fn main() -> Result<(), Error> {
 ///     let args = vec![
-///         String::from("the_book"),
+///         String::from("crate"),
 ///         String::from("some query"),
 ///         String::from("some filename"),
 ///     ];

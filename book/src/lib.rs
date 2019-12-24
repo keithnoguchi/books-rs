@@ -4,7 +4,6 @@
 //!
 //! [the rust programming language]: https://doc.rust-lang.org/stable/book/
 //! [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
-
 pub use ch09::Error;
 pub use ch11::add_two;
 
@@ -14,6 +13,7 @@ pub mod ch10;
 pub mod ch11;
 pub mod ch12;
 pub mod ch14;
+pub mod ch20;
 mod fs;
 mod hashmap;
 mod vector;
