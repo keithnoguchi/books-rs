@@ -42,12 +42,20 @@ impl WorkQueue {
     ///     wq.exec(|| {
     ///         println!("Hello WorkQueue");
     ///         Ok(())
-    ///     });
+    ///     }).unwrap();
+    /// }
+    /// let wq = WorkQueue::new(5);
+    /// for id in 0..5 {
+    ///     wq.exec(move || {
+    ///         println!("It returns values");
+    ///         Ok(id)
+    ///     }).unwrap();
     /// }
     /// ```
-    pub fn exec<F>(&self, f: F) -> Result<()>
+    pub fn exec<F, T>(&self, f: F) -> Result<T>
     where
-        F: FnOnce() -> Result<()> + Send + 'static,
+        F: FnOnce() -> Result<T> + Send + 'static,
+        T: Send + 'static,
     {
         f()
     }
@@ -68,6 +76,13 @@ mod tests {
         wq.exec(|| {
             println!("hello");
             Ok(())
-        });
+        })
+        .unwrap();
+        let wq = WorkQueue::new(1);
+        wq.exec(|| {
+            println!("returns u32");
+            Ok(1u32)
+        })
+        .unwrap();
     }
 }
