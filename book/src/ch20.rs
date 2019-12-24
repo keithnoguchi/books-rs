@@ -1,14 +1,24 @@
 //! Chapter 20 Final Project: Building a Multithreaded Web Server
-
-/// fixed sized worker queue.
-pub struct WorkQueue {
-    size: usize,
-    workers: Vec<Worker>,
-}
+use std::fmt::{self, Debug, Formatter};
+use std::sync::{mpsc, Arc, Mutex};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+type Message<T> = Box<dyn FnOnce() -> Result<T> + Send + 'static>;
 
-impl WorkQueue {
+/// fixed sized worker queue.
+pub struct WorkQueue<T>
+where
+    T: Send + 'static,
+{
+    size: usize,
+    workers: Vec<Worker<T>>,
+    tx: mpsc::Sender<Message<T>>,
+}
+
+impl<T> WorkQueue<T>
+where
+    T: Send + 'static,
+{
     /// `new` creates the `size` number of workers' queue.
     ///
     /// # Panics
@@ -20,16 +30,18 @@ impl WorkQueue {
     /// ```rust
     /// use the_book::ch20::WorkQueue;
     ///
-    /// let wq = WorkQueue::new(2);
+    /// let wq = WorkQueue::<()>::new(2);
     /// assert_eq!(2, wq.size());
     /// ```
     pub fn new(size: usize) -> Self {
         assert!(size != 0);
         let mut workers = Vec::with_capacity(size);
+        let (tx, rx) = mpsc::channel();
+        let rx = Arc::new(Mutex::new(rx));
         for id in 0..size {
-            workers.push(Worker { id });
+            workers.push(Worker::new(id, &rx));
         }
-        Self { size, workers }
+        Self { size, workers, tx }
     }
     /// `size` returns the size of the work queue.
     ///
@@ -39,7 +51,7 @@ impl WorkQueue {
     /// use the_book::ch20::WorkQueue;
     /// let tests = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     /// for t in &tests {
-    ///     let wq = WorkQueue::new(*t);
+    ///     let wq = WorkQueue::<()>::new(*t);
     ///     assert_eq!(*t, wq.size());
     /// }
     /// ```
@@ -69,16 +81,20 @@ impl WorkQueue {
     ///     }).unwrap();
     /// }
     /// ```
-    pub fn exec<F, T>(&self, f: F) -> Result<T>
+    pub fn exec<F>(&self, f: F) -> Result<()>
     where
         F: FnOnce() -> Result<T> + Send + 'static,
         T: Send + 'static,
     {
-        f()
+        self.tx.send(Box::new(f))?;
+        Ok(())
     }
 }
 
-impl Drop for WorkQueue {
+impl<T> Drop for WorkQueue<T>
+where
+    T: Send + 'static,
+{
     fn drop(&mut self) {
         for w in &self.workers {
             println!("dropping {:?}", w);
@@ -86,9 +102,33 @@ impl Drop for WorkQueue {
     }
 }
 
-#[derive(Debug)]
-struct Worker {
+struct Worker<T>
+where
+    T: Send + 'static,
+{
     id: usize,
+    _rx: Arc<Mutex<mpsc::Receiver<Message<T>>>>,
+}
+
+impl<T> Worker<T>
+where
+    T: Send + 'static,
+{
+    fn new(id: usize, rx: &Arc<Mutex<mpsc::Receiver<Message<T>>>>) -> Self {
+        Self {
+            id,
+            _rx: rx.clone(),
+        }
+    }
+}
+
+impl<T> Debug for Worker<T>
+where
+    T: Send + 'static,
+{
+    fn fmt(&self, fmt: &mut Formatter<'_>) -> fmt::Result {
+        write!(fmt, "Worker[{}]", self.id)
+    }
 }
 
 #[cfg(test)]
@@ -96,14 +136,14 @@ mod tests {
     use super::WorkQueue;
     #[test]
     fn new() {
-        let wq = WorkQueue::new(1);
+        let wq = WorkQueue::<()>::new(1);
         assert_eq!(1, wq.size);
     }
     #[test]
     fn size() {
         let tests = [1, 2, 3, 4, 5, 6, 7];
         for t in &tests {
-            let wq = WorkQueue::new(*t);
+            let wq = WorkQueue::<()>::new(*t);
             assert_eq!(*t, wq.size());
         }
     }
