@@ -20,7 +20,8 @@ impl WorkQueue {
     /// ```rust
     /// use the_book::ch20::WorkQueue;
     ///
-    /// let _wq = WorkQueue::new(2);
+    /// let wq = WorkQueue::new(2);
+    /// assert_eq!(2, wq.size());
     /// ```
     pub fn new(size: usize) -> Self {
         assert!(size != 0);
@@ -30,6 +31,22 @@ impl WorkQueue {
         }
         Self { size, workers }
     }
+    /// `size` returns the size of the work queue.
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use the_book::ch20::WorkQueue;
+    /// let tests = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    /// for t in &tests {
+    ///     let wq = WorkQueue::new(*t);
+    ///     assert_eq!(*t, wq.size());
+    /// }
+    /// ```
+    #[inline]
+    pub fn size(&self) -> usize {
+        self.size
+    }
     /// `exec` executes the closure on one of the workers.
     ///
     /// # Example
@@ -38,14 +55,14 @@ impl WorkQueue {
     /// use the_book::ch20::WorkQueue;
     ///
     /// let wq = WorkQueue::new(10);
-    /// for _ in 0..10 {
+    /// for _ in 0..wq.size() {
     ///     wq.exec(|| {
     ///         println!("Hello WorkQueue");
     ///         Ok(())
     ///     }).unwrap();
     /// }
     /// let wq = WorkQueue::new(5);
-    /// for id in 0..5 {
+    /// for id in 0..wq.size() {
     ///     wq.exec(move || {
     ///         println!("It returns values");
     ///         Ok(id)
@@ -71,6 +88,15 @@ mod tests {
         let wq = WorkQueue::new(1);
         assert_eq!(1, wq.size);
     }
+    #[test]
+    fn size() {
+        let tests = [1, 2, 3, 4, 5, 6, 7];
+        for t in &tests {
+            let wq = WorkQueue::new(*t);
+            assert_eq!(*t, wq.size());
+        }
+    }
+    #[test]
     fn exec() {
         let wq = WorkQueue::new(1);
         wq.exec(|| {
