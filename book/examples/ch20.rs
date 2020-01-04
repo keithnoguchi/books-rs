@@ -1,7 +1,7 @@
 //! Final Project: Building a Multithreaded Web Server
-use the_book::ch20::WorkQueue;
 use std::thread;
 use std::time::Duration;
+use the_book::ch20::WorkQueue;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let wq = WorkQueue::new(10);
@@ -9,7 +9,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         wq.exec(move || {
             println!("Hello WorkQueue {}!", id);
             Ok(())
-        }).unwrap();
+        })
+        .unwrap();
     }
     println!("main thread sleeping...");
     thread::sleep(Duration::from_secs(2));
