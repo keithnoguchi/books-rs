@@ -101,6 +101,10 @@ version = "1.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "embedded-book"
+version = "0.1.0"
+
+[[package]]
 name = "flatbuf-tutorial"
 version = "0.1.0"
 dependencies = [

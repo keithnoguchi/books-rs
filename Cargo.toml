@@ -8,4 +8,5 @@ members = [
    "tokio",
    "list",
    "flatbuf",
+   "embedded",
 ]
