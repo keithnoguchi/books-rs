@@ -31,14 +31,14 @@ fn main() {
 
 fn bar<T>(x: T)
 where
-    T: fmt::Display
+    T: fmt::Display,
 {
     println!("bar: {}", x);
 }
 
 fn baz<T>(x: T)
 where
-    T: fmt::Display
+    T: fmt::Display,
 {
     println!("baz: {}", x);
 }

@@ -16,9 +16,7 @@ pub fn raw(p: *mut usize) {
 #[no_mangle]
 pub fn deref_raw(p: *const usize) -> usize {
     if !p.is_null() {
-        unsafe {
-            *p
-        }
+        unsafe { *p }
     } else {
         0
     }
