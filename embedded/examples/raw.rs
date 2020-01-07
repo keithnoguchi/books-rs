@@ -5,16 +5,22 @@
 /// Pass the value as the mutable raw pointer.
 #[no_mangle]
 pub fn raw(p: *mut usize) {
-    unsafe {
-        *p = 5;
+    if !p.is_null() {
+        unsafe {
+            *p = 5;
+        }
     }
 }
 
 /// Pass the value as the immutable raw pointer.
 #[no_mangle]
 pub fn deref_raw(p: *const usize) -> usize {
-    unsafe {
-        *p
+    if !p.is_null() {
+        unsafe {
+            *p
+        }
+    } else {
+        0
     }
 }
 
