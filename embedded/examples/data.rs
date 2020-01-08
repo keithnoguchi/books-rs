@@ -45,11 +45,17 @@ fn main() {
     let s = S::new();
     println!("S = {:?}", s);
     assert_eq!(0, s.field1);
-    let root = Node { parent: None, value: 100 };
+    let root = Node {
+        parent: None,
+        value: 100,
+    };
     assert_eq!(true, root.is_root());
     assert_eq!(100, root.value);
     let root = Rc::new(root);
-    let leaf = Node { parent: Some(root.clone()), value: 115 };
+    let leaf = Node {
+        parent: Some(root.clone()),
+        value: 115,
+    };
     assert_eq!(false, leaf.is_root());
     assert_eq!(115, leaf.value);
     match &leaf.parent {
