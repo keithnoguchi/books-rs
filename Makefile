@@ -13,6 +13,7 @@ run: build
 	@cargo run --bin style-book
 	@echo 2 | cargo run --package the-book --example ch02
 	@cargo run --package the-book --example ch12 -- SPDX Makefile
+	@cargo run --package the-book --example ch15
 	@cargo run --package the-book --example ch20
 install: build
 	@for i in book async; do \
