@@ -1,6 +1,6 @@
 # tokio
 
-Examples from [tokio getting started guide].
+Examples from [the Tokio Book].
 
 ## Modules
 
@@ -25,6 +25,7 @@ Examples from [tokio getting started guide].
 
 ## References
 
+- [The Tokio Book]: Tokio 0.2 Book!
 - [The Async Book]: Asynchronous Programming in Rust
 - [Crate futures]:
   - [Crate futures v0.3]: Abstructions for Asynchronous Programming
@@ -36,6 +37,7 @@ Examples from [tokio getting started guide].
   - [Crate tokio v0.2]: A runtime for writing reliable, asynchronous, and slim applications
   - [Crate tokio v0.1]: An event-driven, non-blocking I/O platform for writing asynchronous I/O backed applications
 
+[the tokio book]: https://github.com/tokio-rs/book/blob/master/SUMMARY.md
 [the async book]: https://rust-lang.github.io/async-book/
 [crate futures]: http://futures.rs/
 [crate futures v0.3]: https://docs.rs/futures/0.3.1/
