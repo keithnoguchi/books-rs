@@ -1,7 +1,8 @@
 //! Smart Pointers example
+use std::cell::RefCell;
 use std::rc::Rc;
 
-use the_book::ch15::{Graph, LimitTracker, List, Messenger, MyBox};
+use the_book::ch15::{Graph, LimitTracker, List, Messenger, MyBox, RefCellList};
 
 struct PrintMessenger;
 
@@ -56,6 +57,23 @@ fn main() {
     tracker.set_value(75);
     tracker.set_value(90);
     tracker.set_value(100);
+    let a = Rc::new(RefCellList::Node(
+        'a',
+        RefCell::new(Rc::new(RefCellList::Null)),
+    ));
+    println!("a initial rc count = {}", Rc::strong_count(&a));
+    println!("a next item = {:?}", a.next());
+    let b = Rc::new(RefCellList::Node('b', RefCell::new(a.clone())));
+    println!("b initial rc count = {}", Rc::strong_count(&b));
+    println!("a rc count = {}", Rc::strong_count(&a));
+    println!("b next item = {:?}", b.next());
+    println!("a next item = {:?}", a.next());
+    if let Some(next) = a.next() {
+        *next.borrow_mut() = b.clone();
+    }
+    println!("b rc count = {}", Rc::strong_count(&b));
+    println!("a rc count = {}", Rc::strong_count(&a));
+    // println!("a next items = {:?}", a.next());
     println!("main finished");
 }
 

@@ -1,6 +1,7 @@
 //! [Smart Pointers]
 //!
 //! [smart pointers]: https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
+use std::cell::RefCell;
 use std::rc::Rc;
 
 /// [Using Box<T>] to Point to Data on the Heap
@@ -17,6 +18,26 @@ pub enum List<T> {
 pub enum Graph<T> {
     Vertex(T, Vec<Rc<Graph<T>>>),
     Nil,
+}
+
+/// Creating a [Reference Cycle]
+///
+/// [reference cycle]: https://doc.rust-lang.org/book/ch15-06-reference-cycles.html
+#[derive(Debug)]
+pub enum RefCellList<T> {
+    Node(T, RefCell<Rc<RefCellList<T>>>),
+    Null,
+}
+
+impl<T> RefCellList<T> {
+    /// next returns the next node of the current node.  It returns Some<Self>
+    /// or None.
+    pub fn next(&self) -> Option<&RefCell<Rc<Self>>> {
+        match self {
+            Self::Node(_, next) => Some(next),
+            Self::Null => None,
+        }
+    }
 }
 
 /// Treating Smart Pointer Like Regular References with [the Deref trait]
