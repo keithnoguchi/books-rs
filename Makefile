@@ -10,11 +10,13 @@ test: build
 clean:
 	@cargo clean
 run: build
-	@cargo run --bin style-book
 	@echo 2 | cargo run --package the-book --example ch02
 	@cargo run --package the-book --example ch12 -- SPDX Makefile
 	@cargo run --package the-book --example ch15
+	@cargo run --package the-book --example ch16-01
+	@cargo run --package the-book --example ch16-02
 	@cargo run --package the-book --example ch20
+	@cargo run --bin style-book
 install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \
