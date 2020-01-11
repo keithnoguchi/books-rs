@@ -1,6 +1,6 @@
 # books-rs
 
-Collection of [Rust lang] books.
+The collections of [Rust lang] books.
 
 [![DroneCI]](https://cloud.drone.io/keithnoguchi/books-rs)
 [![CircleCI]](https://circleci.com/gh/keithnoguchi/workflows/books-rs)
@@ -9,58 +9,26 @@ Collection of [Rust lang] books.
 [DroneCI]: https://cloud.drone.io/api/badges/keithnoguchi/books-rs/status.svg
 [CircleCI]: https://circleci.com/gh/keithnoguchi/books-rs.svg?style=svg
 
-# Crates
+# Books
 
-## the-book crate
+## the-book
 
-[the-book] crate presents the examples provided in [the Book], the Rust Programming
-Language, with the [table driven] unit tests.  Here are the modules in this
-crate:
+[the-book] crate is the examples shown in [the Book].
 
-- [array]: Standard array type example
-- [vector]: Standard vector type example
-- [string]: String type example
-- [hashmap]: HashMap type example
-- [ch09]: Error Handling
-- [ch10]: Generic Types, Traits, and Lifetimes
-  - [generic]: Generic types examples
-  - [lifetime]: Lifetime examples
-- [ch11]: Writing Automated Tests
-  - [tests/integration_test]: Integration test examples
-- [ch12]: An I/O Project: Building a Command Line Program
-- [ch14]: More About Cargo and Crates.io
-- [ch20]: Final Project: Building a Multithreaded Web Server
-- [fs]: std::fs examples
-
-[the book]: https://doc.rust-lang.org/stable/book/
 [the-book]: book/Cargo.toml
-[array]: book/src/array.rs
-[vector]: book/src/vector.rs
-[string]: book/src/string.rs
-[hashmap]: book/src/hashmap.rs
-[ch09]: book/src/ch09.rs
-[ch10]: book/src/ch10/mod.rs
-[generic]: book/src/ch10/generic.rs
-[lifetime]: book/src/ch10/lifetime.rs
-[ch11]: book/src/ch11.rs
-[ch12]: book/src/ch12.rs
-[ch14]: book/src/ch14.rs
-[ch20]: book/src/ch20.rs
-[tests/integration_test]: book/tests/integration_test.rs
-[fs]: book/src/fs.rs
+[the book]: https://doc.rust-lang.org/stable/book/
 
-## style-book crate
+## style-book
 
-[style-book] crate is for the examples presented in Rust [the style guide].
+[style-book] crate is the examples shown in [the style guide].
 
-[the style book]: https://doc.rust-lang.org/1.0.0/style/README.html
 [style-book]: style/Cargo.toml
+[the style guide]: https://doc.rust-lang.org/1.0.0/style/README.html
 
-## async-book crate
+## async-book
 
-[async-book] crate presents the examples provided in [the Async Book], the Async
-Programming Book, with the [table driven] unit tests.  Here are the modules
-in this crate:
+[async-book] crate is the examples shown in [the Async Book], the Async
+Programming Book.
 
 - [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
 - [boxed]: [Module alloc::boxed] example
@@ -68,27 +36,25 @@ in this crate:
 - [futures]: [Crate futures] example
 - [stream]: [Module futures::stream] example
 
-[the async book]: https://rust-lang.github.io/async-book/
 [async-book]: async/Cargo.toml
+[the async book]: https://rust-lang.github.io/async-book/
 [ptr]: async/src/ptr.rs
 [boxed]: async/src/boxed.rs
 [borrow]: async/src/borrow.rs
 [futures]: async/src/futures.rs
 [stream]: async/src/stream.rs
 
-## tokio-book crate
+## tokio-book
 
-[tokio-book] crate presents the examples provided in
-[tokio Getting Started Guide].
+[tokio-book] crate is the examples shown in [tokio Getting Started Guide].
 
 [tokio-book]: tokio/Cargo.toml
 [tokio getting started guide]: https://tokio.rs/docs/overview/
 
-## list-book crate
+## list-book
 
-[list-book] crate presents the examples provided in [the List Book], The Unofficial
-Too Many List Book, with the [table driven] unit tests.  Here are the modules
-in this crate:
+[list-book] crate is the examples shown in [the List Book], The Unofficial
+Too Many List Book.
 
 - [first]: [A Bad Singly-Linked Stack]
 - [second]: [An Ok Singly-Linked Stack]
@@ -102,7 +68,7 @@ in this crate:
 
 ## flatbuf-tutorial
 
-[flatbuf-tutorial] crate presents the [FlatBuffers tutorial] with some unit test.
+[flatbuf-tutorial] crate is the examples shown in [FlatBuffers tutorial].
 
 - [monster]: Monster example
 
@@ -112,27 +78,7 @@ in this crate:
 # Test
 
 ```sh
-$ make test 2>/dev/null | head -20
-
-running 13 tests
-test borrow::tests::abs_all_array ... ok
-test borrow::tests::borrow ... ok
-test borrow::tests::borrow_mut ... ok
-test borrow::tests::abs_all_vector ... ok
-test boxed::tests::recursive_list ... ok
-test borrow::tests::to_owned ... ok
-test futures::test::async_bar_foo ... ok
-test boxed::tests::stack_to_heap ... ok
-test futures::test::join ... ok
-test ptr::tests::null_ptr ... ok
-test futures::test::select ... ok
-test stream::tests::stream ... ok
-test ptr::tests::reference ... ok
-
-test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
-
-
-running 0 tests
+$ make test
 ```
 
 # References
