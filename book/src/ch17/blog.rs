@@ -15,7 +15,7 @@ impl Post {
     pub fn new() -> Self {
         Self::default()
     }
-    /// # Example
+    /// # Examples
     ///
     /// ```rust
     /// use the_book::ch17::blog::Post;
@@ -29,6 +29,9 @@ impl Post {
             None => "",
             Some(state) => state.content(),
         }
+    }
+    pub fn add_text(&mut self, text: &str) {
+        self.content.push_str(text);
     }
 }
 
@@ -76,5 +79,24 @@ mod tests {
             None => panic!("unexpected None state"),
             Some(got) => assert_eq!("", got.content()),
         }
+    }
+    #[test]
+    fn add_text_in_draft_state() {
+        use super::Post;
+
+        let texts = vec![
+            "This is the first post to my blog.",
+            "This is another comments to the first entry",
+        ];
+        let mut want = String::new();
+        for text in &texts {
+            want.push_str(text);
+        }
+        let mut post = Post::new();
+        for text in &texts {
+            post.add_text(text);
+        }
+        assert_eq!(want, post.content);
+        assert_eq!("", post.content());
     }
 }
