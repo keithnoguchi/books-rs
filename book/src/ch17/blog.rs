@@ -30,8 +30,43 @@ impl Post {
             Some(state) => state.content(),
         }
     }
+    /// Update the draft text with add_text().  The `content()` method
+    /// won't return anything at this state, as the added text has not
+    /// been approved yet.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use the_book::ch17::blog::Post;
+    ///
+    /// let mut post = Post::new();
+    /// post.add_text("This is the first blog entry");
+    /// // You haven't request a review.
+    /// assert_eq!("", post.content());
+    /// ```
     pub fn add_text(&mut self, text: &str) {
         self.content.push_str(text);
+    }
+    /// Request an approval of the current draft text.  The `content()`
+    /// method still won't return anything, as the draft has not been
+    /// approved yet.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use the_book::ch17::blog::Post;
+    ///
+    /// let mut post = Post::new();
+    /// post.add_text("Let's start the blog!");
+    /// post.add_text(" and another text.");
+    /// post.request_review();
+    /// // Still waiting for the approval.
+    /// assert_eq!("", post.content());
+    /// ```
+    pub fn request_review(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.request_review());
+        }
     }
 }
 
@@ -51,14 +86,33 @@ trait State {
     fn content(&self) -> &str {
         ""
     }
+    fn request_review(self: Box<Self>) -> Box<dyn State>;
 }
 
-/// Draft [State], which is the only state to allow to change the
+/// Draft [state], which is the only state to allow to change the
 /// contents.
-#[derive(Debug)]
+///
+/// [state]: trait.State.html
 struct Draft {}
 
-impl State for Draft {}
+impl State for Draft {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        Box::new(PendingReview {})
+    }
+}
+
+/// PendingReview [state], which has been transitioned from [Draft] state
+/// through the [State] request_review() method.
+///
+/// [state]: trait.State.html
+/// [draft]: struct.Draft.html
+struct PendingReview {}
+
+impl State for PendingReview {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Self {})
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -85,7 +139,7 @@ mod tests {
         use super::Post;
 
         let texts = vec![
-            "This is the first post to my blog.",
+            "This is the first post of my blog.",
             "This is another comments to the first entry",
         ];
         let mut want = String::new();
@@ -96,6 +150,26 @@ mod tests {
         for text in &texts {
             post.add_text(text);
         }
+        assert_eq!(want, post.content);
+        assert_eq!("", post.content());
+    }
+    #[test]
+    fn request_review_in_draft_state() {
+        use super::Post;
+
+        let texts = vec![
+            "This is the first post of my blog.",
+            "Oops, let's add additional text",
+        ];
+        let mut want = String::new();
+        for text in &texts {
+            want.push_str(text);
+        }
+        let mut post = Post::new();
+        for text in &texts {
+            post.add_text(text);
+        }
+        post.request_review();
         assert_eq!(want, post.content);
         assert_eq!("", post.content());
     }
