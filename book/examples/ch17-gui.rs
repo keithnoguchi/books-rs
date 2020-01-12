@@ -4,6 +4,6 @@
 use the_book::ch17::gui::{Draw, Screen};
 
 fn main() {
-    let mut screen = Screen::new(10, 15);
+    let screen = Screen::new(10, 15);
     screen.draw();
 }

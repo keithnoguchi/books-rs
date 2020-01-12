@@ -7,14 +7,16 @@
 ///
 /// [state]: trait.State.html
 pub struct Post {
-    content: String,
     state: Option<Box<dyn State>>,
+    content: String,
 }
 
 impl Post {
     pub fn new() -> Self {
         Self::default()
     }
+    /// Retruns the *approved* content back to the caller.
+    ///
     /// # Examples
     ///
     /// ```rust
@@ -22,6 +24,7 @@ impl Post {
     ///
     /// let want = String::new();
     /// let got = Post::new();
+    /// // Not yet approved.
     /// assert_eq!(&want, got.content());
     /// ```
     pub fn content(&self) -> &str {
@@ -110,7 +113,8 @@ struct PendingReview {}
 
 impl State for PendingReview {
     fn request_review(self: Box<Self>) -> Box<dyn State> {
-        Box::new(Self {})
+        // We ignore the multiple review requests.
+        self
     }
 }
 
