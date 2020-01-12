@@ -28,10 +28,7 @@ impl Post {
     /// assert_eq!(&want, got.content());
     /// ```
     pub fn content(&self) -> &str {
-        match &self.state {
-            None => "",
-            Some(state) => state.content(),
-        }
+        ""
     }
     /// Update the draft text with add_text().  The `content()` method
     /// won't return anything at this state, as the added text has not
@@ -71,6 +68,32 @@ impl Post {
             self.state = Some(s.request_review());
         }
     }
+    /// `approve()` method approves the contents so that `content()`
+    /// method can return the *approved* content for this [post].
+    ///
+    /// [post]: struct.Post.html
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use the_book::ch17::blog::Post;
+    ///
+    /// let mut post = Post::new();
+    /// post = Post::new();
+    /// post.add_text("This is the first post");
+    /// post.add_text("let's add additional text");
+    /// post.request_review();
+    /// post.approve();
+    /// // Now it returns the content, as it's approved.
+    /// let mut want = String::from("This is the first post");
+    /// want.push_str("let's add additional text");
+    /// assert_eq!(&want, post.content());
+    /// ```
+    pub fn approve(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.approve());
+        }
+    }
 }
 
 impl Default for Post {
@@ -86,10 +109,8 @@ impl Default for Post {
 ///
 /// [state]: trait.State.html
 trait State {
-    fn content(&self) -> &str {
-        ""
-    }
     fn request_review(self: Box<Self>) -> Box<dyn State>;
+    fn approve(self: Box<Self>) -> Box<dyn State>;
 }
 
 /// Draft [state], which is the only state to allow to change the
@@ -101,6 +122,9 @@ struct Draft {}
 impl State for Draft {
     fn request_review(self: Box<Self>) -> Box<dyn State> {
         Box::new(PendingReview {})
+    }
+    fn approve(self: Box<Self>) -> Box<dyn State> {
+        self
     }
 }
 
@@ -114,6 +138,26 @@ struct PendingReview {}
 impl State for PendingReview {
     fn request_review(self: Box<Self>) -> Box<dyn State> {
         // We ignore the multiple review requests.
+        self
+    }
+    fn approve(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Approved {})
+    }
+}
+
+/// Approved [state] which moves from [PendingReview] state through `approved()`
+/// [Post] method.
+///
+/// [state]: trait.State.html
+/// [pendingreview]: struct.PendingReview.html
+/// [post]: struct.Post.html
+struct Approved {}
+
+impl State for Approved {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+    fn approve(self: Box<Self>) -> Box<dyn State> {
         self
     }
 }
@@ -133,10 +177,7 @@ mod tests {
         use super::Post;
 
         let got = Post::new();
-        match got.state {
-            None => panic!("unexpected None state"),
-            Some(got) => assert_eq!("", got.content()),
-        }
+        assert_eq!("", got.content());
     }
     #[test]
     fn add_text_in_draft_state() {
@@ -176,5 +217,18 @@ mod tests {
         post.request_review();
         assert_eq!(want, post.content);
         assert_eq!("", post.content());
+    }
+    #[test]
+    fn approve_in_pending_review_state() {
+        use super::Post;
+
+        let mut post = Post::new();
+        post.add_text("Here is the text");
+        post.add_text("more text");
+        post.request_review();
+        post.approve();
+        let mut want = String::from("Here is the text");
+        want.push_str("more text");
+        assert_eq!(&want, post.content());
     }
 }

@@ -11,6 +11,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     post.add_text("Let's start the blog");
     post.add_text("oops, let's add more text to the first blog entry");
     post.request_review();
+    post.approve();
     println!("Here is the published content: '{}'", post.content());
     Ok(())
 }
