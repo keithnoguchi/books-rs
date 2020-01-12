@@ -7,16 +7,13 @@
 ///
 /// [state]: trait.State.html
 pub struct Post {
-    state: Option<Box<dyn State>>,
     content: String,
+    state: Option<Box<dyn State>>,
 }
 
 impl Post {
     pub fn new() -> Self {
-        Self {
-            state: Some(Box::new(Draft {})),
-            content: String::new(),
-        }
+        Self::default()
     }
     /// # Example
     ///
@@ -31,6 +28,15 @@ impl Post {
         match &self.state {
             None => "",
             Some(state) => state.content(),
+        }
+    }
+}
+
+impl Default for Post {
+    fn default() -> Self {
+        Self {
+            content: String::new(),
+            state: Some(Box::new(Draft {})),
         }
     }
 }
