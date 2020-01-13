@@ -12,6 +12,18 @@ pub struct Post {
 }
 
 impl Post {
+    /// Returns the newly create [post] instance.
+    ///
+    /// [post]: struct.Post.html
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use the_book::ch17::blog::Post;
+    ///
+    /// let post = Post::new();
+    /// assert_eq!("", post.content());
+    /// ```
     pub fn new() -> Self {
         Self::default()
     }
@@ -28,7 +40,7 @@ impl Post {
     /// assert_eq!(&want, got.content());
     /// ```
     pub fn content(&self) -> &str {
-        ""
+        self.state.as_ref().unwrap().content(&self)
     }
     /// Update the draft text with add_text().  The `content()` method
     /// won't return anything at this state, as the added text has not
@@ -111,6 +123,9 @@ impl Default for Post {
 trait State {
     fn request_review(self: Box<Self>) -> Box<dyn State>;
     fn approve(self: Box<Self>) -> Box<dyn State>;
+    fn content<'a>(&self, _post: &'a Post) -> &'a str {
+        ""
+    }
 }
 
 /// Draft [state], which is the only state to allow to change the
@@ -141,24 +156,27 @@ impl State for PendingReview {
         self
     }
     fn approve(self: Box<Self>) -> Box<dyn State> {
-        Box::new(Approved {})
+        Box::new(Published {})
     }
 }
 
-/// Approved [state] which moves from [PendingReview] state through `approved()`
+/// Published [state] which moves from [PendingReview] state through `approved()`
 /// [Post] method.
 ///
 /// [state]: trait.State.html
 /// [pendingreview]: struct.PendingReview.html
 /// [post]: struct.Post.html
-struct Approved {}
+struct Published {}
 
-impl State for Approved {
+impl State for Published {
     fn request_review(self: Box<Self>) -> Box<dyn State> {
         self
     }
     fn approve(self: Box<Self>) -> Box<dyn State> {
         self
+    }
+    fn content<'a>(&self, post: &'a Post) -> &'a str {
+        &post.content
     }
 }
 

@@ -8,7 +8,7 @@ use the_book::ch17::blog::Post;
 fn main() -> Result<(), Box<dyn Error>> {
     let mut post = Post::new();
 
-    post.add_text("Let's start the blog");
+    post.add_text("Let's start the blog\n");
     post.add_text("oops, let's add more text to the first blog entry");
     post.request_review();
     post.approve();
