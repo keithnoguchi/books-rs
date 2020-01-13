@@ -19,7 +19,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::blog::Post;
+    /// use the_book::ch17::x02_blog::Post;
     ///
     /// let post = Post::new();
     /// assert_eq!("", post.content());
@@ -32,7 +32,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::blog::Post;
+    /// use the_book::ch17::x02_blog::Post;
     ///
     /// let want = String::new();
     /// let got = Post::new();
@@ -49,7 +49,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::blog::Post;
+    /// use the_book::ch17::x02_blog::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("This is the first blog entry");
@@ -66,7 +66,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::blog::Post;
+    /// use the_book::ch17::x02_blog::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("Let's start the blog!");
@@ -88,7 +88,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::blog::Post;
+    /// use the_book::ch17::x02_blog::Post;
     ///
     /// let mut post = Post::new();
     /// post = Post::new();

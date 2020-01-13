@@ -19,9 +19,9 @@ run: build
 	@cargo run --package the-book --example ch15-05-tree
 	@cargo run --package the-book --example ch16-01
 	@cargo run --package the-book --example ch16-02
-	@cargo run --package the-book --example ch17-gui
-	@cargo run --package the-book --example ch17-blog
-	@cargo run --package the-book --example ch17-blog2
+	@cargo run --package the-book --example ch17-01-gui
+	@cargo run --package the-book --example ch17-02-blog
+	@cargo run --package the-book --example ch17-03-blog2
 	@cargo run --package the-book --example ch20
 	@cargo run --bin style-book
 install: build
