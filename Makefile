@@ -17,8 +17,8 @@ run: build
 	@cargo run --package the-book --example ch15-03-cell
 	@cargo run --package the-book --example ch15-04-cycle
 	@cargo run --package the-book --example ch15-05-tree
-	@cargo run --package the-book --example ch16-01
-	@cargo run --package the-book --example ch16-02
+	@cargo run --package the-book --example ch16-01-thread
+	@cargo run --package the-book --example ch16-02-channel
 	@cargo run --package the-book --example ch17-01-gui
 	@cargo run --package the-book --example ch17-02-blog
 	@cargo run --package the-book --example ch17-03-blog2
