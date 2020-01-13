@@ -1,9 +1,6 @@
-// SPDX-License-Identifier: GPL-2.0
-//! `book` is a collection of examples demonstrated in
-//! [the Rust Programming Language] with the [table driven] unit tests.
+//! A collection of examples demonstrated in [the Rust Programming Language].
 //!
 //! [the rust programming language]: https://doc.rust-lang.org/stable/book/
-//! [table driven]: https://dave.cheney.net/2019/05/07/prefer-table-driven-tests
 pub use ch09::Error;
 pub use ch11::add_two;
 
