@@ -25,15 +25,16 @@
 //!     Ok(())
 //! }
 //! ```
-use std::ops::AddAssign;
+use std::ops::{AddAssign, SubAssign};
 use std::sync::Mutex;
 
-/// Atomic counter [Mutex<T>] zerotype.
+/// [Sync] Counter through [Mutex<T>] zerotype.
 ///
+/// [sync]: https://doc.rust-lang.org/std/marker/trait.Sync.html
 /// [mutex<t>]: https://doc.rust-lang.org/std/sync/struct.Mutex.html
-pub struct Counter<T: Copy + AddAssign>(Mutex<T>);
+pub struct Counter<T: Copy + AddAssign + SubAssign>(Mutex<T>);
 
-impl<T: Copy + AddAssign> Counter<T> {
+impl<T: Copy + AddAssign + SubAssign> Counter<T> {
     /// `new()` method to initialize the counter.
     ///
     /// # Examples
@@ -99,6 +100,41 @@ impl<T: Copy + AddAssign> Counter<T> {
         let mut num = self.0.lock().expect("cannot get lock in inc()");
         *num += value;
     }
+    /// `dec()` method decrements the provided value from the counter.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use std::sync::Arc;
+    /// use std::thread::{self, Result};
+    ///
+    /// use the_book::ch16::x03_counter::Counter;
+    ///
+    /// fn main() -> Result<()> {
+    ///     let mut handlers = Vec::with_capacity(1_000);
+    ///     let counter = Arc::new(Counter::new(100_000));
+    ///
+    ///     for _ in 0..100 {
+    ///         let counter = counter.clone();
+    ///         let handler = thread::spawn(move || counter.dec(2));
+    ///         handlers.push(handler);
+    ///     }
+    ///     for handler in handlers {
+    ///         handler.join()?;
+    ///     }
+    ///     assert_eq!(99_800, counter.get());
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// It panics when it cannot get the lock.
+    ///
+    pub fn dec(&self, value: T) {
+        let mut num = self.0.lock().expect("cannot get lock in dec()");
+        *num -= value;
+    }
 }
 
 #[cfg(test)]
@@ -128,6 +164,26 @@ mod tests {
             handler.join()?;
         }
         assert_eq!(3000, counter.get());
+        Ok(())
+    }
+    #[test]
+    fn dec() -> std::thread::Result<()> {
+        use super::Counter;
+        use std::sync::Arc;
+        use std::thread;
+
+        let mut handlers = Vec::with_capacity(1000);
+        let counter = Arc::new(Counter::new(1_000i32));
+
+        for _ in 0..1000 {
+            let counter = counter.clone();
+            let handler = thread::spawn(move || counter.dec(3));
+            handlers.push(handler);
+        }
+        for handler in handlers {
+            handler.join()?;
+        }
+        assert_eq!(-2_000, counter.get());
         Ok(())
     }
 }
