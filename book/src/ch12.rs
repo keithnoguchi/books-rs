@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 //! An I/O Project: Building a Command Line Program
-use super::Error;
+use super::ch09::Error;
 use std::{fs, io::ErrorKind};
 
 /// Config to capture command line arguments for the I/O project.

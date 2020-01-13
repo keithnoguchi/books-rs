@@ -1,9 +1,6 @@
 //! A collection of examples demonstrated in [the Rust Programming Language].
 //!
 //! [the rust programming language]: https://doc.rust-lang.org/stable/book/
-pub use ch09::Error;
-pub use ch11::add_two;
-
 mod array;
 pub mod ch09;
 pub mod ch10;

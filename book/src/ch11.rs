@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: GPL-2.0
 //! Writing Automated Tests
 
 /// Adds two to the number given.
@@ -7,7 +6,7 @@
 ///
 /// ```
 /// let arg = 5;
-/// let answer = the_book::add_two(arg);
+/// let answer = the_book::ch11::add_two(arg);
 /// assert_eq!(7, answer);
 /// ```
 pub fn add_two(x: i32) -> i32 {

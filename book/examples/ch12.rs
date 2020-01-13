@@ -1,8 +1,8 @@
 //! An I/O Project: Building a Command Line Program
 use std::{env, process};
 
+use the_book::ch09::Error;
 use the_book::ch12::{self, Config};
-use the_book::Error;
 
 fn main() -> Result<(), Error> {
     let args: Vec<String> = env::args().collect();

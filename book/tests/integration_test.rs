@@ -27,6 +27,6 @@ fn add_two() {
     ];
     common::setup();
     for t in &tests {
-        assert_eq!(t.want, the_book::add_two(t.data), "{}", t.name);
+        assert_eq!(t.want, the_book::ch11::add_two(t.data), "{}", t.name);
     }
 }
