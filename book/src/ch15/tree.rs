@@ -9,21 +9,18 @@
 //! use std::rc::Rc;
 //! use the_book::ch15::tree::Node;
 //!
-//! fn main() -> Result<(), Box<dyn Error>> {
-//!     let children = vec![
-//!         Rc::new(Node::new("alice")),
-//!         Rc::new(Node::new("bob")),
-//!         Rc::new(Node::new("chris")),
-//!     ];
-//!     let parent = Rc::new(Node::new("parent"));
+//! let children = vec![
+//!     Rc::new(Node::new("alice")),
+//!     Rc::new(Node::new("bob")),
+//!     Rc::new(Node::new("chris")),
+//! ];
+//! let parent = Rc::new(Node::new("parent"));
 //!
-//!     for child in children {
-//!         parent.clone().add_child(child);
-//!     }
-//!     assert_eq!(1, Rc::strong_count(&parent));
-//!     assert_eq!(3, Rc::weak_count(&parent));
-//!     Ok(())
+//! for child in children {
+//!     parent.clone().add_child(child);
 //! }
+//! assert_eq!(1, Rc::strong_count(&parent));
+//! assert_eq!(3, Rc::weak_count(&parent));
 //! ```
 use std::cell::RefCell;
 use std::fmt::Debug;
