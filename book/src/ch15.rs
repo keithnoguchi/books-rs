@@ -1,6 +1,8 @@
 //! [Smart Pointers]
 //!
 //! [smart pointers]: https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
+pub mod tree;
+
 use std::cell::RefCell;
 use std::rc::Rc;
 
