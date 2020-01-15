@@ -1,8 +1,3 @@
-// SPDX-License-Identifier: GPL-2.0
-mod basic;
-mod combinator;
-mod deeper;
-mod fibonacci;
-mod hello;
-mod peer;
-mod spawn;
+//! [Tokio 2.0 book]
+//!
+//! [tokio 2.0 book]: https://github.com/tokio-rs/book/blob/master/overview.md

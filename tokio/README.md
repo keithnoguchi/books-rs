@@ -4,24 +4,12 @@ Examples from [the Tokio Book].
 
 ## Modules
 
-- [Tokio Getting Started guide]
-  - [hello]: [Hello World!]
-    - [Tokio runtime]
-  - [Working with Futures]
-  - [I/O with Tokio]
-  - [deeper]: [Going Deeper]
-  - [Tokio Internals]
+- [The Tokio Book]
+  - [Overview]
+    - [echo] server example
 
-[hello]: src/hello.rs
-[deeper]: src/deeper.rs
-
-[tokio getting started guide]: https://tokio.rs/docs/overview/
-[hello world!]: https://tokio.rs/docs/getting-started/hello-world/
-[tokio runtime]: https://tokio.rs/docs/getting-started/runtime/
-[working with futures]: https://tokio.rs/docs/futures/overview/
-[i/o with tokio]: https://tokio.rs/docs/io/overview/
-[going deeper]: https://tokio.rs/docs/going-deeper/futures/
-[tokio internals]: https://tokio.rs/docs/internals/intro/
+[overview]: https://github.com/tokio-rs/book/blob/master/overview.md
+[echo]: examples/echo.rs
 
 ## References
 
