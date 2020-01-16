@@ -6,13 +6,17 @@ use async_std::{fs::File, io, task};
 use std::{env, error::Error, process};
 
 fn main() -> Result<(), Box<dyn Error>> {
+    // Simple [argument parsing].
+    //
+    // [argument parsing]: https://doc.rust-lang.org/rust-by-example/std_misc/arg/matching.html
     let argv: Vec<String> = env::args().collect();
-    if argv.len() < 2 {
-        usage(&argv[0]);
-    }
+    let path = match argv.len() {
+        2 => argv[1].clone(),
+        _ => usage(&argv[0]),
+    };
     let reader = task::spawn(async move {
         eprintln!("[[started a task]]");
-        match read_file(&argv[1]).await {
+        match read_file(&path).await {
             Ok(data) => print!("{}", data),
             Err(err) => eprintln!("read_file(): {:?}", err),
         }
