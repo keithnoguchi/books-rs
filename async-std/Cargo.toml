@@ -1,0 +1,8 @@
+[package]
+name = "async-std-book"
+version = "0.1.0"
+authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+async-std = "^1"

@@ -5,6 +5,7 @@ members = [
    "book",
    "style",
    "async",
+   "async-std",
    "tokio",
    "list",
    "flatbuf",
