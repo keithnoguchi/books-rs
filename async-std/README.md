@@ -9,13 +9,19 @@ Examples from [the async-std Book].
     - [cat.rs]: `task::spawn()` example
     - [panic.rs]: `panic!()` propagation example
     - [abort.rs]: `panic!()` to abort example
+- [Tutorial]: Writing a chat
+  - [Writing Accept Loop]
+    - [accept-server.rs]: server boilerplait code
 
 [concepts] https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
+[tutorial]: https://book.async.rs/tutorial/index.html
+[writing accept loop]: https://book.async.rs/tutorial/accept_loop.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
 [abort.rs]: examples/ch02-02-abort.rs
+[accept-server.rs]: examples/ch03-02-server.rs
 
 ## References
 
