@@ -7,13 +7,15 @@ Examples from [the async-std Book].
 - [Concepts]
   - [Tasks]
     - [cat.rs]: `task::spawn()` example
-    - [panic.rs]: `panic!()` propagation
+    - [panic.rs]: `panic!()` propagation example
+    - [abort.rs]: `panic!()` to abort example
 
 [concepts] https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
+[abort.rs]: examples/ch02-02-abort.rs
 
 ## References
 
