@@ -2,14 +2,19 @@
 
 Examples from [the Tokio Book].
 
-## Modules
+## Examples
 
-- [The Tokio Book]
-  - [Overview]
-    - [echo] server example
+- [Overview]
+  - [echo TCP server] example
+- Getting Started
+  - [Hello World!]
+    - [hello TCP client] example
 
 [overview]: https://github.com/tokio-rs/book/blob/master/overview.md
-[echo]: examples/echo.rs
+[hello world!]: https://github.com/tokio-rs/book/blob/master/getting-started/hello-world.md
+
+[echo tcp server]: examples/echo.rs
+[hello tcp client]: examples/hello.rs
 
 ## References
 
