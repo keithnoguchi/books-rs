@@ -25,6 +25,7 @@ run: build
 	@cargo run --package the-book --example ch17-03-blog2
 	@cargo run --package the-book --example ch20
 	@cargo run --bin style-book
+	@cargo run --package tokio-book --example spawn
 install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \

@@ -5,4 +5,5 @@ authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+futures = "^0.3"
 tokio = { version = "^0.2", features = ["rt-threaded", "io-util", "net"] }

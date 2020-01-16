@@ -10,13 +10,17 @@ Examples from [the Tokio Book].
   - [Hello World!]
     - [hello TCP client] example
   - [Futures]
+  - [Runtime]
+    - [tokio::spawn()] example
 
 [overview]: https://github.com/tokio-rs/book/blob/master/overview.md
 [hello world!]: https://github.com/tokio-rs/book/blob/master/getting-started/hello-world.md
 [futures]: https://github.com/tokio-rs/book/blob/master/getting-started/futures.md
+[runtime]: https://github.com/tokio-rs/book/blob/master/getting-started/runtime.md
 
 [echo tcp server]: examples/echo.rs
 [hello tcp client]: examples/hello.rs
+[tokio::spawn()]: examples/spawn.rs
 
 ## References
 
