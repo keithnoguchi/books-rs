@@ -9,9 +9,11 @@ Examples from [the Tokio Book].
 - Getting Started
   - [Hello World!]
     - [hello TCP client] example
+  - [Futures]
 
 [overview]: https://github.com/tokio-rs/book/blob/master/overview.md
 [hello world!]: https://github.com/tokio-rs/book/blob/master/getting-started/hello-world.md
+[futures]: https://github.com/tokio-rs/book/blob/master/getting-started/futures.md
 
 [echo tcp server]: examples/echo.rs
 [hello tcp client]: examples/hello.rs
