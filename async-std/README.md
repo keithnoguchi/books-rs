@@ -10,18 +10,22 @@ Examples from [the async-std Book].
     - [panic.rs]: `panic!()` propagation example
     - [abort.rs]: `panic!()` to abort example
 - [Tutorial]: Writing a chat
-  - [Writing Accept Loop]
-    - [accept-server.rs]: server boilerplait code
+  - [Writing an accept loop]
+    - [accept-server.rs]: accepter server example
+  - [Receiving messages]
+    - [receive-server.rs]: receiver server example
 
 [concepts] https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
 [tutorial]: https://book.async.rs/tutorial/index.html
-[writing accept loop]: https://book.async.rs/tutorial/accept_loop.html
+[writing an accept loop]: https://book.async.rs/tutorial/accept_loop.html
+[receiving messages]: https://book.async.rs/tutorial/receiving_messages.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
 [abort.rs]: examples/ch02-02-abort.rs
 [accept-server.rs]: examples/ch03-02-server.rs
+[receive-server.rs]: examples/ch03-03-server.rs
 
 ## References
 

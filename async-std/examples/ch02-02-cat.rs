@@ -1,5 +1,26 @@
 //! [Tasks] example
 //!
+//! # Examples
+//!
+//! ```sh
+//! $ cargo run --example ch02-02-cat -- Cargo.toml
+//! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
+//! Finished dev [unoptimized + debuginfo] target(s) in 0.91s
+//! Running `/home/kei/git/books-rs/target/debug/examples/ch02-02-cat Cargo.toml`
+//! <<waiting for the task>>
+//! [[started a task]]
+//! [package]
+//! name = "async-std-book"
+//! version = "0.1.0"
+//! authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
+//! edition = "2018"
+//!
+//! [dependencies]
+//! async-std = "^1"
+//! [[finished a task]]
+//! <<finish wating for the task>>
+//! ```
+//!
 //! [tasks]: https://book.async.rs/concepts/tasks.html
 use async_std::io::ReadExt;
 use async_std::{fs::File, io, task};

@@ -2,7 +2,7 @@
 //!
 //! # Examples
 //!
-//! ```rust
+//! ```sh
 //! $ cargo run --example ch03-02-server
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 0.77s
