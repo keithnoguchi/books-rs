@@ -44,6 +44,13 @@ Programming Book.
 [futures]: async/src/futures.rs
 [stream]: async/src/stream.rs
 
+## async-std-book
+
+[async-std-book] crate for the examples in [async-std book].
+
+[async-std-book]: async-std/README.md
+[async-std book]: https://book.async.rs/
+
 ## tokio-book
 
 [tokio-book] crate hosts the examples shown in the [Tokio 0.2 Book].
@@ -92,6 +99,7 @@ $ make test
   - [Trait alloc::borrow::BorrowMut]: A trait for mutably borrowing data
   - [Trait alloc::borrow::ToOwned]: A generalization of Clone to borrowed data
 - [The async book]: Asynchronous Programming in Rust
+- [The async-std book]: async-std makes async programming foundations easy and approachable.
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
 - [Crate std]: The Rust Standard Library
   - [Module std::ptr]: Manually manage memory through raw pointers
