@@ -12,6 +12,8 @@ Examples from [the Tokio Book].
   - [Futures]
   - [Runtime]
     - [tokio::spawn()] example
+  - [Example]
+    - [echo TCP server2] example
 
 [overview]: https://github.com/tokio-rs/book/blob/master/overview.md
 [hello world!]: https://github.com/tokio-rs/book/blob/master/getting-started/hello-world.md
@@ -21,6 +23,7 @@ Examples from [the Tokio Book].
 [echo tcp server]: examples/echo.rs
 [hello tcp client]: examples/hello.rs
 [tokio::spawn()]: examples/spawn.rs
+[echo tcp server2]: example/echo2.rs
 
 ## References
 

@@ -13,13 +13,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         let mut listener = TcpListener::bind("127.0.0.1:8080").await?;
 
         loop {
-            let (mut socket, _) = listener.accept().await?;
+            let (mut s, _addr) = listener.accept().await?;
 
             tokio::spawn(async move {
                 let mut buf = [0; 1024]; // char buf[1024];
 
                 loop {
-                    let n = match socket.read(&mut buf).await {
+                    let n = match s.read(&mut buf).await {
                         Ok(n) if n == 0 => return,
                         Ok(n) => n,
                         Err(e) => {
@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                             return;
                         }
                     };
-                    if let Err(e) = socket.write_all(&buf[..n]).await {
+                    if let Err(e) = s.write_all(&buf[..n]).await {
                         println!("failed to write to socket: {:?}", e);
                         return;
                     }
