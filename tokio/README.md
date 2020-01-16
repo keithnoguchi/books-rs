@@ -19,6 +19,7 @@ Examples from [the Tokio Book].
 [hello world!]: https://github.com/tokio-rs/book/blob/master/getting-started/hello-world.md
 [futures]: https://github.com/tokio-rs/book/blob/master/getting-started/futures.md
 [runtime]: https://github.com/tokio-rs/book/blob/master/getting-started/runtime.md
+[example]: https://github.com/tokio-rs/book/blob/master/getting-started/echo.md
 
 [echo tcp server]: examples/echo.rs
 [hello tcp client]: examples/hello.rs
@@ -29,6 +30,7 @@ Examples from [the Tokio Book].
 
 - [The Tokio Book]: Tokio 0.2 Book!
 - [The Async Book]: Asynchronous Programming in Rust
+- [Tokio Getting Started Buide]: Original Tokio 0.1 Guide
 - [Crate futures]:
   - [Crate futures v0.3]: Abstructions for Asynchronous Programming
   - [Crate futures v0.1]: Zero-cost Futures in Rust
@@ -41,6 +43,7 @@ Examples from [the Tokio Book].
 
 [the tokio book]: https://github.com/tokio-rs/book/blob/master/SUMMARY.md
 [the async book]: https://rust-lang.github.io/async-book/
+[tokio getting started guide]: https://tokio.rs/docs/overview/
 [crate futures]: http://futures.rs/
 [crate futures v0.3]: https://docs.rs/futures/0.3.1/
 [crate futures v0.1]: https://docs.rs/futures/0.1.29/

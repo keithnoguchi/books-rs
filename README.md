@@ -46,10 +46,10 @@ Programming Book.
 
 ## tokio-book
 
-[tokio-book] crate is the examples shown in [tokio Getting Started Guide].
+[tokio-book] crate hosts the examples shown in the [Tokio 0.2 Book].
 
-[tokio-book]: tokio/Cargo.toml
-[tokio getting started guide]: https://tokio.rs/docs/overview/
+[tokio-book]: tokio/README.md
+[tokio 0.2 book]: https://github.com/tokio-rs/book/blob/master/SUMMARY.md
 
 ## list-book
 
