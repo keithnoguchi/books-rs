@@ -54,7 +54,7 @@ async fn listener(addr: impl ToSocketAddrs) -> Result<()> {
             Err(err) => eprintln!("accept error: {:?}", err),
             Ok(s) => {
                 spawn(server(s));
-            },
+            }
         }
     }
     Ok(())

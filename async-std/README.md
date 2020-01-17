@@ -16,6 +16,8 @@ Examples from [the async-std Book].
     - [receive-server.rs]: receiver server example
   - [Sending messages]
     - [send-server.rs]: sending server example
+  - [Connecting Readers and Writers]
+    - [broker-server.rs]: broker server example
 
 [concepts]: https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
@@ -30,6 +32,7 @@ Examples from [the async-std Book].
 [accept-server.rs]: examples/ch03-02-server.rs
 [receive-server.rs]: examples/ch03-03-server.rs
 [sending-server.rs]: examples/ch03-04-server.rs
+[broker-server.rs]: examples/ch03-05-server.rs
 
 ## References
 
