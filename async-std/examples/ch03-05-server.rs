@@ -179,6 +179,7 @@ async fn writer(
 
 /// `spawn()` spawns a future through `task::spawn()` and print out the
 /// error message on stderr in case of the future returns error.
+#[inline]
 fn spawn<F>(f: F) -> JoinHandle<()>
 where
     F: Future<Output = Result<()>> + Send + Sync + 'static,
