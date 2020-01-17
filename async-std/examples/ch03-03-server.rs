@@ -1,4 +1,7 @@
-//! [Receiving messages]
+//! [Receiving messages] chat server example
+//!
+//! This is the second part of the chat server example, building
+//! on top of the [accept loop] example.
 //!
 //! # Examples
 //!
@@ -19,10 +22,11 @@
 //! finish serving to TcpStream { watcher: Watcher { entry: Entry { token: Token(3), readers: Mutex { data: [] }, writers: Mutex { data: [] } }, source: Some(TcpStream { addr: V6([::1]:8000), peer: V6([::1]:57916), fd: 8 }) } }
 //! ```
 //! [receiving messages]: https://book.async.rs/tutorial/receiving_messages.html
+//! [accept loop]: ch03-02-server.rs
 use async_std::io::{prelude::BufReadExt, BufReader};
 use async_std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use async_std::stream::StreamExt;
-use async_std::task;
+use async_std::task::{self, JoinHandle};
 use std::{env, error::Error, future::Future};
 
 type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>;
@@ -33,24 +37,21 @@ fn main() -> Result<()> {
         2 => &argv[1],
         _ => "localhost:8033",
     };
-    task::block_on(server(addr))
+    task::block_on(listener(addr))
 }
 
-/// `server()` listens on the `addr` [ToSocketAddrs] trait and handles
+/// `listener()` listens on the `addr` [ToSocketAddrs] trait and handles
 /// the incoming request.
 ///
 /// [ToSocketAddrs]: https://docs.rs/async-std/1.4.0/async_std/net/trait.ToSocketAddrs.html
-async fn server(addr: impl ToSocketAddrs) -> Result<()> {
-    let server = TcpListener::bind(addr).await?;
-    eprintln!("listen on {:?}", server);
-    let mut incoming = server.incoming();
-    while let Some(s) = incoming.next().await {
+async fn listener(addr: impl ToSocketAddrs) -> Result<()> {
+    let l = TcpListener::bind(addr).await?;
+    eprintln!("listen on {:?}", l);
+    while let Some(s) = l.incoming().next().await {
         match s {
             Err(err) => eprintln!("accept error: {:?}", err),
             Ok(s) => {
-                // `spawner()` spawns the task with `task::spawn()` and log
-                // the error to stderr in case `receiver()` returns error.
-                spawner(receiver(s));
+                spawn(receiver(s));
             }
         }
     }
@@ -101,10 +102,10 @@ async fn receiver(s: TcpStream) -> Result<()> {
     Ok(())
 }
 
-/// `spawner` spawns the task with the passed `Future` and
+/// `spawn()` spawns the task with the passed `Future` and
 /// print the error to the stderr in case the it returns error.
 #[inline]
-fn spawner<F>(f: F) -> task::JoinHandle<()>
+fn spawn<F>(f: F) -> JoinHandle<()>
 where
     F: Future<Output = Result<()>> + Send + Sync + 'static,
 {

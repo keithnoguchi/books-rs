@@ -14,18 +14,22 @@ Examples from [the async-std Book].
     - [accept-server.rs]: accepter server example
   - [Receiving messages]
     - [receive-server.rs]: receiver server example
+  - [Sending messages]
+    - [send-server.rs]: sending server example
 
-[concepts] https://book.async.rs/concepts.html
+[concepts]: https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
 [tutorial]: https://book.async.rs/tutorial/index.html
 [writing an accept loop]: https://book.async.rs/tutorial/accept_loop.html
 [receiving messages]: https://book.async.rs/tutorial/receiving_messages.html
+[sending messages]: https://book.async.rs/tutorial/sending_messages.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
 [abort.rs]: examples/ch02-02-abort.rs
 [accept-server.rs]: examples/ch03-02-server.rs
 [receive-server.rs]: examples/ch03-03-server.rs
+[sending-server.rs]: examples/ch03-04-server.rs
 
 ## References
 

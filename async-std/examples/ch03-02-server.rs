@@ -1,4 +1,6 @@
-//! Writing an [accept loop]
+//! Writing an [accept loop] chat server example
+//!
+//! This is the first part of the chat server.
 //!
 //! # Examples
 //!
@@ -27,17 +29,16 @@ fn main() -> Result<()> {
         2 => &argv[1],
         _ => "localhost:3000",
     };
-    task::block_on(server(addr))
+    task::block_on(listener(addr))
 }
 
-/// `server` listens on the `addr` SocketAddr and accepts the TCP connection
-/// from the client.
-async fn server(addr: impl ToSocketAddrs) -> Result<()> {
-    let server = TcpListener::bind(addr).await?;
-    eprintln!("listening on {:?}", server);
-    let mut incoming = server.incoming();
-    while let Some(s) = incoming.next().await {
-        eprintln!("accepted the connection with {:?}", s);
+/// `listener` listens on the `addr` ToSocketAddr trait object
+/// and accepts the TCP connection from the client.
+async fn listener(addr: impl ToSocketAddrs) -> Result<()> {
+    let l = TcpListener::bind(addr).await?;
+    eprintln!("listen on {:?}", l);
+    while let Some(s) = l.incoming().next().await {
+        eprintln!("accepted the connection over {:?}", s);
     }
     Ok(())
 }
