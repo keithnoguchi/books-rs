@@ -25,24 +25,25 @@ Examples from [the async-std Book].
 [writing an accept loop]: https://book.async.rs/tutorial/accept_loop.html
 [receiving messages]: https://book.async.rs/tutorial/receiving_messages.html
 [sending messages]: https://book.async.rs/tutorial/sending_messages.html
+[connecting readers and writers]: https://book.async.rs/tutorial/connecting_readers_and_writers.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
 [abort.rs]: examples/ch02-02-abort.rs
 [accept-server.rs]: examples/ch03-02-server.rs
 [receive-server.rs]: examples/ch03-03-server.rs
-[sending-server.rs]: examples/ch03-04-server.rs
+[send-server.rs]: examples/ch03-04-server.rs
 [broker-server.rs]: examples/ch03-05-server.rs
 
 ## References
 
 - [The async-std Book]: async-std book!
   - [Crate async-std]: Async version of the Rust standard library
-  - [Crate futures v0.3]: Abstructions for Asynchronous Programming
 - [The Async Book]: Asynchronous Programming in Rust
+  - [Crate futures]: Abstractions for Asynchronous Programming
 - [Original futures design]: Original futures design by [Aaron Turon]
 
-[async-std book]: https://book.async.rs/
+[the async-std book]: https://book.async.rs/
 [crate async-std]: https://docs.rs/async-std/latest/
 [crate futures]: https://docs.rs/futures/latest/
 [the async book]: https://rust-lang.github.io/async-book/
