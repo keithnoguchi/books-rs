@@ -14,7 +14,6 @@
 //! accepted the connection with Ok(TcpStream { watcher: Watcher { entry: Entry { token: Token(2), readers: Mutex { data: [] }, writers: Mutex { data: [] } }, source: Some(TcpStream { addr: V6([::1]:3000), peer: V6([::1]:57728), fd: 7 }) } })
 //! ...
 //! ```
-//!
 //! [accept loop]: https://book.async.rs/tutorial/accept_loop.html
 use async_std::net::{TcpListener, ToSocketAddrs};
 use async_std::stream::StreamExt;

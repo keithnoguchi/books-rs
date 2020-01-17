@@ -7,6 +7,21 @@
 //! # Examples
 //!
 //! ```sh
+//! $ cargo run --example ch03-05-server -- [::1]:8000
+//! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
+//! Finished dev [unoptimized + debuginfo] target(s) in 1.18s
+//! Running `target/debug/examples/ch03-05-server '[::1]:8000'`
+//! [broker] starting broker task
+//! [reader:[::1]:51944] connected
+//! [reader:[::1]:51946] connected
+//! [reader:uno@[::1]:51944] registered
+//! [broker] "uno" is joining
+//! [writer] "uno" started
+//! [reader:due@[::1]:51946] registered
+//! [broker] "due" is joining
+//! [writer] "due" started
+//! [broker] "due" left
+//! [writer] finished
 //! ```
 //! [connecting readers and writers]: https://book.async.rs/tutorial/connecting_readers_and_writers.html
 //! [accept loop]: ch03-02-server.rs
@@ -29,11 +44,11 @@ type Receiver<T> = mpsc::UnboundedReceiver<T>;
 /// Event is for the communication between the broker and the servers.
 #[derive(Debug)]
 enum Event {
-    Register {
+    Join {
         name: String,
         stream: Arc<TcpStream>,
     },
-    Deregister(String),
+    Leave(String),
     Message {
         from: String,
         to: Vec<String>,
@@ -47,81 +62,54 @@ fn main() -> Result<()> {
         0..=1 => "localhost:8035",
         _ => &argv[1],
     };
-    task::block_on(listener(&addr))
+    task::block_on(server(&addr))
 }
 
-/// `listener()` listens on the `addr` address and spawns the server tasks
+/// `server()` listens on the `addr` address and spawns the `reader()` task
 /// for each connections.
-async fn listener(addr: impl ToSocketAddrs) -> Result<()> {
+async fn server(addr: impl ToSocketAddrs) -> Result<()> {
     let (tx, rx) = mpsc::unbounded();
-    task::spawn(broker(rx));
+    spawn(broker(rx));
     let l = TcpListener::bind(addr).await?;
     while let Some(s) = l.incoming().next().await {
         match s {
-            Err(err) => eprintln!("[listener] accept error: {:?}", err),
+            Err(err) => eprintln!("[server] accept error: {:?}", err),
             Ok(s) => {
-                spawn(server(s, tx.clone()));
+                spawn(reader(tx.clone(), s));
             }
         }
     }
     Ok(())
 }
 
-async fn broker(mut rx: Receiver<Event>) -> Result<()> {
-    let mut peers = HashMap::new();
-    while let Some(msg) = rx.next().await {
-        match msg {
-            Event::Register { name, stream } => {
-                let (tx, rx) = mpsc::unbounded();
-                eprintln!("[broker] register {}", name);
-                peers.insert(name, tx);
-                spawn(responder(rx, stream));
-            }
-            Event::Deregister(name) => {
-                peers.remove(&name);
-                eprintln!("[broker] deregistered {}", name);
-            }
-            Event::Message { from: _, to, msg } => {
-                for name in &to {
-                    if let Some(tx) = peers.get_mut(name) {
-                        tx.send(msg.clone()).await?;
-                    }
-                }
-            }
-        }
-    }
-    rx.close();
-    eprintln!("[broker] draining messages");
-    while let Some(_) = rx.next().await {}
-    Ok(())
-}
-
-/// `server()` serves the specific client over the [TcpStream].
-async fn server(s: TcpStream, mut tx: Sender<Event>) -> Result<()> {
+/// `reader()` reads the message from the client over [TcpStream]
+/// and send it to the `broker()` for the rest of the processes,
+/// including the multicasting to the friends.
+async fn reader(mut broker: Sender<Event>, s: TcpStream) -> Result<()> {
     let peer = match s.peer_addr() {
         Err(_) => String::from("unknown"),
         Ok(s) => s.to_string(),
     };
-    eprintln!("[server:{}] connected", peer);
+    eprintln!("[reader:{}] connected", peer);
     let s = Arc::new(s);
     let rx = s.clone();
     let mut lines = BufReader::new(&*rx).lines();
     let name = match lines.next().await {
-        None => Err(format!("[server:{}] premature connection close", peer))?,
+        None => Err(format!("[reader:{}] premature connection close", peer))?,
         Some(name) => name?,
     };
-    let event = Event::Register {
+    let event = Event::Join {
         name: name.clone(),
         stream: s.clone(),
     };
-    tx.send(event).await?;
-    eprintln!("[server:{}@{}] registered", name, peer);
+    broker.send(event).await?;
+    eprintln!("[reader:{}@{}] registered", name, peer);
     while let Some(msg) = lines.next().await {
         let msg = msg?;
-        let (dest, msg) = match msg.find(':') {
+        let (dest, msg) = match msg.find('<') {
             Some(idx) => (&msg[..idx], &msg[idx + 1..]),
             None => {
-                eprintln!("[server:{}@{}] wrong format: {:?}", name, peer, msg);
+                eprintln!("[reader:{}@{}] wrong format: {:?}", name, peer, msg);
                 continue;
             }
         };
@@ -135,19 +123,57 @@ async fn server(s: TcpStream, mut tx: Sender<Event>) -> Result<()> {
             to,
             msg,
         };
-        tx.send(event).await?;
+        broker.send(event).await?;
     }
-    let event = Event::Deregister(name);
-    tx.send(event).await?;
+    let event = Event::Leave(name);
+    broker.send(event).await?;
     Ok(())
 }
 
-async fn responder(mut rx: Receiver<String>, s: Arc<TcpStream>) -> Result<()> {
-    eprintln!("[responder] started");
-    while let Some(msg) = rx.next().await {
+/// `broker()` receives `Event` from `reader()` and fanout
+/// the message to the specific user's `writer()`s.
+async fn broker(mut reader: Receiver<Event>) -> Result<()> {
+    eprintln!("[broker] starting broker task");
+    let mut peers = HashMap::new();
+    while let Some(msg) = reader.next().await {
+        match msg {
+            Event::Join { name, stream } => {
+                let (tx, rx) = mpsc::unbounded();
+                eprintln!("[broker] {:?} is joining", name);
+                spawn(writer(rx, name.clone(), stream));
+                peers.insert(name, tx);
+            }
+            Event::Leave(name) => {
+                peers.remove(&name);
+                eprintln!("[broker] {:?} left", name);
+            }
+            Event::Message { from, to, msg } => {
+                for name in &to {
+                    if let Some(writer) = peers.get_mut(name) {
+                        let msg = format!("{}> {}", from, msg);
+                        writer.send(msg).await?;
+                    }
+                }
+            }
+        }
+    }
+    reader.close();
+    eprintln!("[broker] draining messages");
+    while let Some(_) = reader.next().await {}
+    Ok(())
+}
+
+async fn writer(
+    mut broker: Receiver<String>,
+    name: String,
+    s: Arc<TcpStream>,
+) -> Result<()> {
+    eprintln!("[writer] {:?} started", name);
+    while let Some(msg) = broker.next().await {
+        let msg = format!("{}\n", msg);
         (&*s).write_all(msg.as_bytes()).await?;
     }
-    eprintln!("[responder] finished");
+    eprintln!("[writer] finished");
     Ok(())
 }
 
