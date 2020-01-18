@@ -18,6 +18,8 @@ Examples from [the async-std Book].
     - [send-server.rs]: sending server example
   - [Connecting Readers and Writers]
     - [broker-server.rs]: broker server example
+  - [Clean Shutdown]
+    - [cleanup-server.rs]: Cleanup server example
 
 [concepts]: https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
@@ -34,6 +36,7 @@ Examples from [the async-std Book].
 [receive-server.rs]: examples/ch03-03-server.rs
 [send-server.rs]: examples/ch03-04-server.rs
 [broker-server.rs]: examples/ch03-05-server.rs
+[cleanup-server.rs]: examples/ch03-07-server.rs
 
 ## References
 
