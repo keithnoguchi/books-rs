@@ -28,6 +28,7 @@ Examples from [the async-std Book].
 [receiving messages]: https://book.async.rs/tutorial/receiving_messages.html
 [sending messages]: https://book.async.rs/tutorial/sending_messages.html
 [connecting readers and writers]: https://book.async.rs/tutorial/connecting_readers_and_writers.html
+[clean shutdown]: https://book.async.rs/tutorial/clean_shutdown.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
