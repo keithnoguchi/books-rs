@@ -163,11 +163,7 @@ async fn broker(mut reader: Receiver<Event>) -> Result<()> {
     Ok(())
 }
 
-async fn writer(
-    mut broker: Receiver<String>,
-    name: String,
-    s: Arc<TcpStream>,
-) -> Result<()> {
+async fn writer(mut broker: Receiver<String>, name: String, s: Arc<TcpStream>) -> Result<()> {
     eprintln!("[writer] {:?} started", name);
     while let Some(msg) = broker.next().await {
         let msg = format!("{}\n", msg);

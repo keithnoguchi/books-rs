@@ -111,7 +111,10 @@ async fn reader(s: TcpStream) -> Result<()> {
 async fn forwarder(mut tx: &Sender<String>, msg: String) -> Result<()> {
     // Echoing back to the sender through the unbound channel for now.
     match tx.send(msg).await {
-        Err(err) => Err(format!("[forwarder] cannot send a message over the channel: {:?}", err))?,
+        Err(err) => Err(format!(
+            "[forwarder] cannot send a message over the channel: {:?}",
+            err
+        ))?,
         Ok(_) => Ok(()),
     }
 }

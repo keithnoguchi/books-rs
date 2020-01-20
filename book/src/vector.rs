@@ -78,19 +78,6 @@ fn largest_iter<T: PartialOrd>(list: &[T]) -> Result<&T, Error> {
 mod tests {
     use super::*;
     #[test]
-    fn next() {
-        let a = vec!['a', 'b', 'c', 'd', 'e'];
-        let mut i = a.iter();
-        assert_eq!(Some(&'a'), i.next());
-        assert_eq!(Some(&'b'), i.next());
-        assert_eq!(Some(&'c'), i.next());
-        assert_eq!(Some(&'d'), i.next());
-        assert_eq!(Some(&'e'), i.next());
-        for _ in 1..1000 {
-            assert_eq!(None, i.next());
-        }
-    }
-    #[test]
     fn len() {
         struct Test {
             name: &'static str,

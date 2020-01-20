@@ -23,8 +23,8 @@
 //! [sending messages]: ch03-04-server.rs
 //! [connecting readers and writers]: ch03-05-server.rs
 use async_std::net::{TcpListener, TcpStream};
-use async_std::task;
 use async_std::stream::StreamExt;
+use async_std::task;
 use futures::channel::mpsc;
 use std::{env, error::Error, result, sync::Arc};
 
@@ -36,10 +36,7 @@ type Receiver<T> = mpsc::UnboundedReceiver<T>;
 #[derive(Debug)]
 enum Event {
     /// The client join event.
-    _Join {
-        name: String,
-        stream: TcpStream,
-    },
+    _Join { name: String, stream: TcpStream },
     /// The client leave event.
     _Leave(String),
     _Message {
