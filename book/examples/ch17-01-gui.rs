@@ -1,7 +1,7 @@
 //! Using [Trait Objects] That Allow for Values of Different Types
 //!
 //! [trait objects]: https://doc.rust-lang.org/book/ch17-02-trait-objects.html
-use the_book::ch17::x01_gui::{Draw, Screen};
+use the_book::ch17::sec01::{Draw, Screen};
 
 struct TextBox {
     width: u32,

@@ -9,7 +9,7 @@
 //! ```rust
 //! use std::error::Error;
 //!
-//! use the_book::ch17::x03_blog2::Post;
+//! use the_book::ch17::sec03::Post;
 //!
 //! fn main() -> Result<(), Box<dyn Error>> {
 //!     let mut post = Post::new();
@@ -57,7 +57,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::x03_blog2::{DraftPost, Post};
+    /// use the_book::ch17::sec03::{DraftPost, Post};
     ///
     /// let _post = Post::new();
     /// ```
@@ -73,7 +73,7 @@ impl Post {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::x03_blog2::Post;
+    /// use the_book::ch17::sec03::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("This is how to publish the blog post");
@@ -94,7 +94,7 @@ impl DraftPost {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::x03_blog2::Post;
+    /// use the_book::ch17::sec03::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("I'm at Chipotle");
@@ -111,7 +111,7 @@ impl DraftPost {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::x03_blog2::Post;
+    /// use the_book::ch17::sec03::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("let's request a review");
@@ -135,7 +135,7 @@ impl PendingReviewPost {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch17::x03_blog2::Post;
+    /// use the_book::ch17::sec03::Post;
     ///
     /// let mut post = Post::new();
     /// post.add_text("let's create a post and approve it");

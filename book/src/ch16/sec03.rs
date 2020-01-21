@@ -7,7 +7,7 @@
 //! ```rust
 //! use std::sync::Arc;
 //! use std::thread::{self, Result};
-//! use the_book::ch16::x03_counter::Counter;
+//! use the_book::ch16::sec03::Counter;
 //!
 //! fn main() -> Result<()> {
 //!     let mut handlers = Vec::with_capacity(10);
@@ -40,7 +40,7 @@ impl<T: Copy + AddAssign + SubAssign> Counter<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch16::x03_counter::Counter;
+    /// use the_book::ch16::sec03::Counter;
     ///
     /// let counter = Counter::new(100);
     /// assert_eq!(100, counter.get());
@@ -54,7 +54,7 @@ impl<T: Copy + AddAssign + SubAssign> Counter<T> {
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch16::x03_counter::Counter;
+    /// use the_book::ch16::sec03::Counter;
     ///
     /// let counter = Counter::new(1000);
     /// assert_eq!(1000, counter.get());
@@ -74,7 +74,7 @@ impl<T: Copy + AddAssign + SubAssign> Counter<T> {
     /// ```rust
     /// use std::sync::Arc;
     /// use std::thread::{self, Result};
-    /// use the_book::ch16::x03_counter::Counter;
+    /// use the_book::ch16::sec03::Counter;
     ///
     /// fn main() -> Result<()> {
     ///     let mut handlers = Vec::with_capacity(100);
@@ -108,7 +108,7 @@ impl<T: Copy + AddAssign + SubAssign> Counter<T> {
     /// use std::sync::Arc;
     /// use std::thread::{self, Result};
     ///
-    /// use the_book::ch16::x03_counter::Counter;
+    /// use the_book::ch16::sec03::Counter;
     ///
     /// fn main() -> Result<()> {
     ///     let mut handlers = Vec::with_capacity(1_000);

@@ -3,7 +3,7 @@
 //! [rc<t>]: https://doc.rust-lang.org/book/ch15-04-rc.html
 use std::rc::Rc;
 
-use the_book::ch15::x02_graph::Graph;
+use the_book::ch15::sec02::Graph;
 
 fn main() {
     let mut a = Rc::new(Graph::Nil);

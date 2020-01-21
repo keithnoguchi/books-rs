@@ -7,7 +7,7 @@
 //! ```rust
 //! use std::cell::RefCell;
 //!
-//! use the_book::ch15::x03_cell::{LimitTracker, Messenger};
+//! use the_book::ch15::sec03::{LimitTracker, Messenger};
 //!
 //! struct Cacher {
 //!     msgs: RefCell<Vec<String>>,

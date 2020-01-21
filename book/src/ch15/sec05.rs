@@ -8,7 +8,7 @@
 //! use std::error::Error;
 //! use std::rc::Rc;
 //!
-//! use the_book::ch15::x05_tree::Node;
+//! use the_book::ch15::sec05::Node;
 //!
 //! let children = vec![
 //!     Rc::new(Node::new("alice")),
@@ -53,7 +53,7 @@ where
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch15::x05_tree::Node;
+    /// use the_book::ch15::sec05::Node;
     ///
     /// let node = Node::new('c');
     /// assert_eq!(&'c', node.data());
@@ -73,7 +73,7 @@ where
     /// # Examples
     ///
     /// ```rust
-    /// use the_book::ch15::x05_tree::Node;
+    /// use the_book::ch15::sec05::Node;
     ///
     /// let node = Node::new(String::from("this is a test node"));
     /// let want = "this is a test node";
@@ -90,7 +90,7 @@ where
     /// ```rust
     /// use std::rc::Rc;
     ///
-    /// use the_book::ch15::x05_tree::Node;
+    /// use the_book::ch15::sec05::Node;
     ///
     /// let child = Rc::new(Node::new(5));
     /// let parent = Rc::new(Node::new(0));

@@ -4,7 +4,7 @@
 use std::sync::Arc;
 use std::thread::{self, Result};
 
-use the_book::ch16::x03_counter::Counter;
+use the_book::ch16::sec03::Counter;
 
 fn main() -> Result<()> {
     let mut handlers = Vec::with_capacity(100_000);

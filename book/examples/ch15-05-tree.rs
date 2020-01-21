@@ -3,7 +3,7 @@
 //! [preventing reference cycles]: https://doc.rust-lang.org/book/ch15-06-reference-cycles.html#preventing-reference-cycles-turning-an-rct-into-a-weakt
 use std::rc::Rc;
 
-use the_book::ch15::x05_tree::Node;
+use the_book::ch15::sec05::Node;
 
 fn main() {
     let children = vec![

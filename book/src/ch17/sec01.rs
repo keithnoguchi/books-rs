@@ -5,7 +5,7 @@
 //! ## Example
 //!
 //! ```rust
-//! use the_book::ch17::x01_gui::{Button, Draw, Screen};
+//! use the_book::ch17::sec01::{Button, Draw, Screen};
 //!
 //! struct TextBox {
 //!     width: u32,
@@ -83,7 +83,7 @@ impl Screen {
     /// # Example
     ///
     /// ```rust
-    /// use the_book::ch17::x01_gui::{Draw, Screen};
+    /// use the_book::ch17::sec01::{Draw, Screen};
     ///
     /// let screen = Screen::new(100, 200);
     /// screen.draw();
@@ -101,7 +101,7 @@ impl Screen {
     /// # Example
     ///
     /// ```rust
-    /// use the_book::ch17::x01_gui::{Button, Draw, Screen};
+    /// use the_book::ch17::sec01::{Button, Draw, Screen};
     ///
     /// let submit = Button::new(5, 10, "submit");
     /// let cancel = Button::new(5, 10, "cancel");
@@ -124,7 +124,7 @@ impl Draw for Screen {
     /// # Example
     ///
     /// ```rust
-    /// use the_book::ch17::x01_gui::{Button, Draw, Screen};
+    /// use the_book::ch17::sec01::{Button, Draw, Screen};
     ///
     /// let mut screen = Screen::new(200, 400);
     /// let submit = Button::new(5, 10, "submit!");
@@ -148,7 +148,7 @@ impl Button {
     /// # Example
     ///
     /// ```rust
-    /// use the_book::ch17::x01_gui::{Button, Draw, Screen};
+    /// use the_book::ch17::sec01::{Button, Draw, Screen};
     ///
     /// let submit = Button::new(5, 1, "Submit!");
     /// let mut screen = Screen::new(100, 200);

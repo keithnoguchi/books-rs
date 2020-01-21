@@ -3,7 +3,7 @@
 //! [object-oriented design pattern]: https://doc.rust-lang.org/book/ch17-03-oo-design-patterns.html
 use std::error::Error;
 
-use the_book::ch17::x02_blog::Post;
+use the_book::ch17::sec02::Post;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let mut post = Post::new();
