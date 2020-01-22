@@ -17,6 +17,7 @@ run: build
 	@cargo run --package the-book --example ch13-02-iter-mut
 	@cargo run --package the-book --example ch13-02-into-iter
 	@cargo run --package the-book --example ch13-02-map
+	@cargo run --package the-book --example ch13-02-counter
 	@cargo run --package the-book --example ch15-01-list
 	@cargo run --package the-book --example ch15-02-graph
 	@cargo run --package the-book --example ch15-03-cell
