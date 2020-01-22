@@ -11,13 +11,14 @@ clean:
 	@cargo clean
 run: build
 	@echo 2 | cargo run --package the-book --example ch02
-	@cargo run --package the-book --example ch12 -- SPDX Makefile
+	@cargo run --package the-book --example ch12 SPDX Makefile
 	@cargo run --package the-book --example ch13-01-cacher
 	@cargo run --package the-book --example ch13-02-iter
 	@cargo run --package the-book --example ch13-02-iter-mut
 	@cargo run --package the-book --example ch13-02-into-iter
 	@cargo run --package the-book --example ch13-02-map
 	@cargo run --package the-book --example ch13-02-counter
+	@cargo run --package the-book --example ch13-03-grep ch13 Makefile
 	@cargo run --package the-book --example ch15-01-list
 	@cargo run --package the-book --example ch15-02-graph
 	@cargo run --package the-book --example ch15-03-cell

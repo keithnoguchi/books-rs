@@ -15,7 +15,7 @@ pub struct Shoe {
 pub fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: f32) -> Vec<Shoe> {
     shoes
         .into_iter()
-        .filter(|shoe| shoe.size == shoe_size)
+        .filter(|shoe| (shoe.size - shoe_size).abs() < std::f32::EPSILON)
         .collect()
 }
 
