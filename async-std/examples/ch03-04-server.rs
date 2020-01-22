@@ -6,7 +6,7 @@
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch03-04-server -- [::1]:8000
+//! $ cargo run --example ch03-04-server [::1]:8000
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 1.42s
 //! Running `target/debug/examples/ch03-04-server '[::1]:8000'`
@@ -34,19 +34,18 @@ use async_std::stream::StreamExt;
 use async_std::task::{self, JoinHandle};
 use futures::channel::mpsc;
 use futures::sink::SinkExt;
-use std::{env, error::Error, future::Future, result, sync::Arc};
+use std::{error::Error, future::Future, result, sync::Arc};
 
 type Result<T> = result::Result<T, Box<dyn Error + Send + Sync + 'static>>;
 type Sender<T> = mpsc::UnboundedSender<T>;
 type Receiver<T> = mpsc::UnboundedReceiver<T>;
 
 fn main() -> Result<()> {
-    let argv: Vec<String> = env::args().collect();
-    let addr = match argv.len() {
-        2 => &argv[1],
-        _ => "localhost:8034",
-    };
-    task::block_on(server(addr))
+    let addr = std::env::args()
+        .skip(1)
+        .next()
+        .unwrap_or(String::from("localhost:8034"));
+    task::block_on(server(&addr))
 }
 
 /// `server()` listens on the specified `addr` [ToSocketAddrs] trait object

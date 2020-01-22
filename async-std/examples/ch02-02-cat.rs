@@ -3,7 +3,7 @@
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch02-02-cat -- Cargo.toml
+//! $ cargo run --example ch02-02-cat Cargo.toml
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 0.91s
 //! Running `/home/kei/git/books-rs/target/debug/examples/ch02-02-cat Cargo.toml`
@@ -24,17 +24,14 @@
 //! [tasks]: https://book.async.rs/concepts/tasks.html
 use async_std::io::ReadExt;
 use async_std::{fs::File, io, task};
-use std::{env, error::Error, process};
 
-fn main() -> Result<(), Box<dyn Error>> {
-    // Simple [argument parsing].
-    //
-    // [argument parsing]: https://doc.rust-lang.org/rust-by-example/std_misc/arg/matching.html
-    let argv: Vec<String> = env::args().collect();
-    let path = match argv.len() {
-        2 => argv[1].clone(),
-        _ => usage(&argv[0]),
-    };
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut args = std::env::args();
+    let progname = args.next().unwrap();
+    let path = args.next().unwrap_or_else(move || {
+        eprintln!("usage: {} <filename>", progname);
+        std::process::exit(1);
+    });
     let reader = task::spawn(async move {
         eprintln!("[[started a task]]");
         match read_file(&path).await {
@@ -56,9 +53,4 @@ async fn read_file(path: &str) -> io::Result<String> {
     let mut buf = String::new();
     f.read_to_string(&mut buf).await?;
     Ok(buf)
-}
-
-fn usage(progname: &str) -> ! {
-    println!("usage: {} <file_name>", progname);
-    process::exit(1)
 }

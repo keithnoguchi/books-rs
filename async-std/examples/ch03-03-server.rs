@@ -6,7 +6,7 @@
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch03-03-server -- [::1]:8000
+//! $ cargo run --example ch03-03-server [::1]:8000
 //! Finished dev [unoptimized + debuginfo] target(s) in 0.03s
 //! Running `target/debug/examples/ch03-03-server '[::1]:8000'`
 //! [server] listen on TcpListener { watcher: Watcher { entry: Entry { token: Token(1), readers: Mutex { data: [] }, writers: Mutex { data: [] } }, source: Some(TcpListener { addr: V6([::1]:8000), fd: 3 }) } }
@@ -26,17 +26,16 @@ use async_std::io::{prelude::BufReadExt, BufReader};
 use async_std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use async_std::stream::StreamExt;
 use async_std::task::{self, JoinHandle};
-use std::{env, error::Error, future::Future};
+use std::future::Future;
 
-type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>;
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 fn main() -> Result<()> {
-    let argv: Vec<String> = env::args().collect();
-    let addr = match argv.len() {
-        0..=1 => "localhost:8033",
-        _ => &argv[1],
-    };
-    task::block_on(server(addr))
+    let addr = std::env::args()
+        .skip(1)
+        .next()
+        .unwrap_or(String::from("localhost:8033"));
+    task::block_on(server(&addr))
 }
 
 /// `server()` listens on the `addr` [ToSocketAddrs] trait and handles

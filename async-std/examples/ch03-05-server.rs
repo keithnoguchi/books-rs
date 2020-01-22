@@ -7,7 +7,7 @@
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch03-05-server -- [::1]:8000
+//! $ cargo run --example ch03-05-server [::1]:8000
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 1.18s
 //! Running `target/debug/examples/ch03-05-server '[::1]:8000'`
@@ -35,7 +35,7 @@ use async_std::task::{self, JoinHandle};
 use futures::channel::mpsc;
 use futures::sink::SinkExt;
 use std::collections::HashMap;
-use std::{env, error::Error, future::Future, result, sync::Arc};
+use std::{error::Error, future::Future, result, sync::Arc};
 
 type Result<T> = result::Result<T, Box<dyn Error + Send + Sync + 'static>>;
 type Sender<T> = mpsc::UnboundedSender<T>;
@@ -57,11 +57,10 @@ enum Event {
 }
 
 fn main() -> Result<()> {
-    let argv: Vec<String> = env::args().collect();
-    let addr = match argv.len() {
-        0..=1 => "localhost:8035",
-        _ => &argv[1],
-    };
+    let addr = std::env::args()
+        .skip(1)
+        .next()
+        .unwrap_or(String::from("localhost:8035"));
     task::block_on(server(&addr))
 }
 
@@ -106,23 +105,20 @@ async fn reader(mut broker: Sender<Event>, s: TcpStream) -> Result<()> {
     eprintln!("[reader:{}@{}] registered", name, peer);
     while let Some(msg) = lines.next().await {
         let msg = msg?;
-        let (dest, msg) = match msg.find('<') {
-            Some(idx) => (&msg[..idx], &msg[idx + 1..]),
+        let (dest, msg) = match msg.find(':') {
             None => {
                 eprintln!("[reader:{}@{}] wrong format: {:?}", name, peer, msg);
                 continue;
             }
+            Some(idx) => (&msg[..idx], &msg[idx + 1..]),
         };
+        let from = name.clone();
         let to: Vec<String> = dest
             .split(',')
             .map(|dest| dest.trim().to_string())
             .collect();
         let msg = msg.trim().to_string();
-        let event = Event::Message {
-            from: name.clone(),
-            to,
-            msg,
-        };
+        let event = Event::Message { from, to, msg };
         broker.send(event).await?;
     }
     let event = Event::Leave(name);

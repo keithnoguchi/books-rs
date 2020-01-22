@@ -1,13 +1,13 @@
 //! [Clean Shutdown]
 //!
-//! Let's cleanup all the tasks cleanly.  This is the continuation of the chat
-//! server example, based off of the [accept loop], [receiving messages],
+//! Let's cleanup all the tasks gracefully.  This is the continuation of
+//! the chat server example, based off of [accept loop], [receiving messages],
 //! [sending messages], and [connecting readers and writers].
 //!
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch03-07-server -- [::1]:8000
+//! $ cargo run --example ch03-07-server [::1]:8000
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 1.15s
 //! Running `/home/kei/git/books-rs/target/debug/examples/ch03-07-server '[::1]:8000'`
@@ -26,7 +26,7 @@ use async_std::net::{TcpListener, TcpStream};
 use async_std::stream::StreamExt;
 use async_std::task;
 use futures::channel::mpsc;
-use std::{env, error::Error, result, sync::Arc};
+use std::{error::Error, result, sync::Arc};
 
 type Result<T> = result::Result<T, Box<dyn Error + Send + Sync + 'static>>;
 type Sender<T> = mpsc::UnboundedSender<T>;
@@ -47,11 +47,10 @@ enum Event {
 }
 
 fn main() -> Result<()> {
-    let argv: Vec<String> = env::args().collect();
-    let addr = match argv.len() {
-        0..=1 => String::from("localhost:8037"),
-        _ => argv[1].clone(),
-    };
+    let addr = std::env::args()
+        .skip(1) // skip argv[0]
+        .next()
+        .unwrap_or(String::from("localhost:8037"));
     task::block_on(supervisor(addr))
 }
 
@@ -75,7 +74,6 @@ async fn supervisor(addr: String) -> Result<()> {
 async fn server(broker: Arc<Sender<Event>>, addr: String) -> Result<()> {
     eprintln!("[server] starting");
     let s = TcpListener::bind(&addr).await?;
-    eprintln!("[server] started");
     while let Some(s) = s.incoming().next().await {
         match s {
             Err(err) => eprintln!("[server] accept error: {:?}", err),

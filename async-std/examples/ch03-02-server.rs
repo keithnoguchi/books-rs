@@ -5,7 +5,7 @@
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example ch03-02-server -- [::1]:8000
+//! $ cargo run --example ch03-02-server [::1]:8000
 //! Compiling async-std-book v0.1.0 (/home/kei/git/books-rs/async-std)
 //! Finished dev [unoptimized + debuginfo] target(s) in 0.87s
 //! Running `target/debug/examples/ch03-02-server '[::1]:8000'`
@@ -18,17 +18,15 @@
 use async_std::net::{TcpListener, ToSocketAddrs};
 use async_std::stream::StreamExt;
 use async_std::task;
-use std::{env, error, result};
 
-type Result<T> = result::Result<T, Box<dyn error::Error + Send + Sync>>;
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 fn main() -> Result<()> {
-    let argv: Vec<String> = env::args().collect();
-    let addr = match argv.len() {
-        0..=1 => "localhost:8032",
-        _ => &argv[1],
-    };
-    task::block_on(server(addr))
+    let addr = std::env::args()
+        .skip(1)
+        .next()
+        .unwrap_or(String::from("localhost:8032"));
+    task::block_on(server(&addr))
 }
 
 /// `server()` listens on the `addr` ToSocketAddr trait object
