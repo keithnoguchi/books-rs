@@ -35,7 +35,7 @@ mod tests {
     #[test]
     fn value() {
         let mut c = Cacher::new(|v| v);
-        for _ in {0..1000} {
+        for _ in { 0..1000 } {
             let got = c.get(1);
             assert_eq!(1, got);
         }
