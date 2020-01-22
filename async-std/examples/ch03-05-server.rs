@@ -85,10 +85,10 @@ async fn server(addr: impl ToSocketAddrs) -> Result<()> {
 /// and send it to the `broker()` for the rest of the processes,
 /// including the multicasting to the friends.
 async fn reader(mut broker: Sender<Event>, s: TcpStream) -> Result<()> {
-    let peer = match s.peer_addr() {
-        Err(_) => String::from("unknown"),
-        Ok(s) => s.to_string(),
-    };
+    let peer = s
+        .peer_addr()
+        .map(|s| s.to_string())
+        .unwrap_or(String::from("unknown"));
     eprintln!("[reader:{}] connected", peer);
     let s = Arc::new(s);
     let rx = s.clone();
