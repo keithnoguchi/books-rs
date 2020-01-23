@@ -97,7 +97,6 @@ async fn supervisor(addr: String) -> Result<()> {
 /// for servicing the clients.
 async fn server(broker: Sender<Event>, addr: String) -> Result<()> {
     let mut readers = Vec::new();
-    let broker = Arc::new(broker);
     eprintln!("[server] starting");
     let s = TcpListener::bind(addr).await?;
     while let Some(s) = s.incoming().next().await {
@@ -121,8 +120,7 @@ async fn server(broker: Sender<Event>, addr: String) -> Result<()> {
 
 /// `reader()` reads a message from the client and send it to the
 /// `broker()`.
-async fn reader(broker: Arc<Sender<Event>>, mut s: TcpStream) -> Result<()> {
-    let mut broker = &*broker;
+async fn reader(mut broker: Sender<Event>, mut s: TcpStream) -> Result<()> {
     s.write_all("What is your name? ".as_bytes()).await?;
     let s = Arc::new(s);
     let peer = s

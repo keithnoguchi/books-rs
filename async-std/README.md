@@ -20,6 +20,8 @@ Examples from [the async-std Book].
     - [broker-server.rs]: broker server example
   - [Clean Shutdown]
     - [shutdown-server.rs]: Server shutdown example
+  - [Handling Disconnection]
+    - [disconnect-server.rs]: Client disconnection example
 
 [concepts]: https://book.async.rs/concepts.html
 [tasks]: https://book.async.rs/concepts/tasks.html
@@ -29,6 +31,7 @@ Examples from [the async-std Book].
 [sending messages]: https://book.async.rs/tutorial/sending_messages.html
 [connecting readers and writers]: https://book.async.rs/tutorial/connecting_readers_and_writers.html
 [clean shutdown]: https://book.async.rs/tutorial/clean_shutdown.html
+[handling disconnection]: https://book.async.rs/tutorial/handling_disconnection.html
 
 [cat.rs]: examples/ch02-02-cat.rs
 [panic.rs]: examples/ch02-02-panic.rs
@@ -38,6 +41,7 @@ Examples from [the async-std Book].
 [send-server.rs]: examples/ch03-04-server.rs
 [broker-server.rs]: examples/ch03-05-server.rs
 [shutdown-server.rs]: examples/ch03-07-server.rs
+[disconnect-server.rs]: example/ch03-08-server.rs
 
 ## References
 
