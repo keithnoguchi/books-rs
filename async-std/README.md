@@ -43,6 +43,27 @@ Examples from [the async-std Book].
 [shutdown-server.rs]: examples/ch03-07-server.rs
 [disconnect-server.rs]: example/ch03-08-server.rs
 
+### A chat server
+
+Here is the chat server example, as in [examples/chat-server.rs].
+
+```rust
+use async_std::task;
+use async_std_book::Server;
+
+type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
+
+fn main() -> Result<(), Error> {
+    let addr = std::env::args()
+        .skip(1)
+        .next()
+        .unwrap_or(String::from("[::1]:8000"));
+    task::block_on(Server::new(addr).run())
+}
+```
+
+[examples/chat-server.rs]: examples/chat-server.rs
+
 ## References
 
 - [The async-std Book]: async-std book!

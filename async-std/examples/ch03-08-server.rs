@@ -36,9 +36,9 @@ use async_std::net::{TcpListener, TcpStream};
 use async_std::task;
 use futures::channel::mpsc;
 use futures::future::FutureExt;
+use futures::select;
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
-use futures::select;
 use std::collections::{hash_map::Entry, HashMap};
 use std::{error::Error, result, sync::Arc};
 
@@ -180,7 +180,11 @@ async fn broker(readers: Receiver<Event>) -> Result<()> {
             },
         };
         match event {
-            Event::Join { cancel, name, stream } => match peers.entry(name.clone()) {
+            Event::Join {
+                cancel,
+                name,
+                stream,
+            } => match peers.entry(name.clone()) {
                 Entry::Occupied(_) => {
                     let mut s = &*stream;
                     s.write_all(b"name is already taken.  bye!\n").await?;
