@@ -5,7 +5,6 @@ use async_std::io::BufReader;
 use async_std::net::TcpStream;
 use futures::channel::mpsc;
 use futures::io::AsyncBufReadExt;
-use futures::io::AsyncWriteExt;
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
 use std::sync::Arc;
@@ -30,14 +29,13 @@ impl Reader {
             broker,
         }
     }
-    pub async fn run(mut self, mut stream: TcpStream) -> Result<()> {
+    pub async fn run(mut self, stream: TcpStream) -> Result<()> {
         let peer = stream
             .peer_addr()
             .map(|s| s.to_string())
             .unwrap_or_else(|_| String::from("unknown"));
         let peer = format!("{}@{}", self.name, peer);
         eprintln!("[{}] starting", peer);
-        stream.write_all(b"What's your name? ").await?;
         let stream = Arc::new(stream);
         let mut lines = BufReader::new(&*stream).lines();
         let name = match lines.next().await {

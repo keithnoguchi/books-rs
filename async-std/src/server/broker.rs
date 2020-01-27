@@ -32,7 +32,7 @@ impl Broker {
         eprintln!("[{}] starting", self.name);
         let mut writers = Vec::new();
         let mut peers = HashMap::new();
-        let (writer_tx, writer_rx) = mpsc::unbounded::<(String, Receiver<Option<String>>)>();
+        let (writer_tx, writer_rx) = mpsc::unbounded::<(String, Receiver<String>)>();
         let mut writer_rx = writer_rx.fuse();
         let mut events = self.events.fuse();
         eprintln!("[{}] started", self.name);
@@ -67,7 +67,7 @@ impl Broker {
                         }
                     }
                     Entry::Vacant(e) => {
-                        let (mut tx, mut rx) = mpsc::unbounded();
+                        let (tx, mut rx) = mpsc::unbounded();
                         let writer = Writer::new(name.clone());
                         let mut writer_tx = writer_tx.clone();
                         writers.push(task::spawn(async move {
@@ -77,7 +77,6 @@ impl Broker {
                             }
                             ret
                         }));
-                        tx.send(None).await?;
                         e.insert(tx);
                     }
                 },
@@ -85,14 +84,14 @@ impl Broker {
                     let msg = format!("{}: {}\n", from, msg.trim());
                     for (to, mut writer) in &peers {
                         if to == &from {
-                            writer.send(None).await?;
-                        } else {
-                            writer.send(Some(msg.clone())).await?;
+                            continue;
                         }
+                        writer.send(msg.clone()).await?;
                     }
                 }
             }
         }
+        drop(writer_tx);
         peers.drain();
         for writer in writers {
             let id = writer.task().id();

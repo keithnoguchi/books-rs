@@ -15,7 +15,6 @@ use super::Result;
 /// `Writer` waits for a message from `Broker` and writes to the `TcpStream`.
 pub struct Writer {
     name: String,
-    prompt: String,
     to: String,
 }
 
@@ -23,14 +22,13 @@ impl Writer {
     pub fn new(to: String) -> Self {
         Self {
             name: String::from("writer"),
-            prompt: format!("{}> ", to),
             to,
         }
     }
     pub async fn run(
         self,
         cancel: Cancel,
-        broker: &mut Receiver<Option<String>>,
+        broker: &mut Receiver<String>,
         stream: Arc<TcpStream>,
     ) -> Result<()> {
         let mut stream = &*stream;
@@ -45,20 +43,18 @@ impl Writer {
         loop {
             select! {
                 msg = cancel.next().fuse() => match msg {
-                    None => break Ok(()),
+                    None => break,
                     Some(void) => match void {},
                 },
                 msg = broker.next().fuse() => match msg {
-                    None => break Ok(()),
+                    None => break,
                     Some(msg) => {
-                        if let Some(msg) = msg {
-                            stream.write_all(msg.as_bytes()).await?;
-                        }
-                        stream.write_all(self.prompt.as_bytes()).await?;
+                        stream.write_all(msg.as_bytes()).await?;
                     }
                 },
             }
         }
+        Ok(())
     }
 }
 
