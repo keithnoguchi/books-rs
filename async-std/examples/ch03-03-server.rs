@@ -32,9 +32,8 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>
 
 fn main() -> Result<()> {
     let addr = std::env::args()
-        .skip(1)
-        .next()
-        .unwrap_or(String::from("localhost:8033"));
+        .nth(1)
+        .unwrap_or_else(|| String::from("localhost:8033"));
     task::block_on(server(&addr))
 }
 

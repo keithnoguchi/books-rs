@@ -16,9 +16,8 @@ type Result<T> = std::result::Result<T, Error>;
 
 fn main() -> Result<()> {
     let addr = std::env::args()
-        .skip(1)
-        .next()
-        .unwrap_or(String::from("localhost:8039"));
+        .nth(1)
+        .unwrap_or_else(|| String::from("localhost:8039"));
     task::block_on(run(&addr))
 }
 

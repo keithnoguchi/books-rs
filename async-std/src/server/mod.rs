@@ -12,9 +12,8 @@
 //!
 //! fn main() -> Result<(), Error> {
 //!     let addr = std::env::args()
-//!         .skip(1)
-//!         .next()
-//!         .unwrap_or(String::from("[::1]:8000"));
+//!         .nth(1)
+//!         .unwrap_or_else(|| String::from("[::1]:8000"));
 //!     task::block_on(Server::new(addr).run())
 //! }
 //! ```
@@ -57,9 +56,8 @@ impl Server {
     /// use async_std_book::Server;
     ///
     /// let addr = std::env::args()
-    ///     .skip(1)
-    ///     .next()
-    ///     .unwrap_or(String::from("localhost:8000"));
+    ///     .nth(1)
+    ///     .unwrap_or_else(|| String::from("localhost:8000"));
     /// let _server = Server::new(addr);
     /// ```
     pub fn new(addr: String) -> Self {
@@ -79,9 +77,8 @@ impl Server {
     /// use async_std_book::Server;
     ///
     /// let addr = std::env::args()
-    ///     .skip(1)
-    ///     .next()
-    ///     .unwrap_or(String::from("localhost:8000"));
+    ///     .nth(1)
+    ///     .unwrap_or_else(|| String::from("localhost:8000"));
     /// task::block_on(Server::new(addr).run());    
     /// ```
     pub async fn run(self) -> Result<()> {

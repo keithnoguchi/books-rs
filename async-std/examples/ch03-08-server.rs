@@ -66,9 +66,8 @@ enum Event {
 
 fn main() -> Result<()> {
     let addr = std::env::args()
-        .skip(1)
-        .next()
-        .unwrap_or(String::from("localhost:8038"));
+        .nth(1)
+        .unwrap_or_else(|| String::from("localhost:8038"));
     task::block_on(supervisor(addr))
 }
 
