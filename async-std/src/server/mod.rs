@@ -33,12 +33,11 @@ mod read;
 mod write;
 
 /// module local aliases.
-type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
-type Result<T> = std::result::Result<T, Error>;
 type Sender<T> = mpsc::UnboundedSender<T>;
 type Receiver<T> = mpsc::UnboundedReceiver<T>;
 type Cancel = Receiver<message::Void>;
 
+use super::Result;
 use broker::Broker;
 use listen::Listener;
 

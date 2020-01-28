@@ -40,15 +40,16 @@ async fn run(addr: impl ToSocketAddrs) -> Result<()> {
     loop {
         select! {
             line = lines.next().fuse() => match line {
+                None => break,
                 Some(line) => {
                     let line = line?.trim().to_string();
                     let line = format!("{}\n", line);
                     tx.write_all(line.as_bytes()).await?;
                     io::stderr().write_all(prompt.as_bytes()).await?;
                 }
-                None => break,
             },
             line = resp.next().fuse() => match line {
+                None => break,
                 Some(line) => {
                     let line = line?;
                     if line.len() == 0 {
@@ -57,7 +58,6 @@ async fn run(addr: impl ToSocketAddrs) -> Result<()> {
                     let output = format!("{}\n{}", line, prompt);
                     io::stderr().write_all(output.as_bytes()).await?;
                 },
-                None => break,
             },
         }
     }
