@@ -33,6 +33,7 @@ use super::Result;
 
 pub struct Client {
     addr: String,
+    prompt: Option<String>,
 }
 
 impl Client {
@@ -50,7 +51,7 @@ impl Client {
     /// let _client = Client::new(addr);
     /// ```
     pub fn new(addr: String) -> Self {
-        Self { addr }
+        Self { addr, prompt: None }
     }
     /// `run` creates a `Future` instance which handles all the
     /// business logic.
@@ -77,17 +78,17 @@ impl Client {
         let name = self.name(&mut writer, &mut lines).await?;
         let s = TcpStream::connect(&self.addr).await?;
         let (tx, rx) = (&s, &s);
-        self.send(tx, &name).await?;
+        Self::send(tx, &name).await?;
         let mut lines = lines.fuse();
         let mut server = BufReader::new(rx).lines().fuse();
         loop {
-            self.prompt(&mut writer, &name).await?;
+            self.prompt(&mut writer).await?;
             select! {
                 line = lines.next().fuse() => match line {
                     None => break,
                     Some(line) => {
                         let line = line?.trim().to_string();
-                        self.send(tx, &line).await?;
+                        Self::send(tx, &line).await?;
                     }
                 },
                 line = server.next().fuse() => match line {
@@ -97,7 +98,7 @@ impl Client {
                         if line.len() == 0 {
                             continue;
                         }
-                        self.write(&mut writer, &line).await?;
+                        Self::write(&mut writer, &line).await?;
                     }
                 },
             }
@@ -114,19 +115,22 @@ impl Client {
             None => return Err("premature reader close".into()),
             Some(name) => name?.trim().to_string(),
         };
+        self.prompt = Some(format!("{}> ", name));
         Ok(name)
     }
-    async fn prompt<W: AsyncWrite + Unpin>(&self, writer: &mut W, name: &str) -> Result<()> {
-        let prompt = format!("{}> ", name);
-        writer.write_all(prompt.as_bytes()).await?;
+    async fn prompt<W: AsyncWrite + Unpin>(&self, writer: &mut W) -> Result<()> {
+        match &self.prompt {
+            Some(prompt) => writer.write_all(prompt.as_bytes()).await?,
+            None => return Err("no prompt set".into()),
+        }
         Ok(())
     }
-    async fn write<W: AsyncWrite + Unpin>(&self, writer: &mut W, msg: &str) -> Result<()> {
+    async fn write<W: AsyncWrite + Unpin>(writer: &mut W, msg: &str) -> Result<()> {
         let msg = format!("{}\n", msg);
         writer.write_all(msg.as_bytes()).await?;
         Ok(())
     }
-    async fn send(&self, mut server: &TcpStream, msg: &str) -> Result<()> {
+    async fn send(mut server: &TcpStream, msg: &str) -> Result<()> {
         server.write_all(msg.as_bytes()).await?;
         server.write_all(b"\n").await?;
         Ok(())
