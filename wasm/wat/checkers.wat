@@ -1,6 +1,7 @@
 ;; SPDX-License-Identifier: Apache-2.0 AND MIT
 (module
   (memory $mem 1)
+  (global $currentTurn (mut i32) (i32.const 0))
   (global $WHITE i32 (i32.const 2))
   (global $BLACK i32 (i32.const 1))
   (global $CROWN i32 (i32.const 4))
@@ -10,6 +11,29 @@
   (export "isBlack" (func $isBlack))
   (export "withCrown" (func $withCrown))
   (export "withoutCrown" (func $withoutCrown))
+
+  ;; Determine if it's a player's turn
+  (func $isPlayerTurn (param $player i32) (result i32)
+    (i32.gt_s
+      (i32.and (get_local $player) (call $getTurnOwner))
+      (i32.const 0)
+    )
+  )
+  ;; At the end of a turn, switch turn owner to the other player
+  (func $toggleTurnOwner
+    (if (i32.eq (call $getTurnOwner) (i32.const 1))
+      (then (call $setTurnOwner (i32.const 2)))
+      (else (call $setTurnOwner (i32.const 1)))
+    )
+  )
+  ;; Gets the current turn owner (white or black)
+  (func $getTurnOwner (result i32)
+    (get_global $currentTurn)
+  )
+  ;; Sets the turn owner
+  (func $setTurnOwner (param $piece i32)
+    (set_global $currentTurn (get_local $piece))
+  )
 
   (func $indexForPosition (param $x i32) (param $y i32) (result i32)
     (i32.add

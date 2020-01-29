@@ -5,8 +5,11 @@ WAT += checkers_test
 all: fmt lint test
 build:
 	@cd flatbuf/schema && flatc -r *.fbs
-	@cd wasm; for i in $(WAT); \
-		do wat2wasm wat/$$i.wat -o wat/$$i.wasm; \
+	@cd wasm; for i in $(WAT);                            \
+		do if ! wat2wasm wat/$$i.wat -o wat/$$i.wasm; \
+	        then                                          \
+			exit 1;                               \
+		fi;                                           \
 	done
 check: build
 	@cargo check
