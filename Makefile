@@ -1,8 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0
+WAT := checkers
+WAT += checkers_test
 .PHONY: build check test clean run install update doc doc-all fmt lint
 all: fmt lint test
 build:
 	@cd flatbuf/schema && flatc -r *.fbs
+	@cd wasm; for i in $(WAT); \
+		do wat2wasm wat/$$i.wat -o wat/$$i.wasm; \
+	done
 check: build
 	@cargo check
 test: build

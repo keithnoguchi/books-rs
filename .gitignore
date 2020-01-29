@@ -1,4 +1,5 @@
 /target
 **/*.rs.bk
 **/*_generated.rs
+**/*.wasm
 cscope.*
