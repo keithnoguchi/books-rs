@@ -9,6 +9,39 @@
   (global $BLACK i32 (i32.const 1))
   (global $CROWN i32 (i32.const 4))
 
+  ;; Determine if the move is valid
+  (func $isValidMove (param $fromX i32) (param $fromY i32)
+                     (param $toX i32) (param $toY i32) (result i32)
+    (local $player i32)
+    (local $target i32)
+    (set_local $player (call $getPiece (get_local $fromX) (get_local $fromY)))
+    (set_local $target (call $getPiece (get_local $toX) (get_local $toY)))
+    (if (result i32)
+      (block (result i32)
+        (i32.and
+          (call $validJumpDistance (get_local $fromY) (get_local $toY))
+          (i32.and
+            (call $isPlayersTurn (get_local $player))
+            ;; target must be unoccupied
+            (i32.eq (get_local $target) (i32.const 0))
+          )
+        )
+      )
+      (then (i32.const 1))
+      (else (i32.const 0))
+    )
+  )
+  ;; Ensures travel is 1 or 2 squares
+  (func $validJumpDistance (param $from i32) (param $to i32) (result i32)
+    (local $d i32)
+    (set_local $d
+      (if (result i32) (i32.gt_s (get_local $to) (get_local $from))
+        (then (call $distance (get_local $to) (get_local $from)))
+	(else (call $distance (get_local $from) (get_local $to)))
+      )
+    )
+    (i32.le_u (get_local $d) (i32.const 2))
+  )
   ;; Should this piece get crowned?
   ;; We crown black pieces in row 0, white pieces in row 7.
   (func $shouldCrown (param $pieceY i32) (param $piece i32) (result i32)
@@ -42,7 +75,7 @@
     (i32.sub (get_local $x) (get_local $y))
   )
   ;; Determine if it's a player's turn
-  (func $isPlayerTurn (param $player i32) (result i32)
+  (func $isPlayersTurn (param $player i32) (result i32)
     (i32.gt_s
       (i32.and (get_local $player) (call $getTurnOwner))
       (i32.const 0)
@@ -98,9 +131,7 @@
           )
         )
       )
-      (else
-        (unreachable)
-      )
+      (else (unreachable))
     )
   )
   ;; Detect if values are within range (inclusive high and low)
