@@ -1,5 +1,8 @@
 ;; SPDX-License-Identifier: Apache-2.0 AND MIT
 (module
+  (import "events" "piececrowned"
+    (func $notify_piececrowned (param $pieceX i32) (param $pieceY i32))
+  )
   (memory $mem 1)
   (global $currentTurn (mut i32) (i32.const 0))
   (global $WHITE i32 (i32.const 2))
@@ -26,7 +29,18 @@
       )
     )
   )
-
+  ;; Converts a piece into a crowned piece and invokes
+  ;; a host notifier
+  (func $crownPiece (param $x i32) (param $y i32)
+    (local $piece i32)
+    (set_local $piece (call $getPiece (get_local $x)(get_local $y)))
+    (call $setPiece (get_local $x) (get_local $y)
+      (call $withCrown (get_local $piece)))
+    (call $notify_piececrowned (get_local $x)(get_local $y))
+  )
+  (func $distance (param $x i32) (param $y i32) (result i32)
+    (i32.sub (get_local $x) (get_local $y))
+  )
   ;; Determine if it's a player's turn
   (func $isPlayerTurn (param $player i32) (result i32)
     (i32.gt_s
