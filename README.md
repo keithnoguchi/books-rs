@@ -82,6 +82,13 @@ Too Many List Book.
 [flatbuf-tutorial]: flatbuf/Cargo.toml
 [monster]: flatbuf/src/monster.rs
 
+## Programming WebAssembly with Rust
+
+[wasm] crate contains the examples shown in [Programming WebAssembly with Rust].
+
+[wasm]: wasm/README.md
+[programming webassembly with rust]: https://pragprog.com/book/khrust/programming-webassembly-with-rust
+
 # Test
 
 ```sh
