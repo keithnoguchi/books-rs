@@ -5,12 +5,27 @@
   (global $WHITE i32 (i32.const 2))
   (global $BLACK i32 (i32.const 1))
   (global $CROWN i32 (i32.const 4))
-  (export "offsetForPosition" (func $offsetForPosition))
-  (export "isCrowned" (func $isCrowned))
-  (export "isWhite" (func $isWhite))
-  (export "isBlack" (func $isBlack))
-  (export "withCrown" (func $withCrown))
-  (export "withoutCrown" (func $withoutCrown))
+
+  ;; Should this piece get crowned?
+  ;; We crown black pieces in row 0, white pieces in row 7.
+  (func $shouldCrown (param $pieceY i32) (param $piece i32) (result i32)
+    (i32.or
+      (i32.and
+        (i32.eq
+          (get_local $pieceY)
+	  (i32.const 0)
+        )
+        (call $isBlack (get_local $piece))
+      )
+      (i32.and
+        (i32.eq
+          (get_local $pieceY)
+          (i32.const 0)
+        )
+        (call $isWhite (get_local $piece))
+      )
+    )
+  )
 
   ;; Determine if it's a player's turn
   (func $isPlayerTurn (param $player i32) (result i32)
@@ -127,4 +142,11 @@
   (func $withoutCrown (param $piece i32) (result i32)
     (i32.and (get_local $piece) (i32.const 3))
   )
+
+  (export "offsetForPosition" (func $offsetForPosition))
+  (export "isCrowned" (func $isCrowned))
+  (export "isWhite" (func $isWhite))
+  (export "isBlack" (func $isBlack))
+  (export "withCrown" (func $withCrown))
+  (export "withoutCrown" (func $withoutCrown))
 )
