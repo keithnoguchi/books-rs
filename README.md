@@ -89,6 +89,13 @@ Too Many List Book.
 [wasm]: wasm/README.md
 [programming webassembly with rust]: https://pragprog.com/book/khrust/programming-webassembly-with-rust
 
+## Serde book
+
+[Serde] is [a framework for serializing and deserializing Rust] data structures efficiently and generically.
+
+[serde]: serde/README.md
+[framework for serializing and deserializing Rust data]: https://serde.rs
+
 # Test
 
 ```sh
