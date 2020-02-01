@@ -1,33 +1,63 @@
 //! Checker board
 
 /// Color of the checker piece.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum PieceColor {
     White,
     Black,
 }
 
 /// Individual game piece.
-#[derive(Copy, Clone)]
-pub struct GamePiece {
+#[derive(Copy, Clone, Debug)]
+pub struct Piece {
     pub color: PieceColor,
     pub crowned: bool,
 }
 
-impl GamePiece {
+impl Piece {
     pub fn new(color: PieceColor) -> Self {
         Self {
             color,
-            crowned: false,
+            ..Self::default()
         }
     }
-    pub fn crowned(p: Self) -> Self {
+    pub fn white_piece() -> Self {
+        Self {
+            color: PieceColor::White,
+            ..Self::default()
+        }
+    }
+    pub fn black_piece() -> Self {
+        Self {
+            color: PieceColor::Black,
+            ..Self::default()
+        }
+    }
+    pub fn crowned_piece(p: Self) -> Self {
         Self { crowned: true, ..p }
+    }
+    pub fn is_black(self) -> bool {
+        self.color == PieceColor::Black
+    }
+    pub fn is_white(self) -> bool {
+        self.color == PieceColor::White
+    }
+    pub fn is_crowned(self) -> bool {
+        self.crowned
+    }
+}
+
+impl Default for Piece {
+    fn default() -> Self {
+        Self {
+            color: PieceColor::White,
+            crowned: false,
+        }
     }
 }
 
 /// Game board coordinate.
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Coordinate(pub usize, pub usize);
 
 impl Coordinate {
