@@ -1,13 +1,14 @@
 //! Checker board
 
 /// Color of the checker piece.
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum PieceColor {
     White,
     Black,
 }
 
 /// Individual game piece.
+#[derive(Copy, Clone)]
 pub struct GamePiece {
     pub color: PieceColor,
     pub crowned: bool,
