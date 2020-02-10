@@ -1,5 +1,4 @@
 //! Checker board
-
 /// Color of the checker piece.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum PieceColor {
@@ -8,7 +7,7 @@ pub enum PieceColor {
 }
 
 /// Individual game piece.
-#[derive(Copy, Clone, Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Piece {
     pub color: PieceColor,
     pub crowned: bool,
@@ -22,19 +21,20 @@ impl Piece {
         }
     }
     pub fn white_piece() -> Self {
-        Self {
-            color: PieceColor::White,
-            ..Self::default()
-        }
+        Self::new(PieceColor::White)
     }
     pub fn black_piece() -> Self {
-        Self {
-            color: PieceColor::Black,
-            ..Self::default()
-        }
+        Self::new(PieceColor::Black)
     }
-    pub fn crowned_piece(p: Self) -> Self {
+    pub fn crowned(p: Self) -> Self {
         Self { crowned: true, ..p }
+    }
+    pub fn should_crowned(self, to: Coordinate) -> bool {
+        let y = to.1;
+        match self.color {
+            PieceColor::Black => y == 0,
+            PieceColor::White => y == 7,
+        }
     }
     pub fn is_black(self) -> bool {
         self.color == PieceColor::Black
@@ -57,7 +57,7 @@ impl Default for Piece {
 }
 
 /// Game board coordinate.
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Coordinate(pub usize, pub usize);
 
 impl Coordinate {
@@ -97,7 +97,7 @@ impl Coordinate {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Move {
     pub from: Coordinate,
     pub to: Coordinate,
@@ -109,5 +109,12 @@ impl Move {
             from: Coordinate(from.0, from.1),
             to: Coordinate(to.0, to.1),
         }
+    }
+    pub fn midpiece_coordinate(&self) -> Option<Coordinate> {
+        let Coordinate(fx, fy) = self.from;
+        let Coordinate(tx, ty) = self.to;
+        let x = ((fx as isize - tx as isize).abs()/2) as usize;
+        let y = ((fy as isize - ty as isize).abs()/2) as usize;
+        Some(Coordinate(x, y))
     }
 }

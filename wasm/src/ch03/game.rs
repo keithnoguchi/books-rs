@@ -1,4 +1,4 @@
-//! Writing the engine rules
+//! Game engine
 use super::board::{Coordinate, Move, Piece, PieceColor};
 
 pub struct Engine {
@@ -15,6 +15,95 @@ pub struct MoveResult {
 impl Engine {
     pub fn new() -> Self {
         Self::default()
+    }
+    pub fn move_piece(&mut self, mv: &Move) -> Result<MoveResult, ()> {
+        let legal_moves = self.legal_moves();
+        if !legal_moves.contains(mv) {
+            return Err(())
+        }
+        let Coordinate(fx, fy) = mv.from;
+        let Coordinate(tx, ty) = mv.to;
+        let piece = self.board[fx][fy].unwrap();
+        let midpiece_coordinate = mv.midpiece_coordinate();
+        if let Some(Coordinate(x, y)) = midpiece_coordinate {
+            self.board[x][y] = None;
+        }
+        self.board[tx][ty] = Some(piece);
+        self.board[fx][fy] = None;
+
+        let crowned = if piece.should_crowned(mv.to) {
+            self.crown_piece(mv.to);
+            true
+        } else {
+            false
+        };
+        self.advance_turn();
+        Ok(MoveResult {
+            mv: mv.clone(),
+            crowned,
+        })
+    }
+    fn crown_piece(&mut self, to: Coordinate) {
+        let Coordinate(x, y) = to;
+        if let Some(piece) = self.board[x][y] {
+            self.board[x][y] = Some(Piece::crowned(piece));
+        }
+    }
+    fn advance_turn(&mut self) {
+        self.current_turn = match self.current_turn {
+            PieceColor::Black => PieceColor::White,
+            PieceColor::White => PieceColor::Black,
+        };
+        self.move_count += 1;
+    }
+    fn legal_moves(&self) -> Vec<Move> {
+        let mut moves: Vec<Move> = Vec::new();
+        for col in 0..8 {
+            for row in 0..8 {
+                if let Some(piece) = self.board[col][row] {
+                    if piece.color == self.current_turn {
+                        let loc = Coordinate(col, row);
+                        let mut vmoves = self.valid_moves_from(loc);
+                        moves.append(&mut vmoves);
+                    }
+                }
+            }
+        }
+        moves
+    }
+    fn valid_moves_from(&self, loc: Coordinate) -> Vec<Move> {
+        let Coordinate(x, y) = loc;
+        match self.board[x][y] {
+            None => Vec::new(),
+            Some(p) => {
+                let mut jumps = loc
+                    .jump_targets_from()
+                    .filter(|t| self.valid_jump(&p, &loc, &t))
+                    .map(|ref t| Move {
+                        from: loc.clone(),
+                        to: t.clone(),
+                    })
+                    .collect::<Vec<Move>>();
+                let mut moves = loc
+                    .move_targets_from()
+                    .filter(|t| self.valid_move(&p, &loc, &t))
+                    .map(|ref t| Move {
+                        from: loc.clone(),
+                        to: t.clone(),
+                    })
+                    .collect::<Vec<Move>>();
+                jumps.append(&mut moves);
+                jumps
+            }
+        }
+    }
+    fn valid_jump(&self, _p: &Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
+        // XXX
+        true
+    }
+    fn valid_move(&self, _p: &Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
+        // XXX
+        true
     }
     fn initialize_board(&mut self) {
         // white pieces
