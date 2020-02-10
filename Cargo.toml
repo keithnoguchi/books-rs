@@ -11,4 +11,5 @@ members = [
    "flatbuf",
    "embedded",
    "wasm",
+   "stjepang",
 ]
