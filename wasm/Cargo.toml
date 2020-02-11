@@ -5,3 +5,5 @@ authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+mut_static = "5"
+lazy_static = "1"
