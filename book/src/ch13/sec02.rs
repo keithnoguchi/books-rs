@@ -19,7 +19,7 @@ pub fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: f32) -> Vec<Shoe> {
         .collect()
 }
 
-/// `Counter` type demonstrates the [`Iterrator`] trait implementation.
+/// `Counter` type demonstrates the [`Iterator`] trait implementation.
 ///
 /// [`Iterator`]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
 pub struct Counter {
