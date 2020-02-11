@@ -4,7 +4,7 @@
 use futures::channel::oneshot;
 use std::thread;
 use std::time::Duration;
-use stjepang::blog20200125::v1::block_on;
+use stjepang_blog::post20200125::v1::block_on;
 
 fn main() {
     let (s, r) = oneshot::channel();

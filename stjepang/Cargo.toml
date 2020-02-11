@@ -1,5 +1,5 @@
 [package]
-name = "stjepang"
+name = "stjepang-blog"
 version = "0.1.0"
 authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
 edition = "2018"

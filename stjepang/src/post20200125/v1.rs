@@ -13,7 +13,7 @@ use std::thread;
 /// use futures::channel::oneshot;
 /// use std::thread;
 /// use std::time::Duration;
-/// use stjepang::blog20200125::v1::block_on;
+/// use stjepang_blog::post20200125::v1::block_on;
 ///
 /// let (s, r) = oneshot::channel();
 ///

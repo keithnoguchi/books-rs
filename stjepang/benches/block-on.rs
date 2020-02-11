@@ -1,5 +1,9 @@
 //! Build your own [block_on()] with crashing recursive block_on() call
 //!
+//! Benchmark [test] example:
+//!
+//! [test]: https://doc.rust-lang.org/beta/unstable-book/library-features/test.html
+//!
 //! # Examples
 //!
 //! ```no_run
@@ -40,13 +44,13 @@
 //! ```
 //! [block_on()]: https://stjepang.github.io/2020/01/25/build-your-own-block-on.html
 #![feature(test)]
-
 extern crate test;
 
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
-use stjepang::blog20200125::v4::block_on;
+
+use stjepang_blog::post20200125::{v1, v2, v3, v4};
 
 use test::Bencher;
 
@@ -66,18 +70,63 @@ impl Future for Yields {
 }
 
 #[bench]
-fn custom_block_on_0_yields(b: &mut Bencher) {
-    b.iter(|| block_on(Yields(0)));
+fn custom_v1_block_on_0_yields(b: &mut Bencher) {
+    b.iter(|| v1::block_on(Yields(0)));
 }
 
 #[bench]
-fn custom_block_on_10_yields(b: &mut Bencher) {
-    b.iter(|| block_on(Yields(10)));
+fn custom_v1_block_on_10_yields(b: &mut Bencher) {
+    b.iter(|| v1::block_on(Yields(10)));
 }
 
 #[bench]
-fn custom_block_on_50_yields(b: &mut Bencher) {
-    b.iter(|| block_on(Yields(50)));
+fn custom_v1_block_on_50_yields(b: &mut Bencher) {
+    b.iter(|| v1::block_on(Yields(50)));
+}
+
+#[bench]
+fn custom_v2_block_on_0_yields(b: &mut Bencher) {
+    b.iter(|| v2::block_on(Yields(0)));
+}
+
+#[bench]
+fn custom_v2_block_on_10_yields(b: &mut Bencher) {
+    b.iter(|| v2::block_on(Yields(10)));
+}
+
+#[bench]
+fn custom_v2_block_on_50_yields(b: &mut Bencher) {
+    b.iter(|| v2::block_on(Yields(50)));
+}
+
+#[bench]
+fn custom_v3_block_on_0_yields(b: &mut Bencher) {
+    b.iter(|| v3::block_on(Yields(0)));
+}
+
+#[bench]
+fn custom_v3_block_on_10_yields(b: &mut Bencher) {
+    b.iter(|| v3::block_on(Yields(10)));
+}
+
+#[bench]
+fn custom_v3_block_on_50_yields(b: &mut Bencher) {
+    b.iter(|| v3::block_on(Yields(50)));
+}
+
+#[bench]
+fn custom_v4_block_on_0_yields(b: &mut Bencher) {
+    b.iter(|| v4::block_on(Yields(0)));
+}
+
+#[bench]
+fn custom_v4_block_on_10_yields(b: &mut Bencher) {
+    b.iter(|| v4::block_on(Yields(10)));
+}
+
+#[bench]
+fn custom_v4_block_on_50_yields(b: &mut Bencher) {
+    b.iter(|| v4::block_on(Yields(50)));
 }
 
 #[bench]
