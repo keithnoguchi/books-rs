@@ -1,3 +1,3 @@
 //! Creating Rusty Checkers
-mod board;
-mod game;
+pub mod board;
+pub mod game;

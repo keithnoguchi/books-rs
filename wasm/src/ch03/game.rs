@@ -1,15 +1,15 @@
 //! Game engine
 use super::board::{Coordinate, Move, Piece, PieceColor};
 
+pub struct MoveResult {
+    pub mv: Move,
+    pub crowned: bool,
+}
+
 pub struct Engine {
     board: [[Option<Piece>; 8]; 8],
     current_turn: PieceColor,
     move_count: usize,
-}
-
-pub struct MoveResult {
-    pub mv: Move,
-    pub crowned: bool,
 }
 
 impl Engine {
@@ -39,7 +39,7 @@ impl Engine {
         };
         self.advance_turn();
         Ok(MoveResult {
-            mv: mv.clone(),
+            mv: *mv,
             crowned,
         })
     }
@@ -78,18 +78,18 @@ impl Engine {
             Some(p) => {
                 let mut jumps = loc
                     .jump_targets_from()
-                    .filter(|t| self.valid_jump(&p, &loc, &t))
+                    .filter(|t| self.valid_jump(p, &loc, &t))
                     .map(|ref t| Move {
-                        from: loc.clone(),
-                        to: t.clone(),
+                        from: loc,
+                        to: *t,
                     })
                     .collect::<Vec<Move>>();
                 let mut moves = loc
                     .move_targets_from()
-                    .filter(|t| self.valid_move(&p, &loc, &t))
+                    .filter(|t| self.valid_move(p, &loc, &t))
                     .map(|ref t| Move {
-                        from: loc.clone(),
-                        to: t.clone(),
+                        from: loc,
+                        to: *t,
                     })
                     .collect::<Vec<Move>>();
                 jumps.append(&mut moves);
@@ -97,11 +97,11 @@ impl Engine {
             }
         }
     }
-    fn valid_jump(&self, _p: &Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
+    fn valid_jump(&self, _p: Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
         // XXX
         true
     }
-    fn valid_move(&self, _p: &Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
+    fn valid_move(&self, _p: Piece, _from: &Coordinate, _to: &Coordinate) -> bool {
         // XXX
         true
     }
@@ -121,7 +121,19 @@ impl Engine {
                 self.board[*x][*y] = Some(Piece::black_piece());
             });
     }
-    fn is_black(&self, c: Coordinate) -> bool {
+    /// Check if the coordinate point does have a black piece.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use wasm_book::ch03::board::Coordinate;
+    /// use wasm_book::ch03::game::Engine;
+    ///
+    /// let engine = Engine::new();
+    /// let c = Coordinate(2, 7);
+    /// assert!(engine.is_black(c));
+    /// ```
+    pub fn is_black(&self, c: Coordinate) -> bool {
         if !c.on_board() {
             false
         } else {
@@ -132,7 +144,19 @@ impl Engine {
             }
         }
     }
-    fn is_white(&self, c: Coordinate) -> bool {
+    /// Check if the coordinate point does have a white piece.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use wasm_book::ch03::board::Coordinate;
+    /// use wasm_book::ch03::game::Engine;
+    ///
+    /// let engine = Engine::new();
+    /// let c = Coordinate(1, 0);
+    /// assert!(engine.is_white(c));
+    /// ```
+    pub fn is_white(&self, c: Coordinate) -> bool {
         if !c.on_board() {
             false
         } else {
@@ -143,7 +167,20 @@ impl Engine {
             }
         }
     }
-    fn is_empty(&self, c: Coordinate) -> bool {
+    /// Check if the coordinate point does not have a game
+    /// piece.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use wasm_book::ch03::board::Coordinate;
+    /// use wasm_book::ch03::game::Engine;
+    ///
+    /// let engine = Engine::new();
+    /// let c = Coordinate(0, 0);
+    /// assert!(engine.is_empty(c));
+    /// ```
+    pub fn is_empty(&self, c: Coordinate) -> bool {
         if !c.on_board() {
             false
         } else {
