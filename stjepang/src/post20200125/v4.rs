@@ -36,8 +36,8 @@ pub fn block_on<F: Future>(future: F) -> F::Output {
     // We'll use `RefCell` for the thread local variable and crash if there are
     // recursive `block_on()` call, e.g. `block_on()` call inside the `Future`.
     thread_local! {
-        static CACHE: RefCell<(crossbeam::sync::Parker, std::task::Waker)> = {
-            let parker = crossbeam::sync::Parker::new();
+        static CACHE: RefCell<(crossbeam_utils::sync::Parker, std::task::Waker)> = {
+            let parker = crossbeam_utils::sync::Parker::new();
             let unparker = parker.unparker().clone();
             let waker = async_task::waker_fn(move || unparker.unpark());
             RefCell::new((parker, waker))

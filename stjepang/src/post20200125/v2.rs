@@ -35,7 +35,7 @@ use std::task::{Context, Poll};
 pub fn block_on<F: Future>(future: F) -> F::Output {
     pin_utils::pin_mut!(future);
 
-    let parker = crossbeam::sync::Parker::new();
+    let parker = crossbeam_utils::sync::Parker::new();
     let unparker = parker.unparker().clone();
     let waker = async_task::waker_fn(move || unparker.unpark());
 

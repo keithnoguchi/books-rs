@@ -54,21 +54,6 @@ use stjepang_blog::post20200125::{v1, v2, v3, v4};
 
 use test::Bencher;
 
-struct Yields(u32);
-
-impl Future for Yields {
-    type Output = ();
-    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        if self.0 == 0 {
-            Poll::Ready(())
-        } else {
-            self.0 -= 1;
-            cx.waker().wake_by_ref();
-            Poll::Pending
-        }
-    }
-}
-
 #[bench]
 fn custom_v1_block_on_0_yields(b: &mut Bencher) {
     b.iter(|| v1::block_on(Yields(0)));
@@ -175,4 +160,19 @@ fn tokio_block_on_10_yields(b: &mut Bencher) {
 fn tokio_block_on_50_yields(b: &mut Bencher) {
     let mut runtime = tokio::runtime::Runtime::new().unwrap();
     b.iter(move || runtime.block_on(Yields(50)));
+}
+
+struct Yields(u32);
+
+impl Future for Yields {
+    type Output = ();
+    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        if self.0 == 0 {
+            Poll::Ready(())
+        } else {
+            self.0 -= 1;
+            cx.waker().wake_by_ref();
+            Poll::Pending
+        }
+    }
 }

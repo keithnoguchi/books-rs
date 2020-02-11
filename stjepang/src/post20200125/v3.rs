@@ -37,8 +37,8 @@ pub fn block_on<F: Future>(future: F) -> F::Output {
     // block_on(), no way to get out of from here, unless there is
     // a recursive call through the future itself...
     thread_local! {
-        static CACHE: (crossbeam::sync::Parker, std::task::Waker) = {
-            let parker = crossbeam::sync::Parker::new();
+        static CACHE: (crossbeam_utils::sync::Parker, std::task::Waker) = {
+            let parker = crossbeam_utils::sync::Parker::new();
             let unparker = parker.unparker().clone();
             let waker = async_task::waker_fn(move || unparker.unpark());
             (parker, waker)
