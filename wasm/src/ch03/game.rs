@@ -19,7 +19,7 @@ impl Engine {
     pub fn move_piece(&mut self, mv: &Move) -> Result<MoveResult, ()> {
         let legal_moves = self.legal_moves();
         if !legal_moves.contains(mv) {
-            return Err(())
+            return Err(());
         }
         let Coordinate(fx, fy) = mv.from;
         let Coordinate(tx, ty) = mv.to;
@@ -38,10 +38,7 @@ impl Engine {
             false
         };
         self.advance_turn();
-        Ok(MoveResult {
-            mv: *mv,
-            crowned,
-        })
+        Ok(MoveResult { mv: *mv, crowned })
     }
     fn crown_piece(&mut self, to: Coordinate) {
         let Coordinate(x, y) = to;
@@ -79,18 +76,12 @@ impl Engine {
                 let mut jumps = loc
                     .jump_targets_from()
                     .filter(|t| self.valid_jump(p, &loc, &t))
-                    .map(|ref t| Move {
-                        from: loc,
-                        to: *t,
-                    })
+                    .map(|ref t| Move { from: loc, to: *t })
                     .collect::<Vec<Move>>();
                 let mut moves = loc
                     .move_targets_from()
                     .filter(|t| self.valid_move(p, &loc, &t))
-                    .map(|ref t| Move {
-                        from: loc,
-                        to: *t,
-                    })
+                    .map(|ref t| Move { from: loc, to: *t })
                     .collect::<Vec<Move>>();
                 jumps.append(&mut moves);
                 jumps

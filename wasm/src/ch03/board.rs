@@ -113,8 +113,8 @@ impl Move {
     pub fn midpiece_coordinate(&self) -> Option<Coordinate> {
         let Coordinate(fx, fy) = self.from;
         let Coordinate(tx, ty) = self.to;
-        let x = ((fx as isize - tx as isize).abs()/2) as usize;
-        let y = ((fy as isize - ty as isize).abs()/2) as usize;
+        let x = ((fx as isize - tx as isize).abs() / 2) as usize;
+        let y = ((fy as isize - ty as isize).abs() / 2) as usize;
         Some(Coordinate(x, y))
     }
 }
