@@ -16,6 +16,16 @@ impl Engine {
     pub fn new() -> Self {
         Self::default()
     }
+    pub fn get_piece(&self, c: Coordinate) -> Result<Option<Piece>, ()> {
+        if !c.on_board() {
+            return Err(());
+        }
+        let Coordinate(x, y) = c;
+        Ok(self.board[x][y])
+    }
+    pub fn current_turn(&self) -> PieceColor {
+        self.current_turn
+    }
     pub fn move_piece(&mut self, mv: &Move) -> Result<MoveResult, ()> {
         let legal_moves = self.legal_moves();
         if !legal_moves.contains(mv) {

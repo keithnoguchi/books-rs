@@ -56,6 +56,24 @@ impl Default for Piece {
     }
 }
 
+const PIECEFLAG_BLACK: u8 = 1;
+const PIECEFLAG_WHITE: u8 = 2;
+const PIECEFLAG_CROWN: u8 = 4;
+
+impl Into<i32> for Piece {
+    fn into(self) -> i32 {
+        let mut val: u8 = 0;
+        match self.color {
+            PieceColor::Black => val += PIECEFLAG_BLACK,
+            PieceColor::White => val += PIECEFLAG_WHITE,
+        }
+        if self.is_crowned() {
+            val += PIECEFLAG_CROWN;
+        }
+        val as i32
+    }
+}
+
 /// Game board coordinate.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Coordinate(pub usize, pub usize);
