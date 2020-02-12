@@ -10,7 +10,7 @@ use std::thread;
 
 pub type JoinHandle<R> = Pin<Box<dyn Future<Output = R> + Send>>;
 
-/// `spawn()` for our hand written executor.
+/// `spawn()` for our own executor.
 ///
 /// # Examples
 ///
@@ -27,7 +27,7 @@ pub type JoinHandle<R> = Pin<Box<dyn Future<Output = R> + Send>>;
 /// });
 /// ```
 ///
-/// With our hand written `block_on`:
+/// With our own `block_on`:
 ///
 /// ```
 /// use stjepang_blog::post20200125::v4::block_on;
