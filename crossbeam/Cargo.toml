@@ -5,4 +5,5 @@ authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+crossbeam-channel = "0.4"
 crossbeam-queue = "0.2"

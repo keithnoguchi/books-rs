@@ -96,6 +96,7 @@ dependencies = [
 name = "crossbeam-book"
 version = "0.1.0"
 dependencies = [
+ "crossbeam-channel 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "crossbeam-queue 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
