@@ -11,90 +11,25 @@ The collections of [Rust lang] books.
 
 # Books
 
-## the-book
+- [The Book]
+- [The Style Guide]
+- [Async Book]
+- [Async-std Book]
+- [Tokio Book]
+- [Too Many List Book]
+- [Flatbuffers Tutorial]
+- [WebAssembly Book]
+- [Serde Book]
 
-[the-book] crate is the examples shown in [the Book].
-
-[the-book]: book/Cargo.toml
 [the book]: https://doc.rust-lang.org/stable/book/
-
-## style-book
-
-[style-book] crate is the examples shown in [the style guide].
-
-[style-book]: style/Cargo.toml
 [the style guide]: https://doc.rust-lang.org/1.0.0/style/README.html
-
-## async-book
-
-[async-book] crate is the examples shown in [the Async Book], the Async
-Programming Book.
-
-- [ptr]: [Primitive Type pointer] and [Module std::ptr] examples
-- [boxed]: [Module alloc::boxed] example
-- [borrow]: [Enum alloc::borrow::Cow], [Trait alloc::borrow::Borrow] examples
-- [futures]: [Crate futures] example
-- [stream]: [Module futures::stream] example
-
-[async-book]: async/Cargo.toml
-[the async book]: https://rust-lang.github.io/async-book/
-[ptr]: async/src/ptr.rs
-[boxed]: async/src/boxed.rs
-[borrow]: async/src/borrow.rs
-[futures]: async/src/futures.rs
-[stream]: async/src/stream.rs
-
-## async-std-book
-
-[async-std-book] crate for the examples in [async-std book].
-
-[async-std-book]: async-std/README.md
+[async book]: https://rust-lang.github.io/async-book/
 [async-std book]: https://book.async.rs/
-
-## tokio-book
-
-[tokio-book] crate hosts the examples shown in the [Tokio 0.2 Book].
-
-[tokio-book]: tokio/README.md
-[tokio 0.2 book]: https://github.com/tokio-rs/book/blob/master/SUMMARY.md
-
-## list-book
-
-[list-book] crate is the examples shown in [the List Book], The Unofficial
-Too Many List Book.
-
-- [first]: [A Bad Singly-Linked Stack]
-- [second]: [An Ok Singly-Linked Stack]
-
-[list-book]: list/Cargo.toml
-[first]: list/src/first.rs
-[second]: list/src/second.rs
-[the list book]: http://rust-unofficial.github.io/too-many-lists/
-[A Bad Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/first.html
-[An Ok Singly-Linked Stack]: http://rust-unofficial.github.io/too-many-lists/second.html
-
-## flatbuf-tutorial
-
-[flatbuf-tutorial] crate is the examples shown in [FlatBuffers tutorial].
-
-- [monster]: Monster example
-
-[flatbuf-tutorial]: flatbuf/Cargo.toml
-[monster]: flatbuf/src/monster.rs
-
-## Programming WebAssembly with Rust
-
-[wasm] crate contains the examples shown in [Programming WebAssembly with Rust].
-
-[wasm]: wasm/README.md
-[programming webassembly with rust]: https://pragprog.com/book/khrust/programming-webassembly-with-rust
-
-## Serde book
-
-[Serde] is [a framework for serializing and deserializing Rust] data structures efficiently and generically.
-
-[serde]: serde/README.md
-[framework for serializing and deserializing Rust data]: https://serde.rs
+[tokio book]: https://github.com/tokio-rs/book/blob/master/SUMMARY.md
+[too many list book]: http://rust-unofficial.github.io/too-many-lists/
+[flatbuffers tutorial]: https://google.github.io/flatbuffers/flatbuffers_guide_tutorial.html
+[webassembly book]: https://pragprog.com/book/khrust/programming-webassembly-with-rust
+[serde book]: https://serde.rs
 
 # Test
 
@@ -112,7 +47,7 @@ $ make test
   - [Trait alloc::borrow::Borrow]: A trait for borrowing data
   - [Trait alloc::borrow::BorrowMut]: A trait for mutably borrowing data
   - [Trait alloc::borrow::ToOwned]: A generalization of Clone to borrowed data
-- [The async book]: Asynchronous Programming in Rust
+- [Async book]: Asynchronous Programming in Rust
 - [Async-std book]: async-std makes async programming foundations easy and approachable.
 - [Zero-Cost Async IO]: RustLatam 2019 talk by [Without Boats]
 - [Crate std]: The Rust Standard Library
