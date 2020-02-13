@@ -6,9 +6,7 @@ use stjepang_blog::post20200131::v1::spawn;
 
 fn main() {
     let msg = block_on(async {
-        let handle = spawn(async {
-            "Hello world from our executor!"
-        });
+        let handle = spawn(async { "Hello world from our executor!" });
         handle.await
     });
     println!("{}", msg);

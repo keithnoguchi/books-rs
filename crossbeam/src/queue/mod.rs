@@ -20,7 +20,7 @@
 //!
 //! ```
 //! use crossbeam_queue::{PopError, SegQueue};
-//!  
+//!
 //! let q = SegQueue::new();
 //! q.push('a');
 //! q.push('b');
