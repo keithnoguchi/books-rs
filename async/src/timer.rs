@@ -1,11 +1,13 @@
 //! Let's [build a timer]!
 //!
 //! [build a timer]: https://rust-lang.github.io/async-book/02_execution/03_wakeups.html
-use std::future::Future;
-use std::pin::Pin;
-use std::sync::{Arc, Mutex};
-use std::task::{Context, Poll, Waker};
-use std::time::Duration;
+use std::{
+    future::Future,
+    pin::Pin,
+    sync::{Arc, Mutex},
+    task::{Context, Poll, Waker},
+    time::Duration,
+};
 
 /// Future based timer example
 ///

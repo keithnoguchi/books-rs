@@ -1,12 +1,14 @@
 //! Build your own [executor], v1
 //!
 //! [executor]: https://stjepang.github.io/2020/01/31/build-your-own-executor.html
-use std::future::Future;
-use std::pin::Pin;
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, Mutex};
-use std::task::Context;
-use std::thread;
+use std::{
+    future::Future,
+    pin::Pin,
+    sync::atomic::{AtomicUsize, Ordering},
+    sync::{Arc, Mutex},
+    task::Context,
+    thread,
+};
 
 pub type JoinHandle<R> = Pin<Box<dyn Future<Output = R> + Send>>;
 
