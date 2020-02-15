@@ -19,6 +19,26 @@
 //! assert_eq!(String::from("(Read more...)"), article.summarize());
 //! assert_eq!(String::from("tweet, tweet, tweet! @Sam I am"), tweet.summarize());
 //! ```
+//!
+//! Traits as Paramebers
+//!
+//! ```
+//! use the_book::ch10::{notify, notify2, Article, Summary, Tweet};
+//!
+//! let article = Article {
+//!     headline: String::from("Headline!"),
+//!     content: String::from("Article"),
+//! };
+//! assert_eq!(String::from("Breaking news!: (Read more...)"), notify(&article));
+//! assert_eq!(notify(&article), notify2(&article));
+//! ```
+pub fn notify(item: &impl Summary) -> String {
+    format!("Breaking news!: {}", item.summarize())
+}
+
+pub fn notify2<T: Summary>(item: &T) -> String {
+    format!("Breaking news!: {}", item.summarize())
+}
 
 /// Default trait implementation.
 pub trait Summary {
