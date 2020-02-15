@@ -19,6 +19,9 @@ clean:
 	@cargo clean
 run: build
 	@echo 2 | cargo run --package the-book --example ch02
+	@cargo run --package the-book --example ch10-largest
+	@cargo run --package the-book --example ch10-point
+	@cargo run --package the-book --example ch10-tweet
 	@cargo run --package the-book --example ch12 SPDX Makefile
 	@cargo run --package the-book --example ch13-01-cacher
 	@cargo run --package the-book --example ch13-02-iter
