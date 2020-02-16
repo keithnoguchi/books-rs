@@ -36,20 +36,34 @@
 //! use the_book::ch10::ImportantExcerpt;
 //!
 //! let novel = String::from("Call me Ishmael.  Some years ago..."); // 'a -+
-//! let mut lines = novel.split('.');                                //     |
-//! let first_sentence = lines.next().unwrap();                      //     |
+//! let first_sentence = novel.split('.').next().unwrap();           //     |
 //! assert_eq!("Call me Ishmael", first_sentence);                   //     |
 //! let i = ImportantExcerpt::new(first_sentence);                   //     |
 //! assert_eq!("Call me Ishmael", i.part());                         //  <--+
 //! ```
 //!
-//! Lifetime Elision
+//! Lifetime elision
 //!
 //! ```
 //! use the_book::ch10::first_word;
 //!
 //! let sentence = String::from("This is a sentence."); // 'a -+
 //! assert_eq!("This", first_word(sentence.as_str()));  //  <--+
+//! ```
+//!
+//! Lifetime elision examples in methods.
+//!
+//! ```
+//! use the_book::ch10::ImportantExcerpt;
+//!
+//! let novel = String::from("Call me Keith.  Some years ago...");
+//! let mut lines = novel.split('.');
+//! let first_sentence = lines.next().unwrap();
+//! let i = ImportantExcerpt::new(first_sentence);
+//! assert_eq!("Call me Keith", i.part());
+//! let announcement = lines.next().unwrap().trim();
+//! assert_eq!("Call me Keith", i.announce_and_return_part(announcement));
+//! assert_eq!("Some years ago", i.announce_and_return_announcement(announcement));
 //! ```
 
 /// It returns the longest strings.
@@ -67,11 +81,36 @@ pub struct ImportantExcerpt<'a> {
 }
 
 impl<'a> ImportantExcerpt<'a> {
+    /// `'a` lifetime parameter to `sentence` is required so that
+    /// it will be linked to the `ImportantExcerpt` type itself.
     pub fn new(sentence: &'a str) -> Self {
         Self { part: sentence }
     }
-    pub fn part(&self) -> &'a str {
+    /// We don't need to provide the lifetime annotation for the
+    /// return value, as it will get the &self lifetime annotation
+    /// through the lifetime annotation rule #3.
+    pub fn part(&self) -> &str {
         self.part
+    }
+    /// We don't need any lifetime annotations here, as `annoucement`
+    /// will get its own lifetime annotation, e.g. `'b` through the
+    /// first rule of the lifetime annotation elision rule and the
+    /// return value will get the `'a` lifetime annotation, same lifetime
+    /// with the `Self` type itself, through the third time lifetime
+    /// annotation elision rule.
+    pub fn announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+    /// This time, we need to give the explicit lifetime annotation to both
+    /// the second argument, `announcement` as well as the return value,
+    /// as the return value lifetime is not associated with the `Self` itself.
+    pub fn announce_and_return_announcement<'b>(
+        &self,
+        announcement: &'b str,
+    ) -> &'b str {
+        println!("Attention please: {}", announcement);
+        announcement
     }
 }
 
