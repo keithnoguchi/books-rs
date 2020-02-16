@@ -48,6 +48,18 @@
 //! );
 //! assert_eq!(detailed_notify(&tweet), detailed_notify2(&tweet));
 //! ```
+//!
+//! Returning types that implements traits
+//!
+//! ```
+//! use the_book::ch10::{summarizable, Summary};
+//!
+//! let summary = summarizable("sam i am", "yep, this is the tweet");
+//! assert_eq!(
+//!     String::from("yep, this is the tweet @sam i am"),
+//!     summary.summarize(),
+//! );
+//! ```
 use core::fmt::Debug;
 
 /// `impl` based `notify` is a syntax sugar of `notify2`, trait bounds.
@@ -67,6 +79,13 @@ pub fn detailed_notify2<T: Summary + Debug>(item: &T) -> String {
     format!("Breaking news!: {}\n{:?}", item.summarize(), *item)
 }
 
+pub fn summarizable(username: &str, content: &str) -> impl Summary {
+    Tweet {
+        username: username.to_string(),
+        content: content.to_string(),
+    }
+}
+
 /// Default trait implementation.
 pub trait Summary {
     fn summarize(&self) -> String {
@@ -74,6 +93,9 @@ pub trait Summary {
     }
 }
 
+/// [`Summary`] trait implementor.
+///
+/// [`summary`]: trait.Summary.html
 pub struct Article {
     pub headline: String,
     pub content: String,
@@ -82,6 +104,9 @@ pub struct Article {
 /// `Article` uses the default `summarize` method.
 impl Summary for Article {}
 
+/// [`Summary`] trait implementor.
+///
+/// [`summary`]: trait.Summary.html
 #[derive(Debug)]
 pub struct Tweet {
     pub username: String,
