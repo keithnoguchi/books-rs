@@ -60,25 +60,54 @@
 //!     summary.summarize(),
 //! );
 //! ```
-use core::fmt::Debug;
+//! Using trait bounds to conditionally implement methods
+//!
+//! ```
+//! use the_book::ch10::{Pair, Tweet};
+//!
+//! let p = Pair::new(1, 2);
+//! p.cmp_display();
+//!
+//! let p = Pair::new(
+//!     Tweet { username: "A".to_string(), content: "Some tweet".to_string() },
+//!     Tweet { username: "B".to_string(), content: "Another tweet".to_string() },
+//! );
+//! // you can't do this, as [`Tweet`] doesn't implement PartialOrd.
+//! // p.cmp_display();
+//! ```
+//! [`tweet`]: struct.Tweet.html
+use core::fmt::{Debug, Display};
 
-/// `impl` based `notify` is a syntax sugar of `notify2`, trait bounds.
+/// `impl` based `notify`, which is just a syntax sugar of [`notify2`].
+///
+/// [`notify2`]: fn.notify2.html
 pub fn notify(item: &impl Summary) -> String {
     format!("Breaking news!: {}", item.summarize())
 }
 
+/// trait bound [`notify`].
+///
+/// [`notify`]: fn.notify.html
 pub fn notify2<T: Summary>(item: &T) -> String {
     format!("Breaking news!: {}", item.summarize())
 }
 
+/// `impl` based `detailed_notify`, which is just a syntax sugar
+/// of [`detailed_notify2`].
+///
+/// [`detailed_notify2`]: fn.detailed_notify2.html
 pub fn detailed_notify(item: &(impl Summary + Debug)) -> String {
     format!("Breaking news!: {}\n{:?}", item.summarize(), *item)
 }
 
+/// trait bound [`detailed_notify`].
+///
+/// [`detailed_notify`]: fn.detailed_notify.html
 pub fn detailed_notify2<T: Summary + Debug>(item: &T) -> String {
     format!("Breaking news!: {}\n{:?}", item.summarize(), *item)
 }
 
+/// Trait generator, which returns trait implementor, example.
 pub fn summarizable(username: &str, content: &str) -> impl Summary {
     Tweet {
         username: username.to_string(),
@@ -116,5 +145,27 @@ pub struct Tweet {
 impl Summary for Tweet {
     fn summarize(&self) -> String {
         format!("{} @{}", self.content, self.username)
+    }
+}
+
+/// Conditional generic implementor with the trait bound.
+pub struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    pub fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    pub fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
     }
 }

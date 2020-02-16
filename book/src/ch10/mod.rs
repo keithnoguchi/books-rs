@@ -7,4 +7,4 @@ pub mod sec02;
 
 pub use sec01::{largest, Point};
 pub use sec02::{detailed_notify, detailed_notify2, notify, notify2, summarizable};
-pub use sec02::{Article, Summary, Tweet};
+pub use sec02::{Article, Pair, Summary, Tweet};
