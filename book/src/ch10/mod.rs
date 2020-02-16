@@ -9,4 +9,4 @@ pub mod sec03;
 pub use sec01::{largest, Point};
 pub use sec02::{detailed_notify, detailed_notify2, notify, notify2, summarizable};
 pub use sec02::{Article, Pair, Summary, Tweet};
-pub use sec03::longest;
+pub use sec03::{longest, ImportantExcerpt};

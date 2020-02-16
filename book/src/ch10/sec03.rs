@@ -29,6 +29,19 @@
 //!     );
 //! }
 //! ```
+//!
+//! Lifetime annotations in struct.
+//!
+//! ```
+//! use the_book::ch10::ImportantExcerpt;
+//!
+//! let novel = String::from("Call me Ishmael.  Some years ago..."); // 'a -+
+//! let mut lines = novel.split('.');                                //     |
+//! let first_sentence = lines.next().unwrap();                      //     |
+//! assert_eq!("Call me Ishmael", first_sentence);                   //     |
+//! let i = ImportantExcerpt::new(first_sentence);                   //     |
+//! assert_eq!("Call me Ishmael", i.part());                         //  <--+
+//! ```
 
 /// It returns the longest strings.
 pub fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
@@ -36,5 +49,19 @@ pub fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
         x
     } else {
         y
+    }
+}
+
+/// Lifetime annotations example in structures.
+pub struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+impl<'a> ImportantExcerpt<'a> {
+    pub fn new(sentence: &'a str) -> Self {
+        Self { part: sentence }
+    }
+    pub fn part(&self) -> &'a str {
+        self.part
     }
 }
