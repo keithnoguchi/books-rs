@@ -42,6 +42,15 @@
 //! let i = ImportantExcerpt::new(first_sentence);                   //     |
 //! assert_eq!("Call me Ishmael", i.part());                         //  <--+
 //! ```
+//!
+//! Lifetime Elision
+//!
+//! ```
+//! use the_book::ch10::first_word;
+//!
+//! let sentence = String::from("This is a sentence."); // 'a -+
+//! assert_eq!("This", first_word(sentence.as_str()));  //  <--+
+//! ```
 
 /// It returns the longest strings.
 pub fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
@@ -64,4 +73,18 @@ impl<'a> ImportantExcerpt<'a> {
     pub fn part(&self) -> &'a str {
         self.part
     }
+}
+
+/// `first_word` doesn't need the lifetime annotation because
+/// the lifetime elision rule will put `'a` to both the argument
+/// and the return value through the lifetime elision rule #1 and #2.
+pub fn first_word(s: &str) -> &str {
+   let bytes = s.as_bytes();
+
+   for (i, &item) in bytes.iter().enumerate() {
+       if item == b' ' {
+           return &s[0..i];
+       }
+   }
+   &s[..]
 }
