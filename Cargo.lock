@@ -342,6 +342,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mio-book"
+version = "0.1.0"
+dependencies = [
+ "mio 0.6.20 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "mio-uds"
 version = "0.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
