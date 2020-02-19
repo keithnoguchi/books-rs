@@ -1,6 +1,6 @@
 //! Validating References with [Lifetimes]
 //!
-//! [lifetime]: https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
+//! [lifetimes]: https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html
 //!
 //! # Examples
 //!
