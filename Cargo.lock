@@ -139,6 +139,7 @@ name = "flatbuf-tutorial"
 version = "0.1.0"
 dependencies = [
  "flatbuffers 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "once_cell 1.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

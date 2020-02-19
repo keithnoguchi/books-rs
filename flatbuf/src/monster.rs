@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
+use flatbuffers::{FlatBufferBuilder, WIPOffset};
+
 use crate::model::my_game::sample;
 use crate::model::my_game::sample::{Color, Equipment, MonsterArgs, Vec3, Weapon, WeaponArgs};
-use flatbuffers::{FlatBufferBuilder, WIPOffset};
 
 pub struct Monster;
 
@@ -64,6 +65,7 @@ impl Monster {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::BuilderPool;
     #[test]
     fn builder_with_different_capacities() {
         let capacities = [1usize, 16, 32, 64, 128, 256, 1024, 2048, 4096];
@@ -73,7 +75,7 @@ mod tests {
     }
     #[test]
     fn serialize_sword_and_axe() {
-        let mut b = FlatBufferBuilder::new();
+        let mut b = BuilderPool::get();
         let name = b.create_string("Sword");
         let _sword = Weapon::create(
             &mut b,
@@ -93,7 +95,7 @@ mod tests {
     }
     #[test]
     fn serialize_weapons() {
-        let mut b = FlatBufferBuilder::new_with_capacity(1);
+        let mut b = BuilderPool::get();
         let name = b.create_string("Sword");
         let sword = Weapon::create(
             &mut b,
@@ -114,14 +116,14 @@ mod tests {
     }
     #[test]
     fn serialize_monster() {
-        let mut builder = FlatBufferBuilder::new_with_capacity(1);
+        let mut builder = BuilderPool::get();
         let orc = super::Monster::create(&mut builder, "ore");
         builder.finish(orc, None);
     }
     #[test]
     fn serialize_and_deserialize_monster() {
         use super::sample::get_root_as_monster;
-        let mut builder = FlatBufferBuilder::new();
+        let mut builder = BuilderPool::get();
         let godzilla = super::Monster::create(&mut builder, "godzilla");
         builder.finish(godzilla, None);
         let buf = builder.finished_data(); // Of type `&[u8]`
@@ -136,7 +138,7 @@ mod tests {
         use super::sample::get_root_as_monster;
         let monsters = ["godzilla", "minilla", "ore"];
         for name in &monsters {
-            let mut builder = FlatBufferBuilder::new();
+            let mut builder = BuilderPool::get();
             let monster = super::Monster::create(&mut builder, name);
             builder.finish(monster, None);
             let buf = builder.finished_data();
