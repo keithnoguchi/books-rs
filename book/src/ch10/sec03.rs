@@ -105,10 +105,7 @@ impl<'a> ImportantExcerpt<'a> {
     /// This time, we need to give the explicit lifetime annotation to both
     /// the second argument, `announcement` as well as the return value,
     /// as the return value lifetime is not associated with the `Self` itself.
-    pub fn announce_and_return_announcement<'b>(
-        &self,
-        announcement: &'b str,
-    ) -> &'b str {
+    pub fn announce_and_return_announcement<'b>(&self, announcement: &'b str) -> &'b str {
         println!("Attention please: {}", announcement);
         announcement
     }
@@ -118,12 +115,12 @@ impl<'a> ImportantExcerpt<'a> {
 /// the lifetime elision rule will put `'a` to both the argument
 /// and the return value through the lifetime elision rule #1 and #2.
 pub fn first_word(s: &str) -> &str {
-   let bytes = s.as_bytes();
+    let bytes = s.as_bytes();
 
-   for (i, &item) in bytes.iter().enumerate() {
-       if item == b' ' {
-           return &s[0..i];
-       }
-   }
-   &s[..]
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    &s[..]
 }
