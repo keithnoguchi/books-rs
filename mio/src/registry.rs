@@ -5,20 +5,34 @@
 //! # Examples
 //!
 //! ```
-//! use std::{
-//!     net::{SocketAddr, TcpListener},
-//!     time::{Duration, Instant},
-//! };
+//! use std::net::{SocketAddr, TcpListener};
 //! use mio::{
-//!     {Events, Poll, Token},
 //!     net::TcpStream,
+//!     Events, Interest, Poll, Token,
 //! };
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let addr: SocketAddr = "127.0.0.1:0".parse()?;
+//! let server = TcpListener::bind(addr)?;
+//!
 //! let mut poll = Poll::new()?;
 //!
-//! let address: SocketAddr = "127.0.0.1:0".parse()?;
-//! let listener = TcpListener::bind(address)?;
-//! let mut socket = TcpStream::connect(&listener.local_addr()?);
+//! let mut stream = TcpStream::connect(server.local_addr()?)?;
+//! poll.registry()
+//!     .register(&mut stream, Token(0), Interest::READABLE | Interest::WRITABLE)?;
+//! let mut events = Events::with_capacity(1024);
+//! loop {
+//!     poll.poll(&mut events, None)?;
+//!     for event in &events {
+//!         match event.token() {
+//!             Token(0) => if event.is_writable() {
+//!                 println!("{:?} is writable", &stream);
+//!                 return Ok(());
+//!             }
+//!             Token(token) => println!("unknown token: {}", token),
+//!         }
+//!     }
+//! }
 //! #     Ok(())
 //! # }
+//! ```
