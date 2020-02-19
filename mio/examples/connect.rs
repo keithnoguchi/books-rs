@@ -3,7 +3,7 @@
 //! [mio]: https://lib.rs/mio/latest/mio/index.html
 use std::{
     error::Error,
-    net::{TcpListener, SocketAddr},
+    net::{SocketAddr, TcpListener},
     time::Duration,
 };
 
@@ -17,8 +17,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut stream = TcpStream::connect(server.local_addr()?)?;
 
     let mut poll = Poll::new()?;
-    poll.registry()
-        .register(&mut stream, Token(0), Interest::READABLE | Interest::WRITABLE)?;
+    poll.registry().register(
+        &mut stream,
+        Token(0),
+        Interest::READABLE | Interest::WRITABLE,
+    )?;
     loop {
         poll.poll(&mut events, Some(Duration::from_millis(500)))?;
         if events.is_empty() {
