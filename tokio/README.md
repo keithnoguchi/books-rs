@@ -30,7 +30,7 @@ Examples from [the Tokio Book].
 
 - [The Tokio Book]: Tokio 0.2 Book!
 - [The Async Book]: Asynchronous Programming in Rust
-- [Tokio Getting Started Buide]: Original Tokio 0.1 Guide
+- [Tokio Getting Started Guide]: Original Tokio 0.1 Guide
 - [Crate futures]:
   - [Crate futures v0.3]: Abstructions for Asynchronous Programming
   - [Crate futures v0.1]: Zero-cost Futures in Rust
