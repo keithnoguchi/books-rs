@@ -4,24 +4,27 @@
 use std::{
     error::Error,
     net::{TcpListener, SocketAddr},
-};
-use mio::{
-    Events, Interest, Poll, Token,
-    net::TcpStream,
+    time::Duration,
 };
 
+use mio::{net::TcpStream, Events, Interest, Poll, Token};
+
 fn main() -> Result<(), Box<dyn Error>> {
-    let addr: SocketAddr = "127.0.0.1:0".parse()?;
+    let addr: SocketAddr = "[::1]:0".parse()?;
     let server = TcpListener::bind(&addr)?;
 
     let mut events = Events::with_capacity(1024);
     let mut stream = TcpStream::connect(server.local_addr()?)?;
-    let mut poll = Poll::new()?;
 
+    let mut poll = Poll::new()?;
     poll.registry()
         .register(&mut stream, Token(0), Interest::READABLE | Interest::WRITABLE)?;
     loop {
-        poll.poll(&mut events, None)?;
+        poll.poll(&mut events, Some(Duration::from_millis(500)))?;
+        if events.is_empty() {
+            println!("timed out");
+            return Ok(());
+        }
         for event in &events {
             match event.token() {
                 Token(0) => {

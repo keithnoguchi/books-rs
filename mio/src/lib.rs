@@ -6,10 +6,8 @@
 //!
 //! ```
 //! use std::net::{SocketAddr, TcpListener};
-//! use mio::{
-//!     net::TcpStream,
-//!     Events, Interest, Poll, Token,
-//! };
+//!
+//! use mio::{net::TcpStream, Events, Interest, Poll, Token};
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! // Dummy server.
@@ -18,7 +16,6 @@
 //!
 //! // Client event loop.
 //! let mut poll = Poll::new()?;
-//!
 //! let mut stream = TcpStream::connect(server.local_addr()?)?;
 //! poll.registry()
 //!     .register(&mut stream, Token(0), Interest::READABLE | Interest::WRITABLE)?;
@@ -28,9 +25,14 @@
 //!     poll.poll(&mut events, None)?;
 //!     for event in &events {
 //!         match event.token() {
-//!             Token(0) => if event.is_writable() {
-//!                 println!("{:?} is writable", &stream);
-//!                 return Ok(());
+//!             Token(0) => {
+//!                 if event.is_writable() {
+//!                     println!("{:?} is writable", &stream);
+//!                     return Ok(());
+//!                 }
+//!                 if event.is_readable() {
+//!                     println!("{:?} is readable", &stream);
+//!                 }
 //!             }
 //!             Token(token) => println!("unknown token: {}", token),
 //!         }
