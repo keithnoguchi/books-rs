@@ -1,11 +1,28 @@
 //! flatbuffer builder pool benchmark
+//!
+//! # Examples
+//!
+//! ```sh
+//! $ cargo bench --bench pool -j 2
+//! Finished bench [optimized] target(s) in 0.02s
+//! Running /home/kei/git/books-rs/target/release/deps/pool-afa691c94dbb07fb
+//!
+//! running 5 tests
+//! test pool_monster_dynamic ... bench:       5,762 ns/iter (+/- 1,009)
+//! test pool_monster_mutex   ... bench:       5,389 ns/iter (+/- 1,714)
+//! test pool_monster_v1      ... bench:       5,384 ns/iter (+/- 1,285)
+//! test pool_monster_v2      ... bench:       5,419 ns/iter (+/- 1,043)
+//! test pool_monster_v3      ... bench:       5,328 ns/iter (+/- 1,581)
+//!
+//! test result: ok. 0 passed; 0 failed; 0 ignored; 5 measured; 0 filtered out
+//! ```
 #![feature(test)]
 extern crate test;
 
 use std::sync::Mutex;
 
 use flatbuf_tutorial::monster::Monster;
-use flatbuf_tutorial::pool::{v1, v3};
+use flatbuf_tutorial::pool::{v1, v2, v3};
 use flatbuffers::FlatBufferBuilder;
 
 use test::Bencher;
@@ -35,6 +52,15 @@ fn pool_monster_mutex(b: &mut Bencher) {
 fn pool_monster_v1(b: &mut Bencher) {
     b.iter(|| {
         let mut b = v1::BuilderPool::get();
+        let monster = Monster::create(&mut b, "monster");
+        b.finish(monster, None);
+    });
+}
+
+#[bench]
+fn pool_monster_v2(b: &mut Bencher) {
+    b.iter(|| {
+        let mut b = v2::BuilderPool::get();
         let monster = Monster::create(&mut b, "monster");
         b.finish(monster, None);
     });
