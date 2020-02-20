@@ -8,7 +8,7 @@ pub struct Monster;
 
 impl Monster {
     #[allow(dead_code)]
-    fn create<'b>(b: &mut FlatBufferBuilder<'b>, name: &str) -> WIPOffset<sample::Monster<'b>> {
+    pub fn create<'b>(b: &mut FlatBufferBuilder<'b>, name: &str) -> WIPOffset<sample::Monster<'b>> {
         let name1 = b.create_string("Axe");
         let name2 = b.create_string("Sword");
         println!("axe name: {:?}", name1);
