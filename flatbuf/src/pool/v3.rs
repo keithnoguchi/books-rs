@@ -1,9 +1,7 @@
-//! flatbuffer builder pool
-use std::{
-    ops::{Deref, DerefMut},
-    sync::Mutex,
-};
+//! crossbeam_queue::ArrayQueue based flatbuffer builder pool
+use std::ops::{Deref, DerefMut};
 
+use crossbeam_queue::ArrayQueue;
 use flatbuffers::FlatBufferBuilder;
 use once_cell::sync::Lazy;
 
@@ -16,7 +14,7 @@ const BUFFER_CAPACITY: usize = 64;
 /// # Examples
 ///
 /// ```
-/// use flatbuf_tutorial::pool::v1::BuilderPool;
+/// use flatbuf_tutorial::pool::v3::BuilderPool;
 ///
 /// let mut b = BuilderPool::get();
 /// let name = b.create_string("something fun");
@@ -30,10 +28,9 @@ impl BuilderPool {
     ///
     /// [`builder`]: struct.Builder.html
     pub fn get() -> Builder {
-        let mut pool = POOL.lock().unwrap();
-        match pool.pop() {
-            Some(builder) => builder,
-            None => Builder::new(),
+        match POOL.pop() {
+            Ok(builder) => builder,
+            Err(_) => Builder::new(),
         }
     }
 }
@@ -72,18 +69,18 @@ impl Drop for Builder {
             // resetting the builder outside of the lock
             // to reduce the pool manipulation contention.
             builder.reset();
-            let mut pool = POOL.lock().unwrap();
-            if pool.len() < MAX_POOL_SIZE {
-                pool.push(Builder(Some(builder)))
+            if let Err(_err) = POOL.push(Builder(Some(builder))) {
+                // pool reaches to the MAX_POOL_SIZE.
+                // just drop the builder.
             }
         }
     }
 }
 
-static POOL: Lazy<Mutex<Vec<Builder>>> = Lazy::new(|| {
-    let mut pool = Vec::new();
+static POOL: Lazy<ArrayQueue<Builder>> = Lazy::new(|| {
+    let pool = ArrayQueue::new(MAX_POOL_SIZE);
     for _ in { 0..INIT_POOL_SIZE } {
-        pool.push(Builder::new());
+        pool.push(Builder::new()).unwrap();
     }
-    Mutex::new(pool)
+    pool
 });

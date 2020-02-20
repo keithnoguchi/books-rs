@@ -1,3 +1,4 @@
 //! flatbuffer builder pool
 pub mod v1;
-pub use v1::BuilderPool;
+pub mod v3;
+pub use v3::BuilderPool;
