@@ -5,10 +5,6 @@ use flatbuffers::FlatBufferBuilder;
 use once_cell::sync::Lazy;
 use parking_lot::Mutex;
 
-const INIT_POOL_SIZE: usize = 32;
-const MAX_POOL_SIZE: usize = 1_024;
-const BUFFER_CAPACITY: usize = 64;
-
 /// `FlatBufferBuilder` pool.
 ///
 /// # Examples
@@ -50,7 +46,7 @@ impl Builder {
 impl Default for Builder {
     #[inline]
     fn default() -> Self {
-        Self(Some(FlatBufferBuilder::new_with_capacity(BUFFER_CAPACITY)))
+        Self(Some(FlatBufferBuilder::new_with_capacity(buffer_capacity())))
     }
 }
 
@@ -77,16 +73,68 @@ impl Drop for Builder {
             // to reduce the pool manipulation contention.
             builder.reset();
             let mut pool = POOL.lock();
-            if pool.len() < MAX_POOL_SIZE {
+            if pool.len() < max_pool_size() {
                 pool.push(Builder(Some(builder)))
             }
         }
     }
 }
 
+static mut MIN_POOL_SIZE: usize = 32;
+static mut MAX_POOL_SIZE: usize = 1_024;
+static mut BUFFER_CAPACITY: usize = 64;
+
+#[inline]
+pub fn init_min_pool_size(size: usize) {
+    unsafe {
+        MIN_POOL_SIZE = size;
+        if MAX_POOL_SIZE < MIN_POOL_SIZE {
+            MAX_POOL_SIZE = MIN_POOL_SIZE;
+        }
+    }
+}
+
+#[inline]
+pub fn init_max_pool_size(size: usize) {
+    unsafe {
+        MAX_POOL_SIZE = size;
+        if MIN_POOL_SIZE > MAX_POOL_SIZE {
+            MIN_POOL_SIZE = MAX_POOL_SIZE;
+        }
+    }
+}
+
+#[inline]
+pub fn init_buffer_capacity(capacity: usize) {
+    unsafe {
+        BUFFER_CAPACITY = capacity;
+    }
+}
+
+#[inline]
+fn min_pool_size() -> usize {
+    unsafe {
+        MIN_POOL_SIZE
+    }
+}
+
+#[inline]
+fn max_pool_size() -> usize {
+    unsafe {
+        MAX_POOL_SIZE
+    }
+}
+
+#[inline]
+fn buffer_capacity() -> usize {
+    unsafe {
+        BUFFER_CAPACITY
+    }
+}
+
 static POOL: Lazy<Mutex<Vec<Builder>>> = Lazy::new(|| {
     let mut pool = Vec::new();
-    for _ in { 0..INIT_POOL_SIZE } {
+    for _ in { 0..min_pool_size() } {
         pool.push(Builder::new());
     }
     Mutex::new(pool)

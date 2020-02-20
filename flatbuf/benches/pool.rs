@@ -26,6 +26,8 @@ use parking_lot::Mutex;
 
 use test::Bencher;
 
+const MIN_POOL_SIZE: usize = 4;
+const MAX_POOL_SIZE: usize = 64;
 const BUFFER_CAPACITY: usize = 64;
 
 #[bench]
@@ -49,6 +51,9 @@ fn pool_monster_mutex(b: &mut Bencher) {
 
 #[bench]
 fn pool_monster_v1(b: &mut Bencher) {
+    v1::init_min_pool_size(MIN_POOL_SIZE);
+    v1::init_max_pool_size(MAX_POOL_SIZE);
+    v1::init_buffer_capacity(BUFFER_CAPACITY);
     b.iter(|| {
         let mut b = v1::BuilderPool::get();
         let monster = Monster::create(&mut b, "monster");
@@ -58,6 +63,9 @@ fn pool_monster_v1(b: &mut Bencher) {
 
 #[bench]
 fn pool_monster_v2(b: &mut Bencher) {
+    v2::init_min_pool_size(MIN_POOL_SIZE);
+    v2::init_max_pool_size(MAX_POOL_SIZE);
+    v2::init_buffer_capacity(BUFFER_CAPACITY);
     b.iter(|| {
         let mut b = v2::BuilderPool::get();
         let monster = Monster::create(&mut b, "monster");
@@ -67,6 +75,9 @@ fn pool_monster_v2(b: &mut Bencher) {
 
 #[bench]
 fn pool_monster_v3(b: &mut Bencher) {
+    v3::init_min_pool_size(MIN_POOL_SIZE);
+    v3::init_max_pool_size(MAX_POOL_SIZE);
+    v3::init_buffer_capacity(BUFFER_CAPACITY);
     b.iter(|| {
         let mut b = v3::BuilderPool::get();
         let monster = Monster::create(&mut b, "monster");

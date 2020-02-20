@@ -5,10 +5,6 @@ use crossbeam_queue::ArrayQueue;
 use flatbuffers::FlatBufferBuilder;
 use once_cell::sync::Lazy;
 
-const INIT_POOL_SIZE: usize = 32;
-const MAX_POOL_SIZE: usize = 1_024;
-const BUFFER_CAPACITY: usize = 64;
-
 /// `FlatBufferBuilder` pool.
 ///
 /// # Examples
@@ -49,7 +45,7 @@ impl Builder {
 impl Default for Builder {
     #[inline]
     fn default() -> Self {
-        Self(Some(FlatBufferBuilder::new_with_capacity(BUFFER_CAPACITY)))
+        Self(Some(FlatBufferBuilder::new_with_capacity(buffer_capacity())))
     }
 }
 
@@ -72,20 +68,69 @@ impl Drop for Builder {
     #[inline]
     fn drop(&mut self) {
         if let Some(mut builder) = self.0.take() {
-            // resetting the builder outside of the lock
-            // to reduce the pool manipulation contention.
             builder.reset();
             if let Err(_err) = POOL.push(Builder(Some(builder))) {
                 // pool reaches to the MAX_POOL_SIZE.
-                // just drop the builder.
             }
         }
     }
 }
 
+static mut MIN_POOL_SIZE: usize = 32;
+static mut MAX_POOL_SIZE: usize = 1_024;
+static mut BUFFER_CAPACITY: usize = 64;
+
+#[inline]
+pub fn init_min_pool_size(size: usize) {
+    unsafe {
+        MIN_POOL_SIZE = size;
+        if MAX_POOL_SIZE < MIN_POOL_SIZE {
+            MAX_POOL_SIZE = MIN_POOL_SIZE;
+        }
+    }
+}
+
+#[inline]
+pub fn init_max_pool_size(size: usize) {
+    unsafe {
+        MAX_POOL_SIZE = size;
+        if MIN_POOL_SIZE > MAX_POOL_SIZE {
+            MIN_POOL_SIZE = MAX_POOL_SIZE;
+        }
+    }
+}
+
+#[inline]
+pub fn init_buffer_capacity(capacity: usize) {
+    unsafe {
+        BUFFER_CAPACITY = capacity;
+    }
+}
+
+#[inline]
+fn min_pool_size() -> usize {
+    unsafe {
+        MIN_POOL_SIZE
+    }
+}
+
+#[inline]
+fn max_pool_size() -> usize {
+    unsafe {
+        MAX_POOL_SIZE
+    }
+}
+
+#[inline]
+fn buffer_capacity() -> usize {
+    unsafe {
+        BUFFER_CAPACITY
+    }
+}
+
 static POOL: Lazy<ArrayQueue<Builder>> = Lazy::new(|| {
-    let pool = ArrayQueue::new(MAX_POOL_SIZE);
-    for _ in { 0..INIT_POOL_SIZE } {
+    let pool = ArrayQueue::new(max_pool_size());
+    for _ in { 0..min_pool_size() } {
         pool.push(Builder::new()).unwrap();
     }
     pool
