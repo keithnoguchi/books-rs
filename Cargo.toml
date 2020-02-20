@@ -14,4 +14,5 @@ members = [
    "stjepang",
    "crossbeam",
    "mio",
+   "rio",
 ]
