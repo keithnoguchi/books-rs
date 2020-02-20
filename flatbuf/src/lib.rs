@@ -3,4 +3,4 @@ pub mod model;
 pub mod monster;
 pub mod pool;
 pub use monster::Monster;
-pub use pool::BuilderPool;
+pub use pool::FlatBufferBuilderPool;

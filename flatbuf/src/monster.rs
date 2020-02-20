@@ -65,7 +65,7 @@ impl Monster {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::BuilderPool;
+    use crate::FlatBufferBuilderPool;
     #[test]
     fn builder_with_different_capacities() {
         let capacities = [1usize, 16, 32, 64, 128, 256, 1024, 2048, 4096];
@@ -75,7 +75,7 @@ mod tests {
     }
     #[test]
     fn serialize_sword_and_axe() {
-        let mut b = BuilderPool::get();
+        let mut b = FlatBufferBuilderPool::get();
         let name = b.create_string("Sword");
         let _sword = Weapon::create(
             &mut b,
@@ -95,7 +95,7 @@ mod tests {
     }
     #[test]
     fn serialize_weapons() {
-        let mut b = BuilderPool::get();
+        let mut b = FlatBufferBuilderPool::get();
         let name = b.create_string("Sword");
         let sword = Weapon::create(
             &mut b,
@@ -116,14 +116,14 @@ mod tests {
     }
     #[test]
     fn serialize_monster() {
-        let mut builder = BuilderPool::get();
+        let mut builder = FlatBufferBuilderPool::get();
         let orc = super::Monster::create(&mut builder, "ore");
         builder.finish(orc, None);
     }
     #[test]
     fn serialize_and_deserialize_monster() {
         use super::sample::get_root_as_monster;
-        let mut builder = BuilderPool::get();
+        let mut builder = FlatBufferBuilderPool::get();
         let godzilla = super::Monster::create(&mut builder, "godzilla");
         builder.finish(godzilla, None);
         let buf = builder.finished_data(); // Of type `&[u8]`
@@ -138,7 +138,7 @@ mod tests {
         use super::sample::get_root_as_monster;
         let monsters = ["godzilla", "minilla", "ore"];
         for name in &monsters {
-            let mut builder = BuilderPool::get();
+            let mut builder = FlatBufferBuilderPool::get();
             let monster = super::Monster::create(&mut builder, name);
             builder.finish(monster, None);
             let buf = builder.finished_data();
