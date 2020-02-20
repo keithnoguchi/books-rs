@@ -27,6 +27,7 @@ impl BuilderPool {
     /// the pool, or returns the newly allocated one.
     ///
     /// [`builder`]: struct.Builder.html
+    #[inline]
     pub fn get() -> Builder {
         match POOL.pop() {
             Ok(builder) => builder,
@@ -39,12 +40,14 @@ impl BuilderPool {
 pub struct Builder(Option<FlatBufferBuilder<'static>>);
 
 impl Builder {
+    #[inline]
     fn new() -> Self {
         Self::default()
     }
 }
 
 impl Default for Builder {
+    #[inline]
     fn default() -> Self {
         Self(Some(FlatBufferBuilder::new_with_capacity(BUFFER_CAPACITY)))
     }
@@ -52,18 +55,21 @@ impl Default for Builder {
 
 impl Deref for Builder {
     type Target = FlatBufferBuilder<'static>;
+    #[inline]
     fn deref(&self) -> &Self::Target {
         self.0.as_ref().unwrap()
     }
 }
 
 impl DerefMut for Builder {
+    #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.0.as_mut().unwrap()
     }
 }
 
 impl Drop for Builder {
+    #[inline]
     fn drop(&mut self) {
         if let Some(mut builder) = self.0.take() {
             // resetting the builder outside of the lock
