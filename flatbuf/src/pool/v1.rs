@@ -1,4 +1,4 @@
-//! flatbuffer builder pool
+//! `parking_log::Mutex<Vec>` based flatbuffer builder pool
 use std::ops::{Deref, DerefMut};
 
 use flatbuffers::FlatBufferBuilder;
@@ -18,39 +18,130 @@ use parking_lot::Mutex;
 /// ```
 pub struct BuilderPool;
 
+static mut INIT_POOL_SIZE: usize = 32;
+static mut MAX_POOL_SIZE: usize = 1_024;
+static mut BUFFER_CAPACITY: usize = 64;
+
 impl BuilderPool {
-    /// get() returns the pre-allocated [`Builder`] from
-    /// the pool, or returns the newly allocated one.
+    /// Get the `FlatBufferBuilder` from the global pool.
     ///
-    /// [`builder`]: struct.Builder.html
+    /// # Examples
+    ///
+    /// ```
+    /// use flatbuf_tutorial::pool::v1::BuilderPool;
+    ///
+    /// let mut b = BuilderPool::get();
+    /// let name = b.create_string("something fun");
+    /// b.finish(name, None);
+    /// ```
     #[inline]
-    pub fn get() -> Builder {
+    pub fn get() -> GlobalBuilder {
         let mut pool = POOL.lock();
         match pool.pop() {
             Some(builder) => builder,
-            None => Builder::new(),
+            None => GlobalBuilder::new(),
+        }
+    }
+
+    /// Change the initial global pool size.
+    ///
+    /// It should be called before calling the first `get`
+    /// function otherwise the change won't applicable.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use flatbuf_tutorial::pool::v1::BuilderPool;
+    ///
+    /// BuilderPool::init_pool_size(0);
+    /// let mut b = BuilderPool::get();
+    /// let name = b.create_string("something fun");
+    /// b.finish(name, None);
+    /// ```
+    #[inline]
+    pub fn init_pool_size(size: usize) {
+        unsafe {
+            INIT_POOL_SIZE = size;
+            if MAX_POOL_SIZE < size {
+                MAX_POOL_SIZE = size;
+            }
+        }
+    }
+
+    /// Change the maximum global pool size.
+    ///
+    /// It should be called before calling the first `get`
+    /// function otherwise the change won't applicable.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use flatbuf_tutorial::pool::v1::BuilderPool;
+    ///
+    /// BuilderPool::max_pool_size(4);
+    /// let mut b = BuilderPool::get();
+    /// let name = b.create_string("something fun");
+    /// b.finish(name, None);
+    /// ```
+    #[inline]
+    pub fn max_pool_size(size: usize) {
+        unsafe {
+            MAX_POOL_SIZE = size;
+            if INIT_POOL_SIZE > size {
+                INIT_POOL_SIZE = size;
+            }
+        }
+    }
+
+    /// Change the initial `FlatBufferBuilder` buffer size.
+    ///
+    /// The value only applicable for the newly allocated
+    /// `FlatBufferBuilder` instances.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use flatbuf_tutorial::pool::v1::BuilderPool;
+    ///
+    /// BuilderPool::buffer_capacity(64);
+    /// let mut b = BuilderPool::get();
+    /// let name = b.create_string("something fun");
+    /// b.finish(name, None);
+    /// ```
+    #[inline]
+    pub fn buffer_capacity(capacity: usize) {
+        unsafe {
+            BUFFER_CAPACITY = capacity;
         }
     }
 }
 
-/// `Builder` encapsulates the `FlatBufferBuilder` instance.
-pub struct Builder(Option<FlatBufferBuilder<'static>>);
+/// `GlobalBuilder` encapsulates the `FlatBufferBuilder` instance
+/// maintained in the global pool.
+pub struct GlobalBuilder(Option<FlatBufferBuilder<'static>>);
 
-impl Builder {
+impl GlobalBuilder {
     #[inline]
     fn new() -> Self {
         Self::default()
     }
-}
 
-impl Default for Builder {
     #[inline]
-    fn default() -> Self {
-        Self(Some(FlatBufferBuilder::new_with_capacity(buffer_capacity())))
+    fn capacity() -> usize {
+        unsafe { BUFFER_CAPACITY }
     }
 }
 
-impl Deref for Builder {
+impl Default for GlobalBuilder {
+    #[inline]
+    fn default() -> Self {
+        Self(Some(
+            FlatBufferBuilder::new_with_capacity(Self::capacity()),
+        ))
+    }
+}
+
+impl Deref for GlobalBuilder {
     type Target = FlatBufferBuilder<'static>;
     #[inline]
     fn deref(&self) -> &Self::Target {
@@ -58,84 +149,34 @@ impl Deref for Builder {
     }
 }
 
-impl DerefMut for Builder {
+impl DerefMut for GlobalBuilder {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.0.as_mut().unwrap()
     }
 }
 
-impl Drop for Builder {
+impl Drop for GlobalBuilder {
     #[inline]
     fn drop(&mut self) {
         if let Some(mut builder) = self.0.take() {
             // resetting the builder outside of the lock
             // to reduce the pool manipulation contention.
             builder.reset();
+            let max = unsafe { MAX_POOL_SIZE };
             let mut pool = POOL.lock();
-            if pool.len() < max_pool_size() {
-                pool.push(Builder(Some(builder)))
+            if pool.len() < max {
+                pool.push(GlobalBuilder(Some(builder)))
             }
         }
     }
 }
 
-static mut MIN_POOL_SIZE: usize = 32;
-static mut MAX_POOL_SIZE: usize = 1_024;
-static mut BUFFER_CAPACITY: usize = 64;
-
-#[inline]
-pub fn init_min_pool_size(size: usize) {
-    unsafe {
-        MIN_POOL_SIZE = size;
-        if MAX_POOL_SIZE < MIN_POOL_SIZE {
-            MAX_POOL_SIZE = MIN_POOL_SIZE;
-        }
-    }
-}
-
-#[inline]
-pub fn init_max_pool_size(size: usize) {
-    unsafe {
-        MAX_POOL_SIZE = size;
-        if MIN_POOL_SIZE > MAX_POOL_SIZE {
-            MIN_POOL_SIZE = MAX_POOL_SIZE;
-        }
-    }
-}
-
-#[inline]
-pub fn init_buffer_capacity(capacity: usize) {
-    unsafe {
-        BUFFER_CAPACITY = capacity;
-    }
-}
-
-#[inline]
-fn min_pool_size() -> usize {
-    unsafe {
-        MIN_POOL_SIZE
-    }
-}
-
-#[inline]
-fn max_pool_size() -> usize {
-    unsafe {
-        MAX_POOL_SIZE
-    }
-}
-
-#[inline]
-fn buffer_capacity() -> usize {
-    unsafe {
-        BUFFER_CAPACITY
-    }
-}
-
-static POOL: Lazy<Mutex<Vec<Builder>>> = Lazy::new(|| {
+static POOL: Lazy<Mutex<Vec<GlobalBuilder>>> = Lazy::new(|| {
+    let init = unsafe { INIT_POOL_SIZE };
     let mut pool = Vec::new();
-    for _ in { 0..min_pool_size() } {
-        pool.push(Builder::new());
+    for _ in { 0..init } {
+        pool.push(GlobalBuilder::new());
     }
     Mutex::new(pool)
 });
