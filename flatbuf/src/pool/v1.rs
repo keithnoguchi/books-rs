@@ -1,11 +1,9 @@
 //! flatbuffer builder pool
-use std::{
-    ops::{Deref, DerefMut},
-    sync::Mutex,
-};
+use std::ops::{Deref, DerefMut};
 
 use flatbuffers::FlatBufferBuilder;
 use once_cell::sync::Lazy;
+use parking_lot::Mutex;
 
 const INIT_POOL_SIZE: usize = 32;
 const MAX_POOL_SIZE: usize = 1_024;
@@ -30,7 +28,7 @@ impl BuilderPool {
     ///
     /// [`builder`]: struct.Builder.html
     pub fn get() -> Builder {
-        let mut pool = POOL.lock().unwrap();
+        let mut pool = POOL.lock();
         match pool.pop() {
             Some(builder) => builder,
             None => Builder::new(),
@@ -72,7 +70,7 @@ impl Drop for Builder {
             // resetting the builder outside of the lock
             // to reduce the pool manipulation contention.
             builder.reset();
-            let mut pool = POOL.lock().unwrap();
+            let mut pool = POOL.lock();
             if pool.len() < MAX_POOL_SIZE {
                 pool.push(Builder(Some(builder)))
             }

@@ -19,11 +19,10 @@
 #![feature(test)]
 extern crate test;
 
-use std::sync::Mutex;
-
 use flatbuf_tutorial::monster::Monster;
 use flatbuf_tutorial::pool::{v1, v2, v3};
 use flatbuffers::FlatBufferBuilder;
+use parking_lot::Mutex;
 
 use test::Bencher;
 
@@ -42,7 +41,7 @@ fn pool_monster_dynamic(b: &mut Bencher) {
 fn pool_monster_mutex(b: &mut Bencher) {
     let builder = Mutex::new(FlatBufferBuilder::new_with_capacity(BUFFER_CAPACITY));
     b.iter(|| {
-        let mut b = &mut *builder.lock().unwrap();
+        let mut b = &mut *builder.lock();
         let monster = Monster::create(&mut b, "monster");
         b.finish(monster, None);
     });
