@@ -321,14 +321,16 @@ impl FlatBufferBuilderPool {
     }
 }
 
+const LOCAL_INIT_POOL_SIZE: usize = 32;
+const LOCAL_MAX_POOL_SIZE: usize = 1_024;
+const LOCAL_BUFFER_CAPACITY: usize = 64;
+
 impl Default for FlatBufferBuilderPool {
     fn default() -> Self {
-        let (init, max, buffer_capacity) =
-            unsafe { (INIT_POOL_SIZE, MAX_POOL_SIZE, BUFFER_CAPACITY) };
         Self {
-            init,
-            max,
-            buffer_capacity,
+            init: LOCAL_INIT_POOL_SIZE,
+            max: LOCAL_MAX_POOL_SIZE,
+            buffer_capacity: LOCAL_BUFFER_CAPACITY,
         }
     }
 }

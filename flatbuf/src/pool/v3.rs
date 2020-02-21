@@ -29,7 +29,7 @@ pub struct FlatBufferBuilderPool {
     max: usize,
 
     /// Flatbuffer buffer capacity of the local pool buffer.
-    capacity: usize,
+    buffer_capacity: usize,
 }
 
 static mut INIT_POOL_SIZE: usize = 32;
@@ -284,7 +284,7 @@ impl FlatBufferBuilderPool {
     /// ```
     #[inline]
     pub fn buffer_capacity(mut self, capacity: usize) -> Self {
-        self.capacity = capacity;
+        self.buffer_capacity = capacity;
         self
     }
 
@@ -306,24 +306,27 @@ impl FlatBufferBuilderPool {
         for _ in { 0..self.init } {
             let builder = LocalBuilder::new(
                 Arc::downgrade(&inner),
-                FlatBufferBuilder::new_with_capacity(self.capacity),
+                FlatBufferBuilder::new_with_capacity(self.buffer_capacity),
             );
             inner.push(builder).unwrap();
         }
         LocalFlatBufferBuilderPool::<'a> {
-            capacity: self.capacity,
+            buffer_capacity: self.buffer_capacity,
             inner,
         }
     }
 }
 
+const LOCAL_INIT_POOL_SIZE: usize = 32;
+const LOCAL_MAX_POOL_SIZE: usize = 1_024;
+const LOCAL_BUFFER_CAPACITY: usize = 64;
+
 impl Default for FlatBufferBuilderPool {
     fn default() -> Self {
-        let (init, max, capacity) = unsafe { (INIT_POOL_SIZE, MAX_POOL_SIZE, BUFFER_CAPACITY) };
         Self {
-            init,
-            max,
-            capacity,
+            init: LOCAL_INIT_POOL_SIZE,
+            max: LOCAL_MAX_POOL_SIZE,
+            buffer_capacity: LOCAL_BUFFER_CAPACITY,
         }
     }
 }
@@ -343,7 +346,7 @@ impl Default for FlatBufferBuilderPool {
 /// ```
 pub struct LocalFlatBufferBuilderPool<'a> {
     /// Flatbuffer buffer capacity for the local pool.
-    capacity: usize,
+    buffer_capacity: usize,
 
     /// Local pool.
     inner: Arc<ArrayQueue<LocalBuilder<'a>>>,
@@ -370,7 +373,7 @@ impl<'a> LocalFlatBufferBuilderPool<'a> {
             Ok(builder) => builder,
             Err(_) => LocalBuilder::new(
                 Arc::downgrade(pool),
-                FlatBufferBuilder::new_with_capacity(self.capacity),
+                FlatBufferBuilder::new_with_capacity(self.buffer_capacity),
             ),
         }
     }
