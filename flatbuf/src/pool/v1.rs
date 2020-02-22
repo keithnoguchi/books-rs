@@ -303,7 +303,7 @@ impl FlatBufferBuilderPool {
     /// let name = b.create_string("something fun");
     /// b.finish(name, None);
     /// ```
-    pub fn build<'a>(&self) -> LocalFlatBufferBuilderPool<'a> {
+    pub fn build<'a>(&self) -> FlatBufferBuilderLocalPool<'a> {
         let inner = Arc::new(Mutex::new(Vec::with_capacity(self.max)));
         for _ in { 0..self.init } {
             let builder = LocalBuilder::new(
@@ -313,7 +313,7 @@ impl FlatBufferBuilderPool {
             );
             inner.lock().push(builder);
         }
-        LocalFlatBufferBuilderPool::<'a> {
+        FlatBufferBuilderLocalPool::<'a> {
             max: self.max,
             buffer_capacity: self.buffer_capacity,
             inner,
@@ -348,7 +348,7 @@ impl Default for FlatBufferBuilderPool {
 /// let name = b.create_string("something fun");
 /// b.finish(name, None);
 /// ```
-pub struct LocalFlatBufferBuilderPool<'a> {
+pub struct FlatBufferBuilderLocalPool<'a> {
     /// Maximum local pool size.
     max: usize,
 
@@ -359,7 +359,7 @@ pub struct LocalFlatBufferBuilderPool<'a> {
     inner: Arc<Mutex<Vec<LocalBuilder<'a>>>>,
 }
 
-impl<'a> LocalFlatBufferBuilderPool<'a> {
+impl<'a> FlatBufferBuilderLocalPool<'a> {
     /// Get the `FlatBufferBuilder` from the local pool.
     ///
     /// # Examples
@@ -387,7 +387,7 @@ impl<'a> LocalFlatBufferBuilderPool<'a> {
     }
 }
 
-impl<'a> Drop for LocalFlatBufferBuilderPool<'a> {
+impl<'a> Drop for FlatBufferBuilderLocalPool<'a> {
     fn drop(&mut self) {
         let mut pool = self.inner.lock();
         while let Some(mut builder) = pool.pop() {

@@ -301,7 +301,7 @@ impl FlatBufferBuilderPool {
     /// let name = b.create_string("something fun");
     /// b.finish(name, None);
     /// ```
-    pub fn build<'a>(&self) -> LocalFlatBufferBuilderPool<'a> {
+    pub fn build<'a>(&self) -> FlatBufferBuilderLocalPool<'a> {
         let inner = Arc::new(ArrayQueue::new(self.max));
         for _ in { 0..self.init } {
             let builder = LocalBuilder::new(
@@ -310,7 +310,7 @@ impl FlatBufferBuilderPool {
             );
             inner.push(builder).unwrap();
         }
-        LocalFlatBufferBuilderPool::<'a> {
+        FlatBufferBuilderLocalPool::<'a> {
             buffer_capacity: self.buffer_capacity,
             inner,
         }
@@ -344,7 +344,7 @@ impl Default for FlatBufferBuilderPool {
 /// let name = b.create_string("something fun");
 /// b.finish(name, None);
 /// ```
-pub struct LocalFlatBufferBuilderPool<'a> {
+pub struct FlatBufferBuilderLocalPool<'a> {
     /// Flatbuffer buffer capacity for the local pool.
     buffer_capacity: usize,
 
@@ -352,7 +352,7 @@ pub struct LocalFlatBufferBuilderPool<'a> {
     inner: Arc<ArrayQueue<LocalBuilder<'a>>>,
 }
 
-impl<'a> LocalFlatBufferBuilderPool<'a> {
+impl<'a> FlatBufferBuilderLocalPool<'a> {
     /// Get the `FlatBufferBuilder` from the local pool.
     ///
     /// # Examples
@@ -379,7 +379,7 @@ impl<'a> LocalFlatBufferBuilderPool<'a> {
     }
 }
 
-impl<'a> Drop for LocalFlatBufferBuilderPool<'a> {
+impl<'a> Drop for FlatBufferBuilderLocalPool<'a> {
     fn drop(&mut self) {
         while let Ok(mut builder) = self.inner.pop() {
             builder.drain();
