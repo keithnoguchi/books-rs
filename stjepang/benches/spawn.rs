@@ -9,9 +9,36 @@ use core::pin::Pin;
 use core::task::{Context, Poll};
 
 use stjepang_blog::post20200125::v4::block_on;
-use stjepang_blog::post20200131::v1;
+use stjepang_blog::post20200131::{v1, v2};
 
 use test::Bencher;
+
+#[bench]
+fn custom_v2_spawn_0_yields(b: &mut Bencher) {
+    b.iter(|| {
+        block_on(async {
+            v2::spawn(Yields(0));
+        })
+    });
+}
+
+#[bench]
+fn custom_v2_spawn_10_yields(b: &mut Bencher) {
+    b.iter(|| {
+        block_on(async {
+            v2::spawn(Yields(10));
+        })
+    });
+}
+
+#[bench]
+fn custom_v2_spawn_50_yields(b: &mut Bencher) {
+    b.iter(|| {
+        block_on(async {
+            v2::spawn(Yields(50));
+        })
+    });
+}
 
 #[bench]
 fn custom_v1_spawn_0_yields(b: &mut Bencher) {
