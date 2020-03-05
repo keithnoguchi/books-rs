@@ -21,7 +21,7 @@ steps:
   - name: test
     image: archlinux/base
     commands:
-      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt grep
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt
       - rustup update stable
       - rustup default stable
       - make test
@@ -31,7 +31,7 @@ steps:
   - name: document
     image: archlinux/base
     commands:
-      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt grep
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt
       - rustup update stable
       - rustup default stable
       - make doc-all
@@ -41,7 +41,7 @@ steps:
   - name: install
     image: archlinux/base
     commands:
-      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt grep
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt
       - rustup update stable
       - rustup default stable
       - make install
