@@ -15,68 +15,86 @@ use test::Bencher;
 
 #[bench]
 fn custom_v1_spawn_0_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        v1::spawn(Yields(0));
-    }));
+    b.iter(|| {
+        block_on(async {
+            v1::spawn(Yields(0));
+        })
+    });
 }
 
 #[bench]
 fn custom_v1_spawn_10_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        v1::spawn(Yields(10));
-    }));
+    b.iter(|| {
+        block_on(async {
+            v1::spawn(Yields(10));
+        })
+    });
 }
 
 #[bench]
 fn custom_v1_spawn_50_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        v1::spawn(Yields(50));
-    }));
+    b.iter(|| {
+        block_on(async {
+            v1::spawn(Yields(50));
+        })
+    });
 }
 
 #[bench]
 fn async_std_spawn_0_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        async_std::task::spawn(Yields(0));
-    }));
+    b.iter(|| {
+        block_on(async {
+            async_std::task::spawn(Yields(0));
+        })
+    });
 }
 
 #[bench]
 fn async_std_spawn_10_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        async_std::task::spawn(Yields(10));
-    }));
+    b.iter(|| {
+        block_on(async {
+            async_std::task::spawn(Yields(10));
+        })
+    });
 }
 
 #[bench]
 fn async_std_spawn_50_yields(b: &mut Bencher) {
-    b.iter(|| block_on(async {
-        async_std::task::spawn(Yields(50));
-    }));
+    b.iter(|| {
+        block_on(async {
+            async_std::task::spawn(Yields(50));
+        })
+    });
 }
 
 #[bench]
 fn tokio_spawn_0_yields(b: &mut Bencher) {
     let mut runtime = tokio::runtime::Runtime::new().unwrap();
-    b.iter(move || runtime.block_on(async {
-        tokio::spawn(Yields(0));
-    }));
+    b.iter(move || {
+        runtime.block_on(async {
+            tokio::spawn(Yields(0));
+        })
+    });
 }
 
 #[bench]
 fn tokio_spawn_10_yields(b: &mut Bencher) {
     let mut runtime = tokio::runtime::Runtime::new().unwrap();
-    b.iter(move || runtime.block_on(async {
-        tokio::spawn(Yields(10));
-    }));
+    b.iter(move || {
+        runtime.block_on(async {
+            tokio::spawn(Yields(10));
+        })
+    });
 }
 
 #[bench]
 fn tokio_spawn_50_yields(b: &mut Bencher) {
     let mut runtime = tokio::runtime::Runtime::new().unwrap();
-    b.iter(move || runtime.block_on(async {
-        tokio::spawn(Yields(50));
-    }));
+    b.iter(move || {
+        runtime.block_on(async {
+            tokio::spawn(Yields(50));
+        })
+    });
 }
 
 struct Yields(u32);
