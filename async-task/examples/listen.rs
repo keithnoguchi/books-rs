@@ -1,4 +1,4 @@
-//! TCP server example
+//! TCP server accept timeout example
 //!
 //! # Examples
 //!
