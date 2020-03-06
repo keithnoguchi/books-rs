@@ -47,7 +47,7 @@ fn main() {
     let mut args = args();
     let path = args.nth(1).unwrap_or("Cargo.toml".to_string());
     let us: u64 = args
-        .nth(0)
+        .next()
         .unwrap_or(String::from("1000"))
         .parse()
         .unwrap_or(1000);

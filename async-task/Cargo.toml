@@ -8,7 +8,7 @@ edition = "2018"
 
 [dev-dependencies]
 async-task = "1"
-async-std = "1"
+async-std = {version = "1", features = ["unstable"]}
 crossbeam-utils = "0.7"
 crossbeam-channel = "0.4"
 futures = "0.3"
