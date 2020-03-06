@@ -1,0 +1,12 @@
+[project]
+name = "actix-web-book"
+version = "0.1.0"
+authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+
+[dev-dependencies]
+actix-rt = "1"
+actix-web = "2"
+env_logger = "0.5"

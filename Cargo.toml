@@ -16,4 +16,5 @@ members = [
    "mio",
    "kafka",
    "async-task",
+   "actix-web",
 ]
