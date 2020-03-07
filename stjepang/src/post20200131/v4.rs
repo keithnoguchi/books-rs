@@ -4,10 +4,7 @@
 use core::{
     future::Future,
     pin::Pin,
-    task::{
-        Context,
-        Poll,
-    },
+    task::{Context, Poll},
 };
 use std::{panic::catch_unwind, thread};
 
@@ -41,9 +38,11 @@ static QUEUE: Lazy<crossbeam_channel::Sender<Task>> = Lazy::new(|| {
     let (tx, rx) = crossbeam_channel::unbounded::<Task>();
     for _ in 0..num_cpus::get().max(1) {
         let rx = rx.clone();
-        thread::spawn(move || rx.iter().for_each(|task| {
-            let _ = catch_unwind(|| task.run());
-        }));
+        thread::spawn(move || {
+            rx.iter().for_each(|task| {
+                let _ = catch_unwind(|| task.run());
+            })
+        });
     }
     tx
 });

@@ -40,7 +40,6 @@ fn custom_v4_spawn_50_yields(b: &mut Bencher) {
     });
 }
 
-
 #[bench]
 fn custom_v3_spawn_0_yields(b: &mut Bencher) {
     b.iter(|| {
