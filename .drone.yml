@@ -21,7 +21,7 @@ steps:
   - name: test
     image: archlinux/base
     commands:
-      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt
+      - pacman -Sy --noconfirm make gcc pkgconf rustup flatbuffers wabt grep
       - rustup update stable
       - rustup default stable
       - make test
