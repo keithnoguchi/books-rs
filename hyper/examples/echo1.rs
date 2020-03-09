@@ -3,11 +3,11 @@
 //! [hyper]: https://hyper.rs/guides/server/echo/
 use std::{convert::Infallible, net::SocketAddr, str::FromStr};
 
-use tokio::runtime::Runtime;
 use hyper::{
     service::{make_service_fn, service_fn},
     Body, Method, Request, Response, Server, StatusCode,
 };
+use tokio::runtime::Runtime;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = std::env::args()
