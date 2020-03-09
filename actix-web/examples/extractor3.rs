@@ -3,7 +3,7 @@
 //! [extractor]: https://actix.rs/docs/extractors/
 use std::io;
 
-use actix_web::{web, App, Result, HttpRequest, HttpServer};
+use actix_web::{web, App, HttpRequest, HttpServer, Result};
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
