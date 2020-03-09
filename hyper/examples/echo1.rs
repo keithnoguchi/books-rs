@@ -11,7 +11,7 @@ use hyper::{
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = std::env::args()
         .nth(1)
-        .unwrap_or(String::from("127.0.0.1:3001"));
+        .unwrap_or(String::from("127.0.0.1:8088"));
     tokio::runtime::Runtime::new()?.block_on(server(addr))
 }
 
