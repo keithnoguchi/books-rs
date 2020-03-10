@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2018"
 
 [[bin]]
+name = "hello-client"
+path = "examples/hello-client.rs"
+
+[[bin]]
 name = "hello-server"
 path = "examples/hello-server.rs"
 

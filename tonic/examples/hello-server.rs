@@ -1,14 +1,12 @@
 //! [tonic] [helloworld] server
 //!
+//! [tonic]: https://lib.rs/tonic
+//! [helloword]: https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
+//!
 //! # Examples
 //!
 //! ```sh
-//! $ cargo run --example hello-server [::1]:8080
-//! warning: /home/kei/git/books-rs/tonic/Cargo.toml: file found to be present in multiple build targets: /home/kei/git/books-rs/tonic/examples/hello-server.rs
-//! Compiling tonic-book v0.1.0 (/home/kei/git/books-rs/tonic)
-//! Finished dev [unoptimized + debuginfo] target(s) in 2.18s
-//! Running `/home/kei/git/books-rs/target/debug/examples/hello-server`
-//!
+//! $ cargo run -q --example hello-server [::1]:8081
 //! ```
 //!
 //! then, say hello with `grpcurl`:
@@ -19,8 +17,6 @@
 //!   "message": "Hello tonic!"
 //! }
 //! ```
-//! [tonic]: https://lib.rs/tonic
-//! [helloword]: https://github.com/hyperium/tonic/blob/master/examples/helloworld-tutorial.md
 use tonic::{transport::Server, Request, Response, Status};
 
 use tonic_book::hello::{
@@ -32,7 +28,7 @@ use tonic_book::hello::{
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = std::env::args()
         .nth(1)
-        .unwrap_or_else(|| String::from("[::1]:50051"))
+        .unwrap_or_else(|| String::from("[::1]:8080"))
         .parse()?;
     let greeter = MyGreeter::default();
     Ok(Server::builder()
