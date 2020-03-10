@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: MIT
+syntax = "proto3";
+package hello;
+
+service Greeter {
+	// Our SayHello rpc accepts HelloRequests and returns HelloReplies.
+	rpc SayHello(HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+	// Request message contains the name to be greeted.
+	string name = 1;
+}
+
+message HelloResponse {
+	// Response contains the greeting message.
+	string message = 1;
+}

@@ -18,4 +18,5 @@ members = [
    "async-task",
    "actix-web",
    "hyper",
+   "tonic",
 ]
