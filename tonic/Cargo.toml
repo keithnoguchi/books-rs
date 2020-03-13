@@ -14,10 +14,11 @@ path = "examples/hello-server.rs"
 [dependencies]
 prost = "0.6"
 tonic = "0.1"
-tokio = { version = "0.2", features = ["macros", "rt-threaded", "stream"] }
+tokio = { version = "0.2", features = ["macros", "rt-threaded"] }
 
 [dev-dependencies]
 futures-core = "0.3"
+futures-channel = "0.3"
 
 [build-dependencies]
 tonic-build = "0.1"

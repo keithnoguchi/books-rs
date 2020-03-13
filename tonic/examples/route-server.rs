@@ -3,8 +3,8 @@
 //! [route]: https://github.com/hyperium/tonic/blob/master/examples/routeguide-tutorial.md
 use std::{error, pin::Pin};
 
+use futures_channel::mpsc;
 use futures_core::stream::Stream;
-use tokio::sync::mpsc;
 use tonic::{Request, Response, Status};
 
 use tonic_book::{
@@ -12,7 +12,8 @@ use tonic_book::{
     route_guide_server::RouteGuide,
 };
 
-fn main() -> Result<(), Box<dyn error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn error::Error>> {
     let svc = RouteGuideService {};
     println!("RouteGuideService = {:?}!", svc);
     Ok(())
