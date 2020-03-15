@@ -1,5 +1,6 @@
 //! Smart Pointers example
-use the_book::ch15::sec01::{List, MyBox};
+use the_book::ch15::sec01::List;
+use the_book::ch15::sec02::MyBox;
 
 fn main() {
     let mut i32s = List::Nil;

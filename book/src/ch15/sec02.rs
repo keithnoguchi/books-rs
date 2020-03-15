@@ -1,64 +1,71 @@
-//! [Rc<T>], the Reference Counted Smart Pointer
+//! Treating Smart Pointer Like Regular References with [the Deref trait]
 //!
-//! [rc<t>]: https://doc.rust-lang.org/book/ch15-04-rc.html
-use std::rc::Rc;
+//! [the deref trait]: https://doc.rust-lang.org/book/ch15-02-deref.html
+pub struct MyBox<T: std::fmt::Debug>(T);
 
-pub enum Graph<T> {
-    Vertex(T, Vec<Rc<Graph<T>>>),
-    Nil,
+impl<T> MyBox<T>
+where
+    T: std::fmt::Debug,
+{
+    pub fn new(t: T) -> Self {
+        Self(t)
+    }
+}
+
+impl<T> Drop for MyBox<T>
+where
+    T: std::fmt::Debug,
+{
+    fn drop(&mut self) {
+        println!("dropping {:?}", self.0);
+    }
+}
+
+impl<T> std::ops::Deref for MyBox<T>
+where
+    T: std::fmt::Debug,
+{
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> std::ops::DerefMut for MyBox<T>
+where
+    T: std::fmt::Debug,
+{
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
 }
 
 #[cfg(test)]
 mod tests {
     #[test]
-    fn graph() {
-        use super::Graph::{Nil, Vertex};
-        use std::rc::Rc;
-        let wants_b = [1, 3, 4, 5];
-        let wants_c = [2, 3, 4, 5];
-        let mut a = Rc::new(Nil);
-        a = Rc::new(Vertex(5, vec![a]));
-        a = Rc::new(Vertex(4, vec![a]));
-        a = Rc::new(Vertex(3, vec![a]));
-        assert_eq!(1, Rc::strong_count(&a));
-        let b = Vertex(1, vec![a.clone()]);
-        assert_eq!(2, Rc::strong_count(&a));
-        let c = Vertex(2, vec![a.clone()]);
-        assert_eq!(3, Rc::strong_count(&a));
-        {
-            let d = a.clone();
-            assert_eq!(4, Rc::strong_count(&a));
-            match *d {
-                Nil => panic!("unexpected Nil"),
-                Vertex(val, _) => assert_eq!(3, val),
-            }
-        }
-        assert_eq!(3, Rc::strong_count(&a));
-        let mut got = &b;
-        for want in &wants_b {
-            got = match got {
-                Nil => panic!("unexpected Nil"),
-                Vertex(val, next) => {
-                    assert_eq!(want, val);
-                    &next[0]
-                }
-            }
-        }
-        if let Vertex(val, _) = got {
-            panic!("unexpected value in b: {}", val);
-        }
-        got = &c;
-        for want in &wants_c {
-            got = match got {
-                Nil => panic!("unexpected Nil in c"),
-                Vertex(val, next) => {
-                    assert_eq!(want, val);
-                    &next[0]
-                }
-            }
-        }
-        if let Vertex(val, _) = got {
-            panic!("unexpected value in c: {}", val);
-        }
+    fn mybox_new() {
+        use super::MyBox;
+        let x = MyBox::new(3);
+        assert_eq!(3, x.0);
+    }
+    #[test]
+    fn mybox_dereference() {
+        use super::MyBox;
+        use std::ops::Deref;
+        let x = 5;
+        let y = MyBox::new(x);
+        assert_eq!(5, x);
+        assert_eq!(5, *y); // multiple deref doesn't cause an issue, as it's just borrows
+        assert_eq!(5, *y); // the value the smart pointer is pointing to.
+        assert_eq!(5, *(y.deref())); // This is the actual call by the compiler.
+    }
+    #[test]
+    fn mybox_mutable_dereference() {
+        use super::MyBox;
+        let x = 5;
+        let mut y = MyBox(x);
+        *y = 6; // Through DerefMut trait.
+        assert_eq!(5, x);
+        assert_eq!(6, *y);
     }
 }
