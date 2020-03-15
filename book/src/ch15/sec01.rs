@@ -2,7 +2,7 @@
 //!
 //! [box<t>]: https://doc.rust-lang.org/book/ch15-01-box.html
 #[derive(Debug)]
-pub enum List<T> {
+pub enum List<T: std::fmt::Debug> {
     Cons(T, Box<List<T>>),
     Nil,
 }

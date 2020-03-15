@@ -5,6 +5,8 @@ use the_book::ch15::sec01::List::{Cons, Nil};
 
 fn main() {
     print_i32_list();
+    print_char_list();
+    print_string_list();
 }
 
 fn print_i32_list() {
@@ -12,6 +14,30 @@ fn print_i32_list() {
     println!("{:?}", list);
     while let Cons(val, next) = list {
         println!("{}", val);
+        list = *next;
+    }
+}
+
+fn print_char_list() {
+    let mut list = Cons('a', Box::new(Cons('b', Box::new(Cons('c', Box::new(Nil))))));
+    println!("{:?}", list);
+    while let Cons(value, next) = list {
+        println!("{}", value);
+        list = *next;
+    }
+}
+
+fn print_string_list() {
+    let mut list = Cons(
+        String::from("a"),
+        Box::new(Cons(
+            String::from("b"),
+            Box::new(Cons(String::from("c"), Box::new(Nil))),
+        )),
+    );
+    println!("{:?}", list);
+    while let Cons(value, next) = list {
+        println!("{}", value);
         list = *next;
     }
 }
