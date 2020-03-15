@@ -4,7 +4,7 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use the_book::ch15::sec05::CycleList;
+use the_book::ch15::sec06::CycleList;
 
 fn main() {
     let a = Rc::new(CycleList::Node('a', RefCell::new(Rc::new(CycleList::Null))));

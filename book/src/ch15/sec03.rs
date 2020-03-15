@@ -1,64 +1,71 @@
-//! [Rc<T>], the Reference Counted Smart Pointer
+//! Running Code on Cleanup with the [Drop Trait]
 //!
-//! [rc<t>]: https://doc.rust-lang.org/book/ch15-04-rc.html
-use std::rc::Rc;
+//! [drop trait]: https://doc.rust-lang.org/book/ch15-03-drop.html
+use std::{
+    fmt::Debug,
+    ops::{Deref, DerefMut},
+};
 
-pub enum Graph<T> {
-    Vertex(T, Vec<Rc<Graph<T>>>),
-    Nil,
+#[derive(Debug)]
+pub struct SmartPointer<T: Debug + Clone>(T);
+
+impl<T: Debug + Clone> SmartPointer<T> {
+    pub fn new(x: &T) -> Self {
+        Self(x.clone())
+    }
+}
+
+impl<T: Debug + Clone> Drop for SmartPointer<T> {
+    fn drop(&mut self) {
+        println!("dropping {:?}", self.0);
+    }
+}
+
+impl<T: Debug + Clone> Deref for SmartPointer<T> {
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T: Debug + Clone> DerefMut for SmartPointer<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    use super::SmartPointer;
     #[test]
-    fn graph() {
-        use super::Graph::{Nil, Vertex};
-        use std::rc::Rc;
-        let wants_b = [1, 3, 4, 5];
-        let wants_c = [2, 3, 4, 5];
-        let mut a = Rc::new(Nil);
-        a = Rc::new(Vertex(5, vec![a]));
-        a = Rc::new(Vertex(4, vec![a]));
-        a = Rc::new(Vertex(3, vec![a]));
-        assert_eq!(1, Rc::strong_count(&a));
-        let b = Vertex(1, vec![a.clone()]);
-        assert_eq!(2, Rc::strong_count(&a));
-        let c = Vertex(2, vec![a.clone()]);
-        assert_eq!(3, Rc::strong_count(&a));
-        {
-            let d = a.clone();
-            assert_eq!(4, Rc::strong_count(&a));
-            match *d {
-                Nil => panic!("unexpected Nil"),
-                Vertex(val, _) => assert_eq!(3, val),
-            }
-        }
-        assert_eq!(3, Rc::strong_count(&a));
-        let mut got = &b;
-        for want in &wants_b {
-            got = match got {
-                Nil => panic!("unexpected Nil"),
-                Vertex(val, next) => {
-                    assert_eq!(want, val);
-                    &next[0]
-                }
-            }
-        }
-        if let Vertex(val, _) = got {
-            panic!("unexpected value in b: {}", val);
-        }
-        got = &c;
-        for want in &wants_c {
-            got = match got {
-                Nil => panic!("unexpected Nil in c"),
-                Vertex(val, next) => {
-                    assert_eq!(want, val);
-                    &next[0]
-                }
-            }
-        }
-        if let Vertex(val, _) = got {
-            panic!("unexpected value in c: {}", val);
-        }
+    fn new_i32() {
+        let x = 1_i32;
+        let y = SmartPointer::new(&x);
+        assert_eq!(1, x);
+        assert_eq!(1, *y);
+    }
+    #[test]
+    fn new_string() {
+        let x = String::from("Hi");
+        let y = SmartPointer::new(&x);
+        let want = String::from("Hi");
+        assert_eq!(want, x);
+        assert_eq!(want, *y);
+    }
+    #[test]
+    fn deref_mut_i32() {
+        let x = 3_i32;
+        let mut y = SmartPointer::new(&x);
+        *y = 9;
+        assert_eq!(3, x);
+        assert_eq!(9, *y);
+    }
+    #[test]
+    fn deref_mut_string() {
+        let x = String::from("Rust");
+        let mut y = SmartPointer::new(&x);
+        *y = String::from("Rustacian");
+        assert_eq!(String::from("Rust"), x);
+        assert_eq!(String::from("Rustacian"), *y);
     }
 }

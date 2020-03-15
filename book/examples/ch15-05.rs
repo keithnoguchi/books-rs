@@ -3,7 +3,7 @@
 //! [refcell<t>]: https://doc.rust-lang.org/book/ch15-05-interior-mutability.html
 use std::cell::RefCell;
 
-use the_book::ch15::sec04::{LimitTracker, Messenger};
+use the_book::ch15::sec05::{LimitTracker, Messenger};
 
 struct Cacher {
     msgs: RefCell<Vec<String>>,

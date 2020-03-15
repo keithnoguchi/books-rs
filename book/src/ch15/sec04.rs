@@ -1,113 +1,64 @@
-//! [RefCell<T>] and the Interior Mutability Pattern
+//! [Rc<T>], the Reference Counted Smart Pointer
 //!
-//! [refcell<t>]: https://doc.rust-lang.org/book/ch15-05-interior-mutability.html
-//!
-//! # Example
-//!
-//! ```rust
-//! use std::cell::RefCell;
-//!
-//! use the_book::ch15::sec04::{LimitTracker, Messenger};
-//!
-//! struct Cacher {
-//!     msgs: RefCell<Vec<String>>,
-//! }
-//!
-//! impl Cacher {
-//!     fn new() -> Self {
-//!         Self {
-//!             msgs: RefCell::new(Vec::new()),
-//!         }
-//!     }
-//! }
-//!
-//! impl Messenger for Cacher {
-//!     fn send(&self, msg: &str) {
-//!         self.msgs.borrow_mut().push(String::from(msg));
-//!     }
-//! }
-//!
-//! let cacher = Cacher::new();
-//! let mut tracker = LimitTracker::new(&cacher, 100);
-//!
-//! tracker.set_value(75);
-//! tracker.set_value(90);
-//! tracker.set_value(100);
-//! let wants = vec![
-//!     "Warning: You've used up over 75% of your quota!",
-//!     "Urgent: You've used up over 90% of your quota!",
-//!     "Error: You are over your quota!",
-//! ];
-//! for (i, want) in wants.iter().enumerate() {
-//!     assert_eq!(*want, &cacher.msgs.borrow()[i]);
-//! }
-//! ```
+//! [rc<t>]: https://doc.rust-lang.org/book/ch15-04-rc.html
+use std::rc::Rc;
 
-pub struct LimitTracker<'a, T>
-where
-    T: 'a + Messenger,
-{
-    messenger: &'a T,
-    value: usize,
-    max: usize,
-}
-
-pub trait Messenger {
-    fn send(&self, msg: &str);
-}
-
-impl<'a, T> LimitTracker<'a, T>
-where
-    T: 'a + Messenger,
-{
-    pub fn new(messenger: &'a T, max: usize) -> Self {
-        Self {
-            messenger,
-            value: 0,
-            max,
-        }
-    }
-    pub fn set_value(&mut self, value: usize) {
-        self.value = value;
-        let percentage = self.value as f64 / self.max as f64;
-        if percentage >= 1.0 {
-            self.messenger.send("Error: You are over your quota!");
-        } else if percentage >= 0.9 {
-            self.messenger
-                .send("Urgent: You've used up over 90% of your quota!");
-        } else if percentage >= 0.75 {
-            self.messenger
-                .send("Warning: You've used up over 75% of your quota!");
-        }
-    }
+pub enum Graph<T> {
+    Vertex(T, Vec<Rc<Graph<T>>>),
+    Nil,
 }
 
 #[cfg(test)]
 mod tests {
-    use std::cell::RefCell;
-
-    struct MockMessenger {
-        sent_messages: RefCell<Vec<String>>,
-    }
-    impl MockMessenger {
-        fn new() -> Self {
-            Self {
-                sent_messages: RefCell::new(vec![]),
+    #[test]
+    fn graph() {
+        use super::Graph::{Nil, Vertex};
+        use std::rc::Rc;
+        let wants_b = [1, 3, 4, 5];
+        let wants_c = [2, 3, 4, 5];
+        let mut a = Rc::new(Nil);
+        a = Rc::new(Vertex(5, vec![a]));
+        a = Rc::new(Vertex(4, vec![a]));
+        a = Rc::new(Vertex(3, vec![a]));
+        assert_eq!(1, Rc::strong_count(&a));
+        let b = Vertex(1, vec![a.clone()]);
+        assert_eq!(2, Rc::strong_count(&a));
+        let c = Vertex(2, vec![a.clone()]);
+        assert_eq!(3, Rc::strong_count(&a));
+        {
+            let d = a.clone();
+            assert_eq!(4, Rc::strong_count(&a));
+            match *d {
+                Nil => panic!("unexpected Nil"),
+                Vertex(val, _) => assert_eq!(3, val),
             }
         }
-    }
-    impl super::Messenger for MockMessenger {
-        fn send(&self, msg: &str) {
-            self.sent_messages.borrow_mut().push(String::from(msg));
+        assert_eq!(3, Rc::strong_count(&a));
+        let mut got = &b;
+        for want in &wants_b {
+            got = match got {
+                Nil => panic!("unexpected Nil"),
+                Vertex(val, next) => {
+                    assert_eq!(want, val);
+                    &next[0]
+                }
+            }
         }
-    }
-    #[test]
-    fn it_sends_an_over_75_percent_warning_message() {
-        let want = "Warning: You've used up over 75% of your quota!";
-        let mock_messenger = MockMessenger::new();
-        let mut limit_tracker = super::LimitTracker::new(&mock_messenger, 100);
-        limit_tracker.set_value(75);
-        assert_eq!(1, mock_messenger.sent_messages.borrow().len());
-        assert_eq!(want, mock_messenger.sent_messages.borrow()[0]);
+        if let Vertex(val, _) = got {
+            panic!("unexpected value in b: {}", val);
+        }
+        got = &c;
+        for want in &wants_c {
+            got = match got {
+                Nil => panic!("unexpected Nil in c"),
+                Vertex(val, next) => {
+                    assert_eq!(want, val);
+                    &next[0]
+                }
+            }
+        }
+        if let Vertex(val, _) = got {
+            panic!("unexpected value in c: {}", val);
+        }
     }
 }
