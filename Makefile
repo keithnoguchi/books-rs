@@ -19,32 +19,32 @@ clean:
 	@cargo clean
 run: build
 	@echo 2 | cargo run --package the-book --example ch02
-	@cargo run --package the-book --example ch10-largest
-	@cargo run --package the-book --example ch10-point
-	@cargo run --package the-book --example ch10-tweet
-	@cargo run --package the-book --example ch12 SPDX Makefile
-	@cargo run --package the-book --example ch13-01-cacher
-	@cargo run --package the-book --example ch13-02-iter
-	@cargo run --package the-book --example ch13-02-iter-mut
-	@cargo run --package the-book --example ch13-02-into-iter
-	@cargo run --package the-book --example ch13-02-map
-	@cargo run --package the-book --example ch13-02-counter
-	@cargo run --package the-book --example ch13-03-grep ch13 Makefile
-	@cargo run --package the-book --example ch15-01-list
-	@cargo run --package the-book --example ch15-02-graph
-	@cargo run --package the-book --example ch15-03-cell
-	@cargo run --package the-book --example ch15-04-cycle
-	@cargo run --package the-book --example ch15-05-tree
-	@cargo run --package the-book --example ch16-01-thread
-	@cargo run --package the-book --example ch16-02-channel
-	@cargo run --package the-book --example ch16-03-counter
-	@cargo run --package the-book --example ch17-01-gui
-	@cargo run --package the-book --example ch17-02-blog
-	@cargo run --package the-book --example ch17-03-blog2
-	@cargo run --package the-book --example ch20
-	@cargo run --bin style-book
-	@cargo run --package async-std-book --example ch02-02-cat -- Cargo.toml
-	@cargo run --package tokio-book --example spawn
+	@cargo run -q --package the-book --example ch10-largest
+	@cargo run -q --package the-book --example ch10-point
+	@cargo run -q --package the-book --example ch10-tweet
+	@cargo run -q --package the-book --example ch12 SPDX Makefile
+	@cargo run -q --package the-book --example ch13-01-cacher
+	@cargo run -q --package the-book --example ch13-02-iter
+	@cargo run -q --package the-book --example ch13-02-iter-mut
+	@cargo run -q --package the-book --example ch13-02-into-iter
+	@cargo run -q --package the-book --example ch13-02-map
+	@cargo run -q --package the-book --example ch13-02-counter
+	@cargo run -q --package the-book --example ch13-03-grep ch13 Makefile
+	@for i in 1 2 3 4 5 6 7; do \
+		if ! cargo run -q --package the-book --example ch15-0$$i; then \
+			exit 1; \
+		fi; \
+	done
+	@cargo run -q --package the-book --example ch16-01-thread
+	@cargo run -q --package the-book --example ch16-02-channel
+	@cargo run -q --package the-book --example ch16-03-counter
+	@cargo run -q --package the-book --example ch17-01-gui
+	@cargo run -q --package the-book --example ch17-02-blog
+	@cargo run -q --package the-book --example ch17-03-blog2
+	@cargo run -q --package the-book --example ch20
+	@cargo run -q --bin style-book
+	@cargo run -q --package async-std-book --example ch02-02-cat -- Cargo.toml
+	@cargo run -q --package tokio-book --example spawn
 install: build
 	@for i in book async; do \
 		cargo install --force --path $$i; \

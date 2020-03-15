@@ -3,26 +3,17 @@
 //! [rc<t>]: https://doc.rust-lang.org/book/ch15-04-rc.html
 use std::rc::Rc;
 
-use the_book::ch15::sec04::Graph;
+use the_book::ch15::sec04::List::{Cons, Nil};
 
 fn main() {
-    let mut a = Rc::new(Graph::Nil);
-    a = Rc::new(Graph::Vertex(5, vec![a]));
-    a = Rc::new(Graph::Vertex(4, vec![a]));
-    a = Rc::new(Graph::Vertex(3, vec![a]));
-    let b = Graph::Vertex(1, vec![a.clone()]);
-    let c = Graph::Vertex(2, vec![a.clone()]);
-    print("b", &b);
-    print("c", &c);
-}
-
-fn print<T>(title: &str, mut vertex: &Graph<T>)
-where
-    T: std::fmt::Display,
-{
-    println!("Graph({})", title);
-    while let Graph::Vertex(val, next) = vertex {
-        println!("{}", val);
-        vertex = &next[0];
+    let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+    println!("a's strong count={} in the beginning", Rc::strong_count(&a));
+    let _b = Cons(3, Rc::clone(&a));
+    println!("a's strong count={} after referenced by b", Rc::strong_count(&a));
+    {
+        let _c = Cons(4, Rc::clone(&a));
+        println!("a's strong count={} after referenced by c", Rc::strong_count(&a));
     }
+    println!("a's strong count={} after getting out of c's scope", Rc::strong_count(&a));
+    println!("done");
 }
