@@ -1,6 +1,7 @@
 //! Using [Box<T>] to Point to Data on the Heap
 //!
 //! [box<t>]: https://doc.rust-lang.org/book/ch15-01-box.html
+#[derive(Debug)]
 pub enum List<T> {
     Cons(T, Box<List<T>>),
     Nil,
