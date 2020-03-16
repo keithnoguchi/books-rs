@@ -39,8 +39,8 @@ impl<'a, T: 'a + Messenger> LimitTracker<'a, T> {
 
 #[cfg(test)]
 mod tests {
-    use std::cell::RefCell;
     use super::{LimitTracker, Messenger};
+    use std::cell::RefCell;
 
     #[test]
     fn it_sends_an_over_75_percent_warning_message() {

@@ -1,24 +1,20 @@
-//! Creating a [Reference Cycle]
+//! [RefCell<T>] and the Interior Mutability Pattern, part 2
 //!
-//! [reference cycle]: https://doc.rust-lang.org/book/ch15-06-reference-cycles.html
-use std::cell::RefCell;
-use std::rc::Rc;
+//! [refcell<t>]: https://doc.rust-lang.org/book/ch15-05-interior-mutability.html
+use std::{cell::RefCell, rc::Rc};
 
-use the_book::ch15::sec06::CycleList;
+use the_book::ch15::sec06::List::{Cons, Nil};
 
 fn main() {
-    let a = Rc::new(CycleList::Node('a', RefCell::new(Rc::new(CycleList::Null))));
-    println!("a initial rc count = {}", Rc::strong_count(&a));
-    println!("a next item = {:?}", a.next());
-    let b = Rc::new(CycleList::Node('b', RefCell::new(a.clone())));
-    println!("b initial rc count = {}", Rc::strong_count(&b));
-    println!("a rc count = {}", Rc::strong_count(&a));
-    println!("b next item = {:?}", b.next());
-    println!("a next item = {:?}", a.next());
-    if let Some(next) = a.next() {
-        *next.borrow_mut() = b.clone();
-    }
-    println!("b rc count = {}", Rc::strong_count(&b));
-    println!("a rc count = {}", Rc::strong_count(&a));
-    // println!("a next items = {:?}", a.next());
+    let value = Rc::new(RefCell::new(10));
+    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+    let b = Rc::new(Cons(Rc::new(RefCell::new(11)), Rc::clone(&a)));
+    let c = Rc::new(Cons(Rc::new(RefCell::new(12)), Rc::clone(&a)));
+    println!("a={:?}", a);
+    println!("b={:?}", b);
+    println!("c={:?}", c);
+    *value.borrow_mut() += 5;
+    println!("a={:?}", a);
+    println!("b={:?}", b);
+    println!("c={:?}", c);
 }

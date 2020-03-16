@@ -30,7 +30,7 @@ run: build
 	@cargo run -q --package the-book --example ch13-02-map
 	@cargo run -q --package the-book --example ch13-02-counter
 	@cargo run -q --package the-book --example ch13-03-grep ch13 Makefile
-	@for i in 1 2 3 4 5 6 7; do \
+	@for i in 1 2 3 4 5 6 7 8; do \
 		if ! cargo run -q --package the-book --example ch15-0$$i; then \
 			exit 1; \
 		fi; \
