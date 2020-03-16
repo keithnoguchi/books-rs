@@ -1,65 +1,20 @@
 //! [RefCell<T>] and the Interior Mutability Pattern
 //!
 //! [refcell<t>]: https://doc.rust-lang.org/book/ch15-05-interior-mutability.html
-//!
-//! # Example
-//!
-//! ```rust
-//! use std::cell::RefCell;
-//!
-//! use the_book::ch15::sec05::{LimitTracker, Messenger};
-//!
-//! struct Cacher {
-//!     msgs: RefCell<Vec<String>>,
-//! }
-//!
-//! impl Cacher {
-//!     fn new() -> Self {
-//!         Self {
-//!             msgs: RefCell::new(Vec::new()),
-//!         }
-//!     }
-//! }
-//!
-//! impl Messenger for Cacher {
-//!     fn send(&self, msg: &str) {
-//!         self.msgs.borrow_mut().push(String::from(msg));
-//!     }
-//! }
-//!
-//! let cacher = Cacher::new();
-//! let mut tracker = LimitTracker::new(&cacher, 100);
-//!
-//! tracker.set_value(75);
-//! tracker.set_value(90);
-//! tracker.set_value(100);
-//! let wants = vec![
-//!     "Warning: You've used up over 75% of your quota!",
-//!     "Urgent: You've used up over 90% of your quota!",
-//!     "Error: You are over your quota!",
-//! ];
-//! for (i, want) in wants.iter().enumerate() {
-//!     assert_eq!(*want, &cacher.msgs.borrow()[i]);
-//! }
-//! ```
 
-pub struct LimitTracker<'a, T>
-where
-    T: 'a + Messenger,
-{
+/// Message trait to trigger to send a message.
+pub trait Messenger {
+    fn send(&self, message: &str);
+}
+
+/// Tracking the limit and call `send()` method of `Messenger` trait implementor.
+pub struct LimitTracker<'a, T: 'a + Messenger> {
     messenger: &'a T,
     value: usize,
     max: usize,
 }
 
-pub trait Messenger {
-    fn send(&self, msg: &str);
-}
-
-impl<'a, T> LimitTracker<'a, T>
-where
-    T: 'a + Messenger,
-{
+impl<'a, T: 'a + Messenger> LimitTracker<'a, T> {
     pub fn new(messenger: &'a T, max: usize) -> Self {
         Self {
             messenger,
@@ -85,29 +40,58 @@ where
 #[cfg(test)]
 mod tests {
     use std::cell::RefCell;
+    use super::{LimitTracker, Messenger};
 
-    struct MockMessenger {
-        sent_messages: RefCell<Vec<String>>,
-    }
-    impl MockMessenger {
-        fn new() -> Self {
-            Self {
-                sent_messages: RefCell::new(vec![]),
+    #[test]
+    fn it_sends_an_over_75_percent_warning_message() {
+        struct MockMessenger(RefCell<Vec<String>>);
+        impl Messenger for MockMessenger {
+            fn send(&self, msg: &str) {
+                self.0.borrow_mut().push(String::from(msg));
             }
         }
-    }
-    impl super::Messenger for MockMessenger {
-        fn send(&self, msg: &str) {
-            self.sent_messages.borrow_mut().push(String::from(msg));
+        let messenger = MockMessenger(RefCell::new(vec![]));
+        let mut tracker = LimitTracker::new(&messenger, 100);
+        tracker.set_value(75);
+        tracker.set_value(90);
+        tracker.set_value(100);
+        let wants = vec![
+            "Warning: You've used up over 75% of your quota!",
+            "Urgent: You've used up over 90% of your quota!",
+            "Error: You are over your quota!",
+        ];
+        assert_eq!(wants.len(), messenger.0.borrow().len());
+        for (i, want) in wants.iter().enumerate() {
+            assert_eq!(*want, &messenger.0.borrow()[i]);
         }
     }
     #[test]
-    fn it_sends_an_over_75_percent_warning_message() {
-        let want = "Warning: You've used up over 75% of your quota!";
-        let mock_messenger = MockMessenger::new();
-        let mut limit_tracker = super::LimitTracker::new(&mock_messenger, 100);
-        limit_tracker.set_value(75);
-        assert_eq!(1, mock_messenger.sent_messages.borrow().len());
-        assert_eq!(want, mock_messenger.sent_messages.borrow()[0]);
+    fn double_borrow_ok() {
+        struct MockMessenger(RefCell<Vec<String>>);
+        impl Messenger for MockMessenger {
+            fn send(&self, _msg: &str) {
+                let one = self.0.borrow();
+                let two = self.0.borrow();
+                assert_eq!(0, one.len());
+                assert_eq!(0, two.len());
+            }
+        }
+        let messenger = MockMessenger(RefCell::new(vec![]));
+        let mut tracker = LimitTracker::new(&messenger, 100);
+        tracker.set_value(75);
+    }
+    #[test]
+    #[should_panic(expected = "already borrowed: BorrowMutError")]
+    fn double_borrow_mut_panic() {
+        struct MockMessenger(RefCell<Vec<String>>);
+        impl Messenger for MockMessenger {
+            fn send(&self, _msg: &str) {
+                let _a = self.0.borrow_mut();
+                let _b = self.0.borrow_mut();
+            }
+        }
+        let messenger = MockMessenger(RefCell::new(vec![]));
+        let mut tracker = LimitTracker::new(&messenger, 100);
+        tracker.set_value(75);
     }
 }
