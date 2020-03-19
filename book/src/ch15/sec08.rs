@@ -102,7 +102,7 @@ where
     /// assert_eq!(2, Rc::strong_count(&child));
     /// ```
     pub fn add_child(self: Rc<Self>, child: Rc<Self>) {
-        *child.parent.borrow_mut() = Rc::downgrade(&self.clone());
+        *child.parent.borrow_mut() = Rc::downgrade(&self);
         self.children.borrow_mut().push(child);
     }
 }
