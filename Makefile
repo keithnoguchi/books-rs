@@ -4,7 +4,6 @@ WAT += checkers_test
 .PHONY: build check test clean run install update doc doc-all fmt lint
 all: fmt lint test
 build:
-	@cd flatbuf/schema && flatc -r *.fbs
 	@cd wasm; for i in $(WAT);                              \
 		do if ! wat2wasm wast/$$i.wat -o wast/$$i.wasm; \
 	        then                                            \

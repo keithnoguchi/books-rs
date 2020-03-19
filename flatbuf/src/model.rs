@@ -7,4 +7,4 @@
     clippy::redundant_closure,
     clippy::redundant_static_lifetimes
 )]
-include!("../schema/monster_generated.rs");
+include!("monster_generated.rs");
