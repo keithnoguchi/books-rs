@@ -17,12 +17,11 @@
 //!   "message": "Hello tonic!"
 //! }
 //! ```
+use std::sync::atomic::{AtomicUsize, Ordering::SeqCst};
+
 use tonic::{transport::Server, Request, Response, Status};
 
-use tonic_book::hello::{
-    greeter_server::{Greeter, GreeterServer},
-    HelloRequest, HelloResponse,
-};
+use tonic_book::hello::{self, greeter_server};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -30,25 +29,28 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nth(1)
         .unwrap_or_else(|| String::from("[::1]:8080"))
         .parse()?;
-    let greeter = MyGreeter::default();
+    let handler = Handler::default();
     Ok(Server::builder()
-        .add_service(GreeterServer::new(greeter))
+        .add_service(greeter_server::GreeterServer::new(handler))
         .serve(addr)
         .await?)
 }
 
 #[derive(Debug, Default)]
-pub struct MyGreeter {}
+struct Handler {
+    counter: AtomicUsize,
+}
 
 #[tonic::async_trait]
-impl Greeter for MyGreeter {
+impl greeter_server::Greeter for Handler {
     async fn say_hello(
         &self,
-        req: Request<HelloRequest>,
-    ) -> Result<Response<HelloResponse>, Status> {
-        println!("Got a request: {:?}", req);
-        let resp = HelloResponse {
-            message: format!("Hello {}!", req.into_inner().name),
+        req: Request<hello::HelloRequest>,
+    ) -> Result<Response<hello::HelloResponse>, Status> {
+        let counter = self.counter.fetch_add(1, SeqCst);
+        println!("[{}]: got a request", counter);
+        let resp = hello::HelloResponse {
+            message: format!("Hello {}{}!", req.into_inner().name, counter),
         };
         Ok(Response::new(resp))
     }
