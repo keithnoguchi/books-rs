@@ -11,7 +11,7 @@ pub struct GreeterService {
 }
 
 impl GreeterService {
-    pub fn build() -> GreeterServer<Self> {
+    pub fn new() -> GreeterServer<Self> {
         GreeterServer::new(Self::default())
     }
 }

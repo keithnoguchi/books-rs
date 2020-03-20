@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or_else(|| String::from("[::1]:8080"))
         .parse()?;
     Ok(Server::builder()
-        .add_service(GreeterService::build())
+        .add_service(GreeterService::new())
         .serve(addr)
         .await?)
 }
