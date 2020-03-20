@@ -4,10 +4,12 @@
 
 /// Service modules.
 mod greet;
+mod route;
 pub use greet::GreeterService;
+pub use route::RouteGuideService;
 
 /// Auto-generated client and server modules
-pub mod autogen;
+mod autogen;
 pub(crate) use autogen::hello::greeter_server::{Greeter, GreeterServer};
-pub use autogen::hello::{self, greeter_client::GreeterClient};
-pub use autogen::route::route_guide_server;
+pub use autogen::hello::{greeter_client::GreeterClient, HelloRequest, HelloResponse};
+pub(crate) use autogen::route::route_guide_server::{RouteGuide, RouteGuideServer};

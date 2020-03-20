@@ -19,7 +19,7 @@
 //! ```
 use tonic::Request;
 
-use tonic_book::{autogen::hello::HelloRequest, GreeterClient};
+use tonic_book::{GreeterClient, HelloRequest};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
