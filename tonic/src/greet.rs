@@ -3,11 +3,17 @@ use std::sync::atomic::{AtomicUsize, Ordering::SeqCst};
 
 use tonic::{Request, Response, Status};
 
-use crate::{hello, Greeter};
+use crate::{hello, Greeter, GreeterServer};
 
 #[derive(Debug, Default)]
 pub struct GreeterService {
     counter: AtomicUsize,
+}
+
+impl GreeterService {
+    pub fn build() -> GreeterServer<Self> {
+        GreeterServer::new(Self::default())
+    }
 }
 
 #[tonic::async_trait]

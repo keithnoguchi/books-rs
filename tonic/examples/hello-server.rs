@@ -19,7 +19,7 @@
 //! ```
 use tonic::transport::Server;
 
-use tonic_book::{GreeterServer, GreeterService};
+use tonic_book::GreeterService;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -28,7 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or_else(|| String::from("[::1]:8080"))
         .parse()?;
     Ok(Server::builder()
-        .add_service(GreeterServer::new(GreeterService::default()))
+        .add_service(GreeterService::build())
         .serve(addr)
         .await?)
 }

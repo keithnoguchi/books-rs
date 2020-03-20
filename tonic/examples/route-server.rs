@@ -9,7 +9,7 @@ use tonic::{transport::Server, Request, Response, Status};
 
 use tonic_book::{
     autogen::route::{Feature, Point, Rectangle, RouteNote, RouteSummary},
-    route_guide_server,
+    route_guide_server, GreeterService,
 };
 
 #[tokio::main]
@@ -18,9 +18,10 @@ async fn main() -> Result<(), Box<dyn error::Error>> {
         .nth(1)
         .unwrap_or_else(|| String::from("[::1]:8080"))
         .parse()?;
-    let handler = RouteGuideService {};
+    let service = RouteGuideService {};
     Ok(Server::builder()
-        .add_service(route_guide_server::RouteGuideServer::new(handler))
+        .add_service(route_guide_server::RouteGuideServer::new(service))
+        .add_service(GreeterService::build())
         .serve(addr)
         .await?)
 }
