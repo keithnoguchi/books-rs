@@ -5,25 +5,31 @@ use std::{error, pin::Pin};
 
 use futures_channel::mpsc;
 use futures_core::stream::Stream;
-use tonic::{Request, Response, Status};
+use tonic::{transport::Server, Request, Response, Status};
 
 use tonic_book::{
-    route::{Feature, Point, Rectangle, RouteNote, RouteSummary},
-    route_guide_server::RouteGuide,
+    autogen::route::{Feature, Point, Rectangle, RouteNote, RouteSummary},
+    route_guide_server,
 };
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn error::Error>> {
-    let svc = RouteGuideService {};
-    println!("RouteGuideService = {:?}!", svc);
-    Ok(())
+    let addr = std::env::args()
+        .nth(1)
+        .unwrap_or_else(|| String::from("[::1]:8080"))
+        .parse()?;
+    let handler = RouteGuideService {};
+    Ok(Server::builder()
+        .add_service(route_guide_server::RouteGuideServer::new(handler))
+        .serve(addr)
+        .await?)
 }
 
 #[derive(Debug)]
 struct RouteGuideService;
 
 #[tonic::async_trait]
-impl RouteGuide for RouteGuideService {
+impl route_guide_server::RouteGuide for RouteGuideService {
     async fn get_feature(&self, _req: Request<Point>) -> Result<Response<Feature>, Status> {
         todo!();
     }

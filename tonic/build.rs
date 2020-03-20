@@ -6,6 +6,6 @@
 //! [route]: https://github.com/hyperium/tonic/blob/master/examples/routeguide-tutorial.md
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(tonic_build::configure()
-        .out_dir("./src/")
+        .out_dir("./src/autogen")
         .compile(&["proto/hello.proto", "proto/route.proto"], &["proto"])?)
 }
