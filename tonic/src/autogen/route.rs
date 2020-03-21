@@ -1,3 +1,7 @@
+/// Points are represented as latitude-longtitude pairs in the E7 representation
+/// (degrees multiplied by 10**7 and rounded to the nearest integer).
+/// Latitudes should be in the range +/- 90 degrees and longitude should be in
+/// the range +/- 180 degrees (inclusive).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Point {
     #[prost(int32, tag = "1")]
@@ -5,35 +9,56 @@ pub struct Point {
     #[prost(int32, tag = "2")]
     pub longitude: i32,
 }
+/// A lttitude-longitude rectangle, represented as two diagonally opposite
+/// points "lo" and "hi".
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rectangle {
+    /// One corner of the rectangle.
     #[prost(message, optional, tag = "1")]
     pub lo: ::std::option::Option<Point>,
+    /// The other corner of the rectangle.
     #[prost(message, optional, tag = "2")]
     pub hi: ::std::option::Option<Point>,
 }
+/// A feature names something at a given point.
+///
+/// If a feature could not be named, the name is empty.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
+    /// The name of the feature.
     #[prost(string, tag = "1")]
     pub name: std::string::String,
+    /// The point where the feature is detected.
     #[prost(message, optional, tag = "2")]
     pub location: ::std::option::Option<Point>,
 }
+/// A RouteNote is a message sent while at a given point.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteNote {
+    /// The location from which the message is sent.
     #[prost(message, optional, tag = "1")]
     pub location: ::std::option::Option<Point>,
+    /// The message to be sent.
     #[prost(string, tag = "2")]
     pub message: std::string::String,
 }
+/// A RouteSummary is received in response to a RecordRoute RPC.
+///
+/// It contains the number of individual points received, the number of
+/// detected features, and the total distance covered as the cumulative sum of
+/// the distance between each point.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteSummary {
+    /// The number of points received.
     #[prost(int32, tag = "1")]
     pub point_count: i32,
+    /// The number of known features passed while traversing the route.
     #[prost(int32, tag = "2")]
     pub feature_count: i32,
+    /// The distance covered in metres.
     #[prost(int32, tag = "3")]
     pub distance: i32,
+    /// The duration of the traversal in seconds.
     #[prost(int32, tag = "4")]
     pub elapsed_time: i32,
 }
@@ -41,9 +66,7 @@ pub struct RouteSummary {
 pub mod route_guide_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
-    #[doc = " Please see the linked file for the descriptions."]
-    #[doc = ""]
-    #[doc = " https://github.com/hyperium/tonic/blob/master/examples/proto/routeguide/route_guide.proto"]
+    #[doc = " Interface exported by the server."]
     pub struct RouteGuideClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -73,6 +96,7 @@ pub mod route_guide_client {
             let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
             Self { inner }
         }
+        #[doc = " Obtains the feature at a given position."]
         pub async fn get_feature(
             &mut self,
             request: impl tonic::IntoRequest<super::Point>,
@@ -87,6 +111,10 @@ pub mod route_guide_client {
             let path = http::uri::PathAndQuery::from_static("/route.RouteGuide/GetFeature");
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Obtains the Features available within the given Rectangle.  Results are"]
+        #[doc = " streamed rather than returned at once (e.g. in a response message with"]
+        #[doc = " a repeated field), as the rectangle may cover a large area and contain a"]
+        #[doc = " huge number of features."]
         pub async fn list_features(
             &mut self,
             request: impl tonic::IntoRequest<super::Rectangle>,
@@ -104,6 +132,8 @@ pub mod route_guide_client {
                 .server_streaming(request.into_request(), path, codec)
                 .await
         }
+        #[doc = " Accepts a stream of Pointson a route being traversed, returning a"]
+        #[doc = " RouteSummary when traversal is completed."]
         pub async fn record_route(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::Point>,
@@ -120,6 +150,8 @@ pub mod route_guide_client {
                 .client_streaming(request.into_streaming_request(), path, codec)
                 .await
         }
+        #[doc = " Accepts a stream of RouteNotes sent while a route is being traversed,"]
+        #[doc = " while receiving other RouteNotes (e.g. from other users)"]
         pub async fn route_chat(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::RouteNote>,
@@ -153,6 +185,7 @@ pub mod route_guide_server {
     #[doc = "Generated trait containing gRPC methods that should be implemented for use with RouteGuideServer."]
     #[async_trait]
     pub trait RouteGuide: Send + Sync + 'static {
+        #[doc = " Obtains the feature at a given position."]
         async fn get_feature(
             &self,
             request: tonic::Request<super::Point>,
@@ -162,10 +195,16 @@ pub mod route_guide_server {
             + Send
             + Sync
             + 'static;
+        #[doc = " Obtains the Features available within the given Rectangle.  Results are"]
+        #[doc = " streamed rather than returned at once (e.g. in a response message with"]
+        #[doc = " a repeated field), as the rectangle may cover a large area and contain a"]
+        #[doc = " huge number of features."]
         async fn list_features(
             &self,
             request: tonic::Request<super::Rectangle>,
         ) -> Result<tonic::Response<Self::ListFeaturesStream>, tonic::Status>;
+        #[doc = " Accepts a stream of Pointson a route being traversed, returning a"]
+        #[doc = " RouteSummary when traversal is completed."]
         async fn record_route(
             &self,
             request: tonic::Request<tonic::Streaming<super::Point>>,
@@ -175,14 +214,14 @@ pub mod route_guide_server {
             + Send
             + Sync
             + 'static;
+        #[doc = " Accepts a stream of RouteNotes sent while a route is being traversed,"]
+        #[doc = " while receiving other RouteNotes (e.g. from other users)"]
         async fn route_chat(
             &self,
             request: tonic::Request<tonic::Streaming<super::RouteNote>>,
         ) -> Result<tonic::Response<Self::RouteChatStream>, tonic::Status>;
     }
-    #[doc = " Please see the linked file for the descriptions."]
-    #[doc = ""]
-    #[doc = " https://github.com/hyperium/tonic/blob/master/examples/proto/routeguide/route_guide.proto"]
+    #[doc = " Interface exported by the server."]
     #[derive(Debug)]
     #[doc(hidden)]
     pub struct RouteGuideServer<T: RouteGuide> {

@@ -1,5 +1,7 @@
-//! RouteGuideService
-use std::pin::Pin;
+//! [RouteGuideService]
+//!
+//! [routeguideservice]: https://github.com/hyperium/tonic/blob/master/examples/routeguide-tutorial.md
+use std::{pin::Pin, sync::Arc};
 
 use futures_channel::mpsc;
 use futures_core::stream::Stream;
@@ -11,11 +13,22 @@ use crate::{
 };
 
 #[derive(Debug)]
-pub struct RouteGuideService;
+pub struct RouteGuideService {
+    features: Arc<Vec<Feature>>,
+}
 
 impl RouteGuideService {
     pub fn new() -> RouteGuideServer<Self> {
-        RouteGuideServer::new(Self {})
+        RouteGuideServer::new(Self::default())
+    }
+}
+
+impl Default for RouteGuideService {
+    fn default() -> Self {
+        let features = crate::data::load().expect("cannot load features data");
+        Self {
+            features: Arc::new(features),
+        }
     }
 }
 

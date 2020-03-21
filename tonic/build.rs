@@ -7,5 +7,5 @@
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(tonic_build::configure()
         .out_dir("./src/autogen")
-        .compile(&["proto/hello.proto", "proto/route.proto"], &["proto"])?)
+        .compile(&["hello.proto", "route.proto"], &["proto"])?)
 }
