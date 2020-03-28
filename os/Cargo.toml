@@ -1,0 +1,6 @@
+[package]
+name = "os-blog"
+version = "0.1.0"
+authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
+
+[dependencies]

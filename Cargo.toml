@@ -20,4 +20,11 @@ members = [
    "hyper",
    "tonic",
    "algorithm",
+   "os",
 ]
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
