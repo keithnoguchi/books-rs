@@ -1,50 +1,35 @@
-//! Multithreaded [Web Server]
+//! Building a [Multithreaded] Web Server
 //!
-//! [web server]: https://doc.rust-lang.org/book/ch20-00-final-project-a-web-server.html
+//! [multithreaded]: https://doc.rust-lang.org/book/ch20-03-graceful-shutdown-and-cleanup.html
 use std::{
-    fmt,
+    error::Error,
+    fmt::{self, Debug},
+    io,
+    marker::PhantomData,
     sync::{
-        atomic::{AtomicUsize, Ordering},
         mpsc::{self, Receiver, Sender},
         Arc, Mutex,
     },
-    thread,
+    thread::{self, JoinHandle},
 };
-use tracing::{error, info, instrument, span, warn, Level};
+use tracing::{debug, error, info, instrument};
 
-pub struct ThreadPool<T: Send + 'static> {
-    counter: AtomicUsize,
-    max: usize,
-    tx: Sender<Job<T>>,
-    workers: Vec<Worker>,
+pub struct ThreadPool<T = ()>
+where
+    T: Send + 'static,
+{
+    tx: Option<Sender<Job<T>>>,
+    workers: Vec<Worker<T>>,
 }
 
-impl<T: Send + 'static> fmt::Debug for ThreadPool<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "size={}", self.workers.len())
-    }
-}
-
-impl<T: Send + 'static> Drop for ThreadPool<T> {
-    #[instrument]
-    fn drop(&mut self) {
-        while let Some(worker) = self.workers.pop() {
-            info!("drop worker{:?}", worker);
-        }
-        info!("ThreadPool dropped");
-    }
-}
-
-impl<T: Send + 'static> ThreadPool<T> {
-    /// Create a new ThreadPool.
-    ///
-    /// The size is the number of threads in the pool.
-    ///
+impl<T> ThreadPool<T>
+where
+    T: Send + 'static,
+{
     /// # Panics
     ///
-    /// The `new` function will panic if the size is zero.
-    #[instrument]
-    pub fn new(size: usize, max: usize) -> Self {
+    /// Function `new` will panic if the `size` argument is zero.
+    pub fn new(size: usize) -> Self {
         assert!(size > 0);
         let mut workers = Vec::with_capacity(size);
         let (tx, rx) = mpsc::channel();
@@ -52,67 +37,95 @@ impl<T: Send + 'static> ThreadPool<T> {
         for id in { 0..size } {
             workers.push(Worker::new(id, Arc::clone(&rx)));
         }
-        info!(size = size, workers = workers.len());
         Self {
-            counter: AtomicUsize::new(0),
-            max,
-            tx,
             workers,
+            tx: Some(tx),
         }
     }
-    pub fn execute<F>(&self, f: F)
+    pub fn execute<F>(&self, f: F) -> Result<(), Box<dyn Error>>
     where
-        F: FnOnce() -> T,
-        F: Send + 'static,
-        T: Send + 'static,
+        F: FnOnce() -> io::Result<T> + Send + 'static,
     {
-        let span = span!(Level::INFO, "execute");
-        let _guard = span.enter();
-        let count = self.counter.fetch_add(1, Ordering::SeqCst);
-        if count < self.max {
-            if let Err(err) = self.tx.send(Box::new(f)) {
-                warn!("{:?}", err);
+        match &self.tx {
+            Some(tx) => tx.send(Box::new(f)).map_err(|err| err.into()),
+            None => Err("channel closed".into()),
+        }
+    }
+}
+
+impl<T> Debug for ThreadPool<T>
+where
+    T: Send + 'static,
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "ThreadPool workers={}", self.workers.len())
+    }
+}
+
+impl<T> Drop for ThreadPool<T>
+where
+    T: Send + 'static,
+{
+    #[instrument]
+    fn drop(&mut self) {
+        // drop the channel to signal workers to complete the task.
+        if let Some(tx) = self.tx.take() {
+            drop(tx)
+        }
+        while let Some(mut worker) = self.workers.pop() {
+            debug!("cleanup {:?}", worker);
+            if let Some(err) = worker.handle.take().and_then(|handle| handle.join().err()) {
+                error!("worker error: {:?}", err);
             }
         }
     }
 }
 
-#[derive(Debug)]
-struct Worker {
-    handle: thread::JoinHandle<()>,
+struct Worker<T = ()>
+where
+    T: Send + 'static,
+{
+    id: usize,
+    handle: Option<JoinHandle<Result<(), Box<dyn Error + Send + Sync + 'static>>>>,
+    phantom: PhantomData<T>,
 }
 
-impl Drop for Worker {
-    #[instrument]
-    fn drop(&mut self) {
-        info!("worker dropped");
-    }
-}
-
-impl Worker {
-    fn new<T>(id: usize, rx: Arc<Mutex<Receiver<Job<T>>>>) -> Self
-    where
-        T: Send + 'static,
-    {
-        let handle = thread::spawn(move || Self::worker(id, rx));
-        Self { handle }
+impl<T: Send + 'static> Worker<T> {
+    fn new(id: usize, rx: Arc<Mutex<Receiver<Job<T>>>>) -> Self {
+        let handle = thread::spawn(|| Self::run(rx));
+        Self {
+            id,
+            handle: Some(handle),
+            phantom: PhantomData,
+        }
     }
     #[instrument]
-    fn worker<T>(id: usize, rx: Arc<Mutex<Receiver<Job<T>>>>)
-    where
-        T: Send + 'static,
-    {
+    fn run(rx: Arc<Mutex<Receiver<Job<T>>>>) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
         loop {
-            let job = match rx.lock().unwrap().recv() {
-                Err(err) => {
-                    error!("receive error: {}", err);
-                    continue;
-                }
+            let job = match rx.lock() {
+                Err(err) => return Err(format!("lock error: {}", err).into()),
                 Ok(job) => job,
-            };
-            job();
+            }
+            .recv()?;
+            match job() {
+                Err(err) => error!("work error: {}", err),
+                Ok(_) => debug!("work done"),
+            }
         }
     }
 }
 
-type Job<T> = Box<dyn FnOnce() -> T + Send + 'static>;
+impl<T: Send + 'static> Debug for Worker<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Worker{}", self.id)
+    }
+}
+
+impl<T: Send + 'static> Drop for Worker<T> {
+    #[instrument]
+    fn drop(&mut self) {
+        info!("{:?} dropped", self);
+    }
+}
+
+type Job<T> = Box<dyn FnOnce() -> io::Result<T> + Send + 'static>;

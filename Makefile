@@ -40,7 +40,6 @@ run: build
 	@cargo run -q --package the-book --example ch17-01-gui
 	@cargo run -q --package the-book --example ch17-02-blog
 	@cargo run -q --package the-book --example ch17-03-blog2
-	@cargo run -q --package the-book --example ch20
 	@cargo run -q --bin style-book
 	@cargo run -q --package async-std-book --example ch02-02-cat -- Cargo.toml
 	@cargo run -q --package tokio-book --example spawn

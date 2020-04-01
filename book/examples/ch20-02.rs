@@ -8,7 +8,7 @@ use std::{
     thread,
     time::Duration,
 };
-use tracing::{event, instrument, Level};
+use tracing::{error, event, info, instrument, Level};
 use tracing_subscriber::FmtSubscriber;
 
 use the_book::ch20::ThreadPool;
@@ -20,18 +20,16 @@ fn main() -> Result<(), Box<dyn error::Error>> {
     let addr = args.next().unwrap_or(String::from("127.0.0.1:7879"));
     let count = args.next().map(|val| val.parse().unwrap_or(5)).unwrap_or(5);
     let listener = TcpListener::bind(addr)?;
-    event!(Level::INFO, "listening on {}", listener.local_addr()?);
-    let pool = ThreadPool::new(4, count);
-    let mut i = count;
-    for s in listener.incoming() {
+    info!("listening on {}", listener.local_addr()?);
+    let pool = ThreadPool::new(4);
+    for s in listener.incoming().take(count) {
         match s {
-            Err(err) => eprintln!("accept error: {}", err),
-            Ok(s) => pool.execute(|| handler(s)),
+            Err(err) => error!("accept error: {}", err),
+            Ok(s) => match pool.execute(|| handler(s)) {
+                Err(err) => error!("work error: {}", err),
+                Ok(_) => info!("work queued"),
+            },
         };
-        i -= 1;
-        if i == 0 {
-            break;
-        }
     }
     Ok(())
 }

@@ -1818,6 +1818,7 @@ dependencies = [
 name = "the-book"
 version = "0.1.0"
 dependencies = [
+ "num_cpus 1.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "tracing 0.1.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "tracing-subscriber 0.1.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
