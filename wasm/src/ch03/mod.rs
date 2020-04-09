@@ -9,7 +9,7 @@ use board::{Coordinate, Move, Piece};
 use game::Engine;
 
 lazy_static! {
-    pub static ref GAME_ENGINE: MutStatic<Engine> = { MutStatic::from(Engine::new()) };
+    pub static ref GAME_ENGINE: MutStatic<Engine> = MutStatic::from(Engine::new());
 }
 
 extern "C" {

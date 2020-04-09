@@ -187,7 +187,7 @@ impl Drop for GlobalBuilder {
 static POOL: Lazy<Mutex<Vec<GlobalBuilder>>> = Lazy::new(|| {
     let (init, max) = unsafe { (INIT_POOL_SIZE, MAX_POOL_SIZE) };
     let mut pool = Vec::with_capacity(max);
-    for _ in { 0..init } {
+    for _ in 0..init {
         pool.push(GlobalBuilder::new());
     }
     Mutex::new(pool)
@@ -305,7 +305,7 @@ impl FlatBufferBuilderPool {
     /// ```
     pub fn build<'a>(&self) -> FlatBufferBuilderLocalPool<'a> {
         let inner = Arc::new(Mutex::new(Vec::with_capacity(self.max)));
-        for _ in { 0..self.init } {
+        for _ in 0..self.init {
             let builder = LocalBuilder::new(
                 Arc::downgrade(&inner),
                 self.max,

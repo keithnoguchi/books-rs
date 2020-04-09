@@ -182,7 +182,7 @@ impl Drop for GlobalBuilder {
 static POOL: Lazy<SegQueue<GlobalBuilder>> = Lazy::new(|| {
     let init = unsafe { INIT_POOL_SIZE };
     let pool = SegQueue::new();
-    for _ in { 0..init } {
+    for _ in 0..init {
         pool.push(GlobalBuilder::new());
     }
     pool
@@ -300,7 +300,7 @@ impl FlatBufferBuilderPool {
     /// ```
     pub fn build<'a>(&self) -> FlatBufferBuilderLocalPool<'a> {
         let inner = Arc::new(SegQueue::new());
-        for _ in { 0..self.init } {
+        for _ in 0..self.init {
             let builder = LocalBuilder::new(
                 Arc::downgrade(&inner),
                 self.max,

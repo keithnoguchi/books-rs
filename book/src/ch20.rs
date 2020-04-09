@@ -34,7 +34,7 @@ where
         let mut workers = Vec::with_capacity(size);
         let (tx, rx) = mpsc::channel();
         let rx = Arc::new(Mutex::new(rx));
-        for id in { 0..size } {
+        for id in 0..size {
             workers.push(Worker::new(id, Arc::clone(&rx)));
         }
         Self {
