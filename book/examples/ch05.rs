@@ -12,7 +12,10 @@ impl Rectangle {
         Self { width, height }
     }
     fn square(width: u32) -> Self {
-        Self { width, height: width }
+        Self {
+            width,
+            height: width,
+        }
     }
     fn area(&self) -> u32 {
         self.width * self.height
@@ -33,6 +36,16 @@ fn main() {
     assert!(!rect.can_hold(&other2));
     println!("area of {:?} is {}", square, square.area());
     println!("area of {:?} is {}", rect, rect.area());
-    println!("{:?} can hold {:?}: {}", rect, other1, rect.can_hold(&other1));
-    println!("{:?} can hold {:?}: {}", rect, other2, rect.can_hold(&other2));
+    println!(
+        "{:?} can hold {:?}: {}",
+        rect,
+        other1,
+        rect.can_hold(&other1)
+    );
+    println!(
+        "{:?} can hold {:?}: {}",
+        rect,
+        other2,
+        rect.can_hold(&other2)
+    );
 }
