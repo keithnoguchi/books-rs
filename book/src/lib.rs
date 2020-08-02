@@ -1,6 +1,7 @@
 //! A collection of examples demonstrated in [the Rust Programming Language].
 //!
 //! [the rust programming language]: https://doc.rust-lang.org/stable/book/
+pub mod ch07;
 pub mod ch09;
 pub mod ch10;
 pub mod ch11;
