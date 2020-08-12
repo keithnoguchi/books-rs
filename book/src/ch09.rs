@@ -1,6 +1,27 @@
-// SPDX-License-Identifier: GPL-2.0
-//! Error Handling
+//! [Error] Handling
+//!
+//! [error]: https://doc.rust-lang.org/book/ch09-00-error-handling.html
 use std::io;
+use std::ops::Deref;
+
+#[derive(Debug)]
+pub struct Guess(i32);
+
+impl Guess {
+    pub fn new(value: i32) -> Self {
+        if value < 1 || value > 100 {
+            panic!("value should be greater than 1 and less than 100, inclusive");
+        }
+        Self(value)
+    }
+}
+
+impl Deref for Guess {
+    type Target = i32;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 /// Error represents the Error type of book crate.
 #[derive(Debug)]
