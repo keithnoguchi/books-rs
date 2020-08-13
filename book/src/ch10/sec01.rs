@@ -5,14 +5,12 @@
 //! # Examples
 //!
 //! ```
-//! use the_book::ch10::sec01::{largest, Error};
+//! use the_book::ch10::sec01::largest;
 //!
-//! let list = vec![1, 2, 3, 4, 5];
+//! let list = [1, 2, 3, 4, 5];
 //! assert_eq!(&5, largest(&list).unwrap());
-//! let list = vec!['a', 'b', 'c'];
-//! assert_eq!(&'c', largest(&list).unwrap());
-//! let list: Vec<String> = vec![];
-//! assert_eq!(Err(Error::RangeError), largest(&list));
+//! let list = [];
+//! assert_eq!(None, largest(&list));
 //! ```
 //!
 //! `Point` generic strucutre with the same types.
@@ -42,31 +40,14 @@
 //! assert_eq!(1, Point { x: 1, y: 'a' }.x());
 //! assert_eq!(2.0, Point { x: 1.1, y: 2.0 }.y());
 //! ```
-use core::cmp::PartialOrd;
-
-/// Error type.
-#[derive(Debug, PartialEq)]
-pub enum Error {
-    RangeError,
-}
-
-type Result<T> = core::result::Result<T, Error>;
-
-/// Returns the largest item out of `list` slice.
-pub fn largest<T>(list: &[T]) -> Result<&T>
-where
-    T: PartialOrd,
-{
-    if list.is_empty() {
-        return Err(Error::RangeError);
-    }
-    let mut largest = &list[0];
-    list.iter().for_each(|item| {
-        if *largest < *item {
-            largest = item
+pub fn largest(list: &[i32]) -> Option<&i32> {
+    let mut largest = list.first()?;
+    for x in &list[1..] {
+        if *x > *largest {
+            largest = x;
         }
-    });
-    Ok(largest)
+    }
+    Some(largest)
 }
 
 /// Double type point structure.
