@@ -52,6 +52,35 @@ impl PartialOrd for Car {
     }
 }
 
+#[derive(Debug, PartialEq)]
+struct Dot<T: Default> {
+    color: Color,
+    loc: T,
+}
+
+impl<T: Default> Dot<T> {
+    fn new(loc: T) -> Self {
+        Self { loc, ..Self::default() }
+    }
+}
+
+impl<T: Default> Default for Dot<T> {
+    fn default() -> Self {
+        Self { color: Color::Blue, loc: T::default() }
+    }
+}
+
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
 fn main() {
     let list: [i32; 0] = [];
     assert_eq!(None, largest(&list));
@@ -73,4 +102,9 @@ fn main() {
         Car::new(5).color(Color::Yellow).make(Make::Subaru),
     ];
     assert_eq!(&Car::new(100).color(Color::Blue).make(Make::Toyota), largest(&list).unwrap());
+    let p = Point { x: 1, y: 2};
+    assert_eq!(&1, p.x());
+    assert_eq!(&2, &p.y);
+    let p = Point { x: Dot::new(1), y: Dot::new(2) };
+    assert_eq!(&Dot::new(1), p.x());
 }
