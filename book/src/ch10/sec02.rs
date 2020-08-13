@@ -1,171 +1,86 @@
 //! [Traits]: Defining Shared Behavior
 //!
 //! [traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
-//!
-//! # Examples
-//!
-//! ```
-//! use the_book::ch10::{Article, Tweet, Summary};
-//!
-//! let article = Article {
-//!     headline: String::from("Headline!"),
-//!     content: String::from("Article"),
-//! };
-//! let tweet = Tweet {
-//!     username: String::from("Sam I am"),
-//!     content: String::from("tweet, tweet, tweet!"),
-//! };
-//!
-//! assert_eq!(String::from("(Read more...)"), article.summarize());
-//! assert_eq!(String::from("tweet, tweet, tweet! @Sam I am"), tweet.summarize());
-//! ```
-//!
-//! Traits as Parameter
-//!
-//! ```
-//! use the_book::ch10::{notify, notify2, Article, Summary};
-//!
-//! let article = Article {
-//!     headline: String::from("Headline!"),
-//!     content: String::from("Article"),
-//! };
-//! assert_eq!(String::from("Breaking news!: (Read more...)"), notify(&article));
-//! assert_eq!(notify(&article), notify2(&article));
-//! ```
-//!
-//! Traits as Parameter with the multiple trait bounds.
-//!
-//! ```
-//! use the_book::ch10::{detailed_notify, detailed_notify2, Summary, Tweet};
-//!
-//! let tweet = Tweet {
-//!     username: "I".to_string(),
-//!     content: "yep".to_string(),
-//! };
-//! assert_eq!(
-//!     String::from("Breaking news!: yep @I\nTweet { username: \"I\", content: \"yep\" }"),
-//!     detailed_notify(&tweet),
-//! );
-//! assert_eq!(detailed_notify(&tweet), detailed_notify2(&tweet));
-//! ```
-//!
-//! Returning types that implements traits
-//!
-//! ```
-//! use the_book::ch10::{summarizable, Summary};
-//!
-//! let summary = summarizable("sam i am", "yep, this is the tweet");
-//! assert_eq!(
-//!     String::from("yep, this is the tweet @sam i am"),
-//!     summary.summarize(),
-//! );
-//! ```
-//! Using trait bounds to conditionally implement methods
-//!
-//! ```
-//! use the_book::ch10::{Pair, Tweet};
-//!
-//! let p = Pair::new(1, 2);
-//! p.cmp_display();
-//!
-//! let p = Pair::new(
-//!     Tweet { username: "A".to_string(), content: "Some tweet".to_string() },
-//!     Tweet { username: "B".to_string(), content: "Another tweet".to_string() },
-//! );
-//! // you can't do this, as [`Tweet`] doesn't implement PartialOrd.
-//! // p.cmp_display();
-//! ```
-//! [`tweet`]: struct.Tweet.html
-use core::fmt::{Debug, Display};
 
-/// `impl` based `notify`, which is just a syntax sugar of [`notify2`].
-///
-/// [`notify2`]: fn.notify2.html
-pub fn notify(item: &impl Summary) -> String {
-    format!("Breaking news!: {}", item.summarize())
-}
-
-/// trait bound [`notify`].
-///
-/// [`notify`]: fn.notify.html
-pub fn notify2<T: Summary>(item: &T) -> String {
-    format!("Breaking news!: {}", item.summarize())
-}
-
-/// `impl` based `detailed_notify`, which is just a syntax sugar
-/// of [`detailed_notify2`].
-///
-/// [`detailed_notify2`]: fn.detailed_notify2.html
-pub fn detailed_notify(item: &(impl Summary + Debug)) -> String {
-    format!("Breaking news!: {}\n{:?}", item.summarize(), *item)
-}
-
-/// trait bound [`detailed_notify`].
-///
-/// [`detailed_notify`]: fn.detailed_notify.html
-pub fn detailed_notify2<T: Summary + Debug>(item: &T) -> String {
-    format!("Breaking news!: {}\n{:?}", item.summarize(), *item)
-}
-
-/// Trait generator, which returns trait implementor, example.
-pub fn summarizable(username: &str, content: &str) -> impl Summary {
-    Tweet {
-        username: username.to_string(),
-        content: content.to_string(),
-    }
-}
-
-/// Default trait implementation.
+/// Summary trait
 pub trait Summary {
+    /// Required implementation of `Summary` trait.
+    fn summarize_author(&self) -> String;
+
+    /// `summarize` method with the default implementation.
     fn summarize(&self) -> String {
-        String::from("(Read more...)")
+        format!("(Read more from {}...)", self.summarize_author())
     }
 }
 
-/// [`Summary`] trait implementor.
+/// `NewsArticle`, a `Summary` trait example with the default implementations
 ///
-/// [`summary`]: trait.Summary.html
-pub struct Article {
-    pub headline: String,
-    pub content: String,
+/// # Example
+///
+/// ```
+/// use the_book::ch10::{NewsArticle, Summary};
+///
+/// let article = NewsArticle::new("Breaking news!", "Keith Noguchi");
+/// assert_eq!("(Read more from Keith Noguchi...)", &article.summarize());
+/// ```
+#[derive(Default)]
+pub struct NewsArticle {
+    _headline: String,
+    author: String,
+    _location: String,
+    _content: String,
 }
 
-/// `Article` uses the default `summarize` method.
-impl Summary for Article {}
+impl NewsArticle {
+    pub fn new(headline: &str, author: &str) -> Self {
+        Self {
+            _headline: headline.into(),
+            author: author.into(),
+            ..Self::default()
+        }
+    }
+}
 
-/// [`Summary`] trait implementor.
+// Use the default `summarize()` method.
+impl Summary for NewsArticle {
+    fn summarize_author(&self) -> String {
+        self.author.clone()
+    }
+}
+
+/// `Tweet`, a `Summary` trait example.
 ///
-/// [`summary`]: trait.Summary.html
-#[derive(Debug)]
+/// # Example
+///
+/// ```
+/// use the_book::ch10::{Summary, Tweet};
+///
+/// let tweet = Tweet::new("keithnoguchi", "Ho, ho, ho!");
+/// assert_eq!("keithnoguchi: Ho, ho, ho!", &tweet.summarize());
+/// ```
+#[derive(Default)]
 pub struct Tweet {
-    pub username: String,
-    pub content: String,
+    username: String,
+    content: String,
+    _reply: bool,
+    _retweet: bool,
+}
+
+impl Tweet {
+    pub fn new(username: &str, content: &str) -> Self {
+        Self {
+            username: username.into(),
+            content: content.into(),
+            ..Self::default()
+        }
+    }
 }
 
 impl Summary for Tweet {
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
+    }
     fn summarize(&self) -> String {
-        format!("{} @{}", self.content, self.username)
-    }
-}
-
-/// Conditional generic implementor with the trait bound.
-pub struct Pair<T> {
-    x: T,
-    y: T,
-}
-
-impl<T> Pair<T> {
-    pub fn new(x: T, y: T) -> Self {
-        Self { x, y }
-    }
-}
-
-impl<T: Display + PartialOrd> Pair<T> {
-    pub fn cmp_display(&self) {
-        if self.x >= self.y {
-            println!("The largest member is x = {}", self.x);
-        } else {
-            println!("The largest member is y = {}", self.y);
-        }
+        format!("{}: {}", self.username, self.content)
     }
 }
