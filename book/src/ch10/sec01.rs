@@ -7,9 +7,9 @@
 //! ```
 //! use the_book::ch10::sec01::largest;
 //!
-//! let list = [1, 2, 3, 4, 5];
-//! assert_eq!(&5, largest(&list).unwrap());
-//! let list = [];
+//! let list = ['a', 'b', 'c', 'd', 'e'];
+//! assert_eq!(&'e', largest(&list).unwrap());
+//! let list: [i32; 0] = [];
 //! assert_eq!(None, largest(&list));
 //! ```
 //!
@@ -40,9 +40,9 @@
 //! assert_eq!(1, Point { x: 1, y: 'a' }.x());
 //! assert_eq!(2.0, Point { x: 1.1, y: 2.0 }.y());
 //! ```
-pub fn largest(list: &[i32]) -> Option<&i32> {
+pub fn largest<T: PartialOrd>(list: &[T]) -> Option<&T> {
     let mut largest = list.first()?;
-    for x in &list[1..] {
+    for x in list.iter() {
         if *x > *largest {
             largest = x;
         }
