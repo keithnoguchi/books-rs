@@ -2,26 +2,29 @@
 //!
 //! [generic data types]: https://doc.rust-lang.org/book/ch10-01-syntax.html
 
+/// Generic `largest` function with `PartialOrd` trait bound
+///
 /// # Examples
 ///
 /// ```
-/// use the_book::ch10::sec01::largest;
+/// use the_book::ch10::largest;
 ///
 /// let list = ['a', 'b', 'c', 'd', 'e'];
 /// assert_eq!(&'e', largest(&list).unwrap());
 /// let list: [i32; 0] = [];
 /// assert_eq!(None, largest(&list));
 /// ```
-pub fn largest<T: PartialOrd>(list: &[T]) -> Option<&T> {
-    let mut largest = list.first()?;
-    for x in list.iter() {
-        if *x > *largest {
-            largest = x;
-        }
-    }
+pub fn largest<T: PartialOrd>(a: &[T]) -> Option<&T> {
+    let mut i = a.iter();
+    let mut largest = i.next()?;
+    i.for_each(|item| if *item > *largest {
+        largest = item;
+    });
     Some(largest)
 }
 
+/// `Point` generic struct
+///
 /// # Examples
 ///
 /// `Point` generic strucutre with the same types.
