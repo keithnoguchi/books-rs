@@ -1,142 +1,237 @@
-//! Writing Automated Tests
+//! Writing Automated [Tests]
+//!
+//! [tests]: https://doc.rust-lang.org/book/ch11-00-testing.html
 
-/// Adds two to the number given.
+/// Simple `add_two` function to demonstrate the integration test
+/// as well as unit test with Result<T, E> return value.
 ///
-/// # Examples
+/// # Example
 ///
 /// ```
-/// let arg = 5;
-/// let answer = the_book::ch11::add_two(arg);
-/// assert_eq!(7, answer);
+/// use the_book::ch11::add_two;
+///
+/// assert_eq!(5, add_two(3));
 /// ```
+///
 pub fn add_two(x: i32) -> i32 {
     x + 2
 }
 
-struct Rectangle {
-    length: u32,
-    width: u32,
+/// Another function `greeting` to demonstrate `assert` macro additional
+/// arguments.
+///
+/// # Example
+///
+/// ```
+/// use the_book::ch11::greeting;
+///
+/// let name = "Keith";
+/// assert!(greeting(name).contains(name));
+/// ```
+pub fn greeting(name: &str) -> String {
+    format!("Hi {}", name)
+}
+
+/// `Rectangle` to demonstrate the rust test framework.
+///
+/// # Examples
+///
+/// ```
+/// use the_book::ch11::Rectangle;
+///
+/// let rect = Rectangle::new(10, 20);
+/// let other = Rectangle::new(2, 19);
+/// assert!(rect.can_hold(&other));
+/// ```
+pub struct Rectangle {
+    length: i32,
+    width: i32,
 }
 
 impl Rectangle {
-    #[allow(dead_code)]
-    fn new(length: u32, width: u32) -> Self {
+    pub fn new(length: i32, width: i32) -> Self {
         Self { length, width }
     }
-    #[allow(dead_code)]
-    fn can_hold(&self, other: &Rectangle) -> bool {
-        other.length <= self.length && other.width <= self.width
+    pub fn can_hold(&self, other: &Self) -> bool {
+        self.length > other.length && self.width > other.width
     }
 }
 
-#[allow(dead_code)]
-fn greeting(name: &str) -> String {
-    format!("Hello, {}!", name)
-}
-
-struct Guess {
+/// `Guess` structure to demonstrate the `#[should_panic]` test attribute.
+///
+/// # Examples
+///
+/// use the_book::ch11::Guess;
+///
+/// #[test]
+/// #[should_panic]
+/// fn negative_value() {
+///     Guess::new(-1);
+/// }
+///
+/// #[test]
+/// #[should_panic]
+/// fn more_than_100() {
+///     Guess::new(101);
+/// }
+pub struct Guess {
     value: i32,
 }
 
 impl Guess {
-    #[allow(dead_code)]
-    fn new(value: i32) -> Self {
-        if value < 1 || value > 100 {
-            panic!("the value should be in 1..101");
+    /// Create a new `Guess` instance.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use the_book::ch11::Guess;
+    ///
+    /// let guess = Guess::new(55);
+    /// assert_eq!(55, guess.value());
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// It will panic when the provided value is negative
+    /// or more than 100.
+    pub fn new(value: i32) -> Self {
+        if value < 0 {
+            panic!("{:#?} is negative", value);
+        } else if value > 100 {
+            panic!("{:#?} is more than 100", value);
         }
         Self { value }
     }
-    #[allow(dead_code)]
-    fn value(&self) -> i32 {
+
+    /// Return the current guessed value.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use the_book::ch11::Guess;
+    ///
+    /// let guess = Guess::new(29);
+    /// assert_eq!(29, guess.value());
+    /// ```
+    pub fn value(&self) -> i32 {
         self.value
-    }
-}
-
-struct Guess2(i32);
-
-impl Guess2 {
-    #[allow(dead_code)]
-    fn new(value: i32) -> Result<Self, String> {
-        if value < 1 || value > 100 {
-            Err(String::from("invalid value"))
-        } else {
-            Ok(Self(value))
-        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     #[test]
-    fn rectangle_can_hold() {
-        use super::Rectangle;
-        const NAME: &str = "rectangle_can_hold";
+    fn add_two_ok() -> Result<(), String> {
         struct Test {
             name: &'static str,
-            r1: Rectangle,
-            r2: Rectangle,
-            want: bool,
+            data: i32,
+            want: i32,
         }
         let tests = [
             Test {
-                name: "r1 can hold r2",
-                r1: Rectangle::new(2, 2),
-                r2: Rectangle::new(2, 1),
-                want: true,
+                name: "add two to four",
+                data: 4,
+                want: 6,
             },
             Test {
-                name: "r1 cannot hold r2",
-                r1: Rectangle::new(2, 1),
-                r2: Rectangle::new(2, 2),
-                want: false,
+                name: "add two to zero",
+                data: 0,
+                want: 2,
             },
             Test {
-                name: "r1 and r2 are equal, hence r1 can hold r2",
-                r1: Rectangle::new(2, 2),
-                r2: Rectangle::new(2, 2),
-                want: true,
+                name: "add two to 1,000,000,000",
+                data: 1_000_000_000,
+                want: 1_000_000_002,
             },
         ];
         for t in &tests {
-            assert_eq!(t.want, t.r1.can_hold(&t.r2), "{}: {}", NAME, t.name);
-        }
-    }
-    #[test]
-    fn greeting_contains() {
-        const NAME: &str = "greeting_contains";
-        let tests = [
-            String::from("Alice"),
-            String::from("Bob"),
-            String::from("Keith"),
-        ];
-        for t in &tests {
-            assert!(super::greeting(t).contains(t), "{}: {}", NAME, t);
-        }
-    }
-    #[test]
-    #[should_panic(expected = "the value should be in 1..101")]
-    fn panic_guess_with_invalid_value() {
-        let tests = [32i32, 99, -1];
-        for t in &tests {
-            super::Guess::new(*t);
-        }
-    }
-    #[test]
-    fn guess2_return_ok() -> Result<(), String> {
-        let tests = [32i32, 99, 100, 1];
-        for t in &tests {
-            super::Guess2::new(*t)?;
+            match super::add_two(t.data) {
+                got if got == t.want => continue,
+                got => {
+                    return Err(format!("{}: unexpected value: {:?} != {:?}",
+                                       t.name, t.want, got));
+                },
+            }
         }
         Ok(())
     }
     #[test]
-    fn guess2_return_err() {
-        let tests = [-1i32, 101, 200, 0];
+    fn greeting() {
+        let name = "Keith";
+        let got = super::greeting(name);
+        assert!(got.contains(name), "{:#?} does not contains {:#?}", got, name);
+    }
+    #[test]
+    fn rectangle_can_hold() {
+        use super::Rectangle;
+
+        struct Test {
+            name: &'static str,
+            data: Rectangle,
+            other: Rectangle,
+            want: bool,
+        }
+        let tests = [
+            Test {
+                name: "can hold",
+                data: Rectangle::new(2, 3),
+                other: Rectangle::new(1, 2),
+                want: true,
+            },
+            Test {
+                name: "cannot due to the same length",
+                data: Rectangle::new(2, 3),
+                other: Rectangle::new(2, 1),
+                want: false,
+            },
+            Test {
+                name: "cannot hold due to the same width",
+                data: Rectangle::new(2, 3),
+                other: Rectangle::new(1, 3),
+                want: false,
+            },
+        ];
         for t in &tests {
-            if let Ok(_) = super::Guess2::new(*t) {
-                let msg = format!("{}: unexpected success", t);
-                panic!(msg);
-            }
+            assert_eq!(t.want, t.data.can_hold(&t.other), "{}", t.name);
+        }
+    }
+    #[test]
+    #[should_panic(expected = "is negative")]
+    fn guess_negative_value() {
+        super::Guess::new(-1);
+    }
+    #[test]
+    #[should_panic(expected = "is more than 100")]
+    fn guess_more_than_100() {
+        super::Guess::new(101);
+    }
+    #[test]
+    fn guess_ok() {
+        struct Test {
+            name: &'static str,
+            value: i32,
+        }
+        let tests = [
+            Test {
+                name: "zero value",
+                value: 0,
+            },
+            Test {
+                name: "one value",
+                value: 1,
+            },
+            Test {
+                name: "99 value",
+                value: 99,
+            },
+            Test {
+                name: "100 value",
+                value: 100,
+            },
+        ];
+        for t in &tests {
+            let got = super::Guess::new(t.value);
+            assert_eq!(t.value, got.value(), "{}", t.name);
         }
     }
 }
