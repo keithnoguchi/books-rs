@@ -1,239 +1,233 @@
-// SPDX-License-Identifier: GPL-2.0
 //! An I/O Project: Building a Command Line Program
-use super::ch09::Error;
-use std::{fs, io::ErrorKind};
+use std::{
+    env, error, fs,
+    io::{self, BufRead},
+};
 
-/// Config to capture command line arguments for the I/O project.
-///
-/// # Examples
-/// ```
-/// use the_book as book;
-/// use book::ch09::Error;
-/// use book::ch12::Config;
-///
-/// fn main() -> Result<(), Error> {
-///     let args = vec![
-///         String::from("crate"),
-///         String::from("some query"),
-///         String::from("some filename"),
-///     ];
-///     let config = Config::new(&args)?;
-///     assert_eq!("some query", config.query());
-///     assert_eq!("some filename", config.filename());
-///     Ok(())
-/// }
-/// ```
-#[derive(Debug, PartialEq)]
-pub struct Config {
+/// Main application.
+#[derive(Debug, PartialEq, Default)]
+pub struct App {
     query: String,
     filename: String,
+    is_case_insensitive: bool,
 }
 
-impl Config {
-    pub fn new(args: &[String]) -> Result<Self, Error> {
+impl App {
+    /// Create a new application with the passed command line arguments.
+    /// The second argument, index 1, will be the query string and the
+    /// third, index 2, as the filename.  It returns error if the
+    /// `args`'s length is less than three.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use the_book::ch12::App;
+    ///
+    /// let args: [String; 3] = [
+    ///     "progname".into(),
+    ///     "query string".into(),
+    ///     "filename.txt".into(),
+    /// ];
+    ///
+    /// let _app = App::new(&args).unwrap();
+    /// ```
+    pub fn new(args: &[String]) -> Result<Self, &'static str> {
         if args.len() < 3 {
-            Err(Error::from(ErrorKind::InvalidInput))
+            return Err("not enough arguments");
+        }
+        let query = args[1].to_owned();
+        let filename = args[2].to_owned();
+        let is_case_insensitive = env::var("CASE_INSENSITIVE")
+            .and_then(|var| {
+                if var.is_empty() || var == "0" {
+                    Err(env::VarError::NotPresent)
+                } else {
+                    Ok(var)
+                }
+            })
+            .is_ok();
+        Ok(Self {
+            query,
+            filename,
+            is_case_insensitive,
+        })
+    }
+
+    /// Read the each line from `config.filename` and returns `Vec<String>`
+    /// which contains `config.query`.  It return error when it couldn't
+    /// open a file to read or print out a error to the stderr when
+    /// it encounters error while reading.
+    ///
+    /// # Example
+    ///
+    /// ```not_run
+    /// use std::env;
+    /// use the_book::ch12::App;
+    ///
+    /// let args = env::args().collect();
+    /// let app = App::new(&args).unwrap();
+    /// app.run();
+    /// ```
+    pub fn run(&self) -> Result<Vec<String>, Box<dyn error::Error>> {
+        let f = io::BufReader::new(fs::File::open(&self.filename)?);
+        let mut matches = vec![];
+        for line in f.lines() {
+            let line = line?;
+            if self.search(&self.query_string(), &line) {
+                matches.push(line);
+            }
+        }
+        Ok(matches)
+    }
+
+    /// Return `true` if `line` contains `&query` string.
+    ///
+    /// `self.is_case_insensitive` bool variable controls
+    /// the case sensitivity behavior.
+    fn search(&self, query: &str, line: &str) -> bool {
+        if self.is_case_insensitive {
+            line.to_lowercase().contains(query)
         } else {
-            let query = args[1].clone();
-            let filename = args[2].clone();
-            Ok(Self { query, filename })
+            line.contains(query)
         }
     }
-    pub fn query(&self) -> &str {
-        &self.query
-    }
-    pub fn filename(&self) -> &str {
-        &self.filename
-    }
-}
 
-/// run reads a file provided by Config.filename() and returns
-/// the contents throught Result<String, Error>.
-pub fn run(cfg: Config) -> Result<(), Error> {
-    let contents = fs::read_to_string(cfg.filename())?;
-    for line in search(cfg.query(), &contents) {
-        println!("{}", line);
-    }
-    Ok(())
-}
-
-/// search takes `query` as a first parameter and returns the line
-/// in case it's in `line`.
-///
-/// # Examples
-/// ```
-/// use the_book::ch12::search;
-///
-/// let data = "\
-/// something here,
-/// and some there.";
-///
-/// let query = "some";
-/// let want = vec!["something here,", "and some there."];
-/// assert_eq!(want, search(query, data));
-///
-/// let query = "another";
-/// let want: Vec<&str> = vec![];
-/// assert_eq!(want, search(query, data));
-///
-/// let query = "Some";
-/// let want: Vec<&str> = vec![];
-/// assert_eq!(want, search(query, data));
-/// ```
-pub fn search<'a>(query: &str, data: &'a str) -> Vec<&'a str> {
-    let mut result = Vec::<&str>::new();
-    for line in data.lines() {
-        if line.contains(query) {
-            result.push(line);
+    /// Returns the query string base on the `self.is_case_insensitive`
+    /// flag.  It returns all lower cased `String` when
+    /// `self.is_case_insensitive` is true.
+    fn query_string(&self) -> String {
+        if self.is_case_insensitive {
+            self.query.to_lowercase()
+        } else {
+            self.query.to_owned()
         }
     }
-    result
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io;
     #[test]
-    fn config_new() {
+    fn app_new_ok() {
         struct Test {
-            args: Vec<String>,
-            want: Result<Config, Error>,
+            name: &'static str,
+            input: [String; 3],
+            want: App,
         }
         let tests = [
             Test {
-                args: vec![],
-                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
-            },
-            Test {
-                args: vec![String::from("no filename")],
-                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
-            },
-            Test {
-                args: vec![String::from("with query"), String::from("query")],
-                want: Err(Error::Io(io::Error::from(io::ErrorKind::InvalidInput))),
-            },
-            Test {
-                args: vec![
-                    String::from("with query and filename"),
-                    String::from("query"),
-                    String::from("filename"),
+                name: "null query string",
+                input: [
+                    String::from("progname"),
+                    String::from(""),
+                    String::from("test.txt"),
                 ],
-                want: Ok(Config {
-                    query: String::from("query"),
-                    filename: String::from("filename"),
-                }),
+                want: App {
+                    query: "".into(),
+                    filename: "test.txt".into(),
+                    ..Default::default()
+                },
             },
             Test {
-                args: vec![
-                    String::from("with more than query and filename"),
-                    String::from("query"),
-                    String::from("filename"),
-                    String::from("another argument"),
+                name: "some query string",
+                input: [
+                    String::from("progname"),
+                    String::from("this is a test query"),
+                    String::from("test.txt"),
                 ],
-                want: Ok(Config {
-                    query: String::from("query"),
-                    filename: String::from("filename"),
-                }),
+                want: App {
+                    query: "this is a test query".into(),
+                    filename: "test.txt".into(),
+                    ..Default::default()
+                },
             },
         ];
         for t in &tests {
-            match Config::new(&t.args) {
-                Ok(got) => {
-                    if let Ok(want) = &t.want {
-                        assert_eq!(want, &got);
-                    } else {
-                        panic!("unexpected success");
-                    }
-                }
-                Err(got) => {
-                    if let Err(want) = &t.want {
-                        assert_eq!(want, &got);
-                    } else {
-                        panic!("unexpected error");
-                    }
-                }
-            }
+            let got = App::new(&t.input).unwrap();
+            assert_eq!(t.want, got, "{}", t.name);
         }
     }
     #[test]
-    fn config_query() {
+    fn app_new_err() {
+        let args: [String; 2] = ["progname".into(), "some query".into()];
+        let got = App::new(&args);
+        assert_eq!(Err("not enough arguments"), got);
+    }
+    #[test]
+    fn app_search_case_sensitive() {
+        // set query as the second argument.
+        let args: [String; 3] = ["".into(), "duct".into(), "".into()];
+        let app = App::new(&args).unwrap();
         struct Test {
-            config: Config,
-            want: &'static str,
+            content: &'static str,
+            want: bool,
         }
         let tests = [
             Test {
-                config: Config {
-                    query: String::from("some query"),
-                    filename: String::from("some file"),
-                },
-                want: "some query",
+                content: "Rust:",
+                want: false,
             },
             Test {
-                config: Config {
-                    query: String::from(""),
-                    filename: String::from("some filename"),
-                },
-                want: "",
+                content: "safe, fast, productive.",
+                want: true,
+            },
+            Test {
+                content: "Pick three.",
+                want: false,
+            },
+            Test {
+                content: "Duct",
+                want: false,
             },
         ];
+        let query = app.query_string();
         for t in &tests {
-            assert_eq!(t.want, t.config.query());
+            assert_eq!(
+                t.want,
+                app.search(&query, &t.content),
+                "{:?} does not contain {:?}",
+                t.content,
+                query,
+            );
         }
     }
     #[test]
-    fn config_filename() {
+    fn app_search_case_insensitive() {
+        // set query as the second argument.
+        let args: [String; 3] = ["".into(), "duct".into(), "".into()];
+        let mut app = App::new(&args).unwrap();
+        app.is_case_insensitive = true;
         struct Test {
-            config: Config,
-            want: &'static str,
+            content: &'static str,
+            want: bool,
         }
         let tests = [
             Test {
-                config: Config {
-                    query: String::from("some query"),
-                    filename: String::from("some file"),
-                },
-                want: "some file",
+                content: "Rust:",
+                want: false,
             },
             Test {
-                config: Config {
-                    query: String::from("some query"),
-                    filename: String::from(""),
-                },
-                want: "",
+                content: "safe, fast, productive.",
+                want: true,
+            },
+            Test {
+                content: "Pick three.",
+                want: false,
+            },
+            Test {
+                content: "Duct",
+                want: true,
             },
         ];
+        let query = app.query_string();
         for t in &tests {
-            assert_eq!(t.want, t.config.filename());
-        }
-    }
-    #[test]
-    fn search_string() {
-        struct Test {
-            query: &'static str,
-            data: &'static str,
-            want: Vec<&'static str>,
-        }
-        let tests = [
-            Test {
-                query: "",
-                data: "",
-                want: vec![],
-            },
-            Test {
-                query: "line",
-                data: "
-This is a line.
-Another line.
-and another line.
-",
-                want: vec!["This is a line.", "Another line.", "and another line."],
-            },
-        ];
-        for t in &tests {
-            let got = search(t.query, t.data);
-            assert_eq!(t.want, got);
+            assert_eq!(
+                t.want,
+                app.search(&query, &t.content),
+                "{:?} does not contain {:?}",
+                t.content,
+                query,
+            );
         }
     }
 }

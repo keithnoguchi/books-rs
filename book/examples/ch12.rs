@@ -1,25 +1,21 @@
 //! An I/O Project: Building a Command Line Program
-use std::{env, io, process};
+use std::{env, process};
 
-use the_book::ch09::Error;
-use the_book::ch12::{self, Config};
+use the_book::ch12;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let cfg = Config::new(&args).unwrap_or_else(|err| usage(err));
-    if let Err(err) = ch12::run(cfg) {
-        usage(err);
+    let lines = ch12::App::new(&args)
+        .unwrap_or_else(|err| {
+            eprintln!("invalid configuration: {}", err);
+            process::exit(1);
+        })
+        .run()
+        .unwrap_or_else(|err| {
+            eprintln!("application error: {}", err);
+            process::exit(1);
+        });
+    for line in &lines {
+        println!("{}", line);
     }
-}
-
-fn usage(err: Error) -> ! {
-    match err {
-        Error::Io(err) => match err.kind() {
-            io::ErrorKind::InvalidInput => eprintln!("{:?}", err),
-            io::ErrorKind::NotFound => eprintln!("{:?}", err),
-            _ => eprintln!("oops {:?}", err),
-        },
-        _ => eprintln!("unexpected error"),
-    }
-    process::exit(1);
 }

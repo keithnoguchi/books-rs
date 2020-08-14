@@ -148,9 +148,11 @@ mod tests {
             match super::add_two(t.data) {
                 got if got == t.want => continue,
                 got => {
-                    return Err(format!("{}: unexpected value: {:?} != {:?}",
-                                       t.name, t.want, got));
-                },
+                    return Err(format!(
+                        "{}: unexpected value: {:?} != {:?}",
+                        t.name, t.want, got
+                    ));
+                }
             }
         }
         Ok(())
@@ -159,7 +161,12 @@ mod tests {
     fn greeting() {
         let name = "Keith";
         let got = super::greeting(name);
-        assert!(got.contains(name), "{:#?} does not contains {:#?}", got, name);
+        assert!(
+            got.contains(name),
+            "{:#?} does not contains {:#?}",
+            got,
+            name
+        );
     }
     #[test]
     fn rectangle_can_hold() {
