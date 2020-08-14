@@ -14,11 +14,16 @@
 /// let list: [i32; 0] = [];
 /// assert_eq!(None, largest(&list));
 /// ```
-pub fn largest<T: PartialOrd>(a: &[T]) -> Option<&T> {
+pub fn largest<T>(a: &[T]) -> Option<&T>
+where
+    T: PartialOrd,
+{
     let mut i = a.iter();
     let mut largest = i.next()?;
-    i.for_each(|item| if *item > *largest {
-        largest = item;
+    i.for_each(|item| {
+        if *item > *largest {
+            largest = item;
+        }
     });
     Some(largest)
 }

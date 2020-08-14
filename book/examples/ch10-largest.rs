@@ -28,7 +28,10 @@ struct Car {
 
 impl Car {
     fn new(id: usize) -> Self {
-        Self { id, ..Self::default() }
+        Self {
+            id,
+            ..Self::default()
+        }
     }
     fn color(mut self, color: Color) -> Self {
         self.color = color;
@@ -42,7 +45,11 @@ impl Car {
 
 impl Default for Car {
     fn default() -> Self {
-        Self { id: 0, color: Color::Red, make: Make::Honda }
+        Self {
+            id: 0,
+            color: Color::Red,
+            make: Make::Honda,
+        }
     }
 }
 
@@ -60,13 +67,19 @@ struct Dot<T: Default> {
 
 impl<T: Default> Dot<T> {
     fn new(loc: T) -> Self {
-        Self { loc, ..Self::default() }
+        Self {
+            loc,
+            ..Self::default()
+        }
     }
 }
 
 impl<T: Default> Default for Dot<T> {
     fn default() -> Self {
-        Self { color: Color::Blue, loc: T::default() }
+        Self {
+            color: Color::Blue,
+            loc: T::default(),
+        }
     }
 }
 
@@ -101,10 +114,16 @@ fn main() {
         Car::new(100).color(Color::Blue).make(Make::Toyota),
         Car::new(5).color(Color::Yellow).make(Make::Subaru),
     ];
-    assert_eq!(&Car::new(100).color(Color::Blue).make(Make::Toyota), largest(&list).unwrap());
-    let p = Point { x: 1, y: 2};
+    assert_eq!(
+        &Car::new(100).color(Color::Blue).make(Make::Toyota),
+        largest(&list).unwrap()
+    );
+    let p = Point { x: 1, y: 2 };
     assert_eq!(&1, p.x());
     assert_eq!(&2, &p.y);
-    let p = Point { x: Dot::new(1), y: Dot::new(2) };
+    let p = Point {
+        x: Dot::new(1),
+        y: Dot::new(2),
+    };
     assert_eq!(&Dot::new(1), p.x());
 }
