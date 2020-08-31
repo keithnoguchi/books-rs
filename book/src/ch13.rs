@@ -7,12 +7,12 @@
 /// `value` call will be faster by skippnig the actual calculation.
 ///
 /// [cacher]: struct.Cacher.html
-pub struct Cacher<F: Fn(i32) -> i32> {
+pub struct Cacher<T: Clone, F: Fn(T) -> T> {
     calc: F,
-    value: Option<i32>,
+    value: Option<T>,
 }
 
-impl<F: Fn(i32) -> i32> Cacher<F> {
+impl<T: Clone, F: Fn(T) -> T> Cacher<T, F> {
     /// `new` instanciates the new [Cacher] instance.
     ///
     /// # Example
@@ -39,28 +39,37 @@ impl<F: Fn(i32) -> i32> Cacher<F> {
     /// let got = c.value(9);
     /// assert_eq!(27, got);
     /// ```
-    pub fn value(&mut self, value: i32) -> i32 {
-        match self.value {
-            Some(x) => x,
+    pub fn value(&mut self, value: T) -> T {
+        match &self.value {
+            Some(x) => x.clone(),
             None => {
                 let x = (self.calc)(value);
-                self.value = Some(x);
+                self.value = Some(x.clone());
                 x
-            },
+            }
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use super::Cacher;
+
     #[test]
     fn cacher_new() {
-        let mut _c = super::Cacher::new(|x| x);
+        let mut _c: Cacher<i32, _> = Cacher::new(|x| x);
     }
     #[test]
     fn cacher_value() {
-        let mut c = super::Cacher::new(|x| 3 * x);
+        let mut c = Cacher::new(|x| 3 * x);
         let got = c.value(2);
         assert_eq!(6, got);
+    }
+    #[test]
+    fn cacher_value_string() {
+        let mut c = Cacher::new(|x: String| x.to_lowercase());
+        let _got = c.value("HELLO".into());
+        let got = c.value("something else".into());
+        assert_eq!(String::from("hello"), got);
     }
 }

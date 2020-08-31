@@ -5,13 +5,13 @@ use std::error::Error;
 use the_book::ch13::Cacher;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let mut c = Cacher::new(|x| x);
+    let mut c = Cacher::new(|x: String| x.to_lowercase());
 
-    for _ in 1..1_000 {
-        let got = c.value(1);
-        assert_eq!(1, got);
+    for x in 1..1_000 {
+        let got = c.value(x.to_string());
+        assert_eq!(String::from("1"), got);
     }
-    let got = c.value(999);
-    assert_eq!(1, got);
+    let got = c.value(999.to_string());
+    assert_eq!(String::from("1"), got);
     Ok(())
 }
