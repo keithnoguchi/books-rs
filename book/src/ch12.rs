@@ -13,6 +13,8 @@ pub struct App {
 }
 
 impl App {
+    const ENV_CASE_INSENSITIVE: &'static str = "CASE_INSENSITIVE";
+
     /// Create a new application with the passed command line arguments.
     /// The second argument, index 1, will be the query string and the
     /// third, index 2, as the filename.  It returns error if the
@@ -37,7 +39,7 @@ impl App {
         }
         let query = args[1].to_owned();
         let filename = args[2].to_owned();
-        let is_case_insensitive = env::var("CASE_INSENSITIVE")
+        let is_case_insensitive = env::var(Self::ENV_CASE_INSENSITIVE)
             .and_then(|var| {
                 if var.is_empty() || var == "0" {
                     Err(env::VarError::NotPresent)
