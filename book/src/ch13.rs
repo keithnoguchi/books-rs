@@ -21,7 +21,10 @@ impl<K: Eq + Hash + Clone, V: Clone, F: Fn(K) -> V> Cacher<K, V, F> {
     /// ```
     /// use the_book::ch13::Cacher;
     ///
-    /// let c = Cacher::new(|x| 2 * x);
+    /// let mut c = Cacher::<&str, _, _>::new(|x| x.to_lowercase());
+    /// c.value("SOMETHING");
+    /// assert_eq!(String::from("hello"), c.value("HELLO"));
+    /// assert_eq!(String::from("something"), c.value("Something"));
     /// ```
     ///
     /// [cacher]: struct.Cacher.html
@@ -39,6 +42,8 @@ impl<K: Eq + Hash + Clone, V: Clone, F: Fn(K) -> V> Cacher<K, V, F> {
     /// # Example
     ///
     /// ```
+    /// use the_book::ch13::Cacher;
+    ///
     /// let mut c = Cacher::new(|x| 3 * x);
     /// let got = c.value(9);
     /// assert_eq!(27, got);
@@ -50,6 +55,40 @@ impl<K: Eq + Hash + Clone, V: Clone, F: Fn(K) -> V> Cacher<K, V, F> {
             .or_insert_with(|| (calc)(key))
             .clone()
     }
+}
+
+/// `Counter` to demonstrate the [Iterator] trait.
+///
+/// [iterator]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+pub struct Counter {
+    pub inner: InnerCounter,
+}
+
+impl Default for Counter {
+    fn default() -> Self {
+        Self {
+            inner: InnerCounter::default(),
+        }
+    }
+}
+
+impl Counter {
+    /// # Examples
+    ///
+    /// ```
+    /// use the_book::ch13::Counter;
+    ///
+    /// let counter = Counter::new();
+    /// assert_eq!(0, counter.inner.count);
+    /// ```
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+#[derive(Default)]
+pub struct InnerCounter {
+    pub count: u32,
 }
 
 #[cfg(test)]
@@ -81,5 +120,10 @@ mod tests {
         let got2 = c.value("Hello world");
         assert_eq!(5, got1);
         assert_eq!(11, got2);
+    }
+    #[test]
+    fn counter_new() {
+        let counter = super::Counter::new();
+        assert_eq!(0, counter.inner.count);
     }
 }
