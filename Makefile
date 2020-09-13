@@ -22,13 +22,12 @@ run: build
 	@cargo run -q --package the-book --example ch10-point
 	@cargo run -q --package the-book --example ch10-tweet
 	@cargo run -q --package the-book --example ch12 SPDX Makefile
-	@cargo run -q --package the-book --example ch13-01-cacher
-	@cargo run -q --package the-book --example ch13-02-iter
-	@cargo run -q --package the-book --example ch13-02-iter-mut
-	@cargo run -q --package the-book --example ch13-02-into-iter
-	@cargo run -q --package the-book --example ch13-02-map
-	@cargo run -q --package the-book --example ch13-02-counter
-	@cargo run -q --package the-book --example ch13-03-grep ch13 Makefile
+	@cargo run -q --package the-book --example ch13-cacher
+	@cargo run -q --package the-book --example ch13-iter
+	@cargo run -q --package the-book --example ch13-iter-mut
+	@cargo run -q --package the-book --example ch13-into-iter
+	@cargo run -q --package the-book --example ch13-map
+	@cargo run -q --package the-book --example ch13-counter
 	@for i in 1 2 3 4 5 6 7 8; do \
 		if ! cargo run -q --package the-book --example ch15-0$$i; then \
 			exit 1; \

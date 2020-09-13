@@ -57,38 +57,28 @@ impl<K: Eq + Hash + Clone, V: Clone, F: Fn(K) -> V> Cacher<K, V, F> {
     }
 }
 
-/// `Counter` to demonstrate the [Iterator] trait.
+/// `Students` demonstrates the [Iterator] implementation.
 ///
 /// [iterator]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
-pub struct Counter {
-    pub inner: InnerCounter,
+#[derive(Default)]
+pub struct Students<T: Default + PartialCmp> {
+    students: Vec<T>,
 }
 
-impl Default for Counter {
-    fn default() -> Self {
-        Self {
-            inner: InnerCounter::default(),
-        }
-    }
-}
-
-impl Counter {
-    /// # Examples
-    ///
-    /// ```
-    /// use the_book::ch13::Counter;
-    ///
-    /// let counter = Counter::new();
-    /// assert_eq!(0, counter.inner.count);
-    /// ```
+impl<T: Default + PartialCmp> Students<T> {
     pub fn new() -> Self {
         Self::default()
     }
-}
-
-#[derive(Default)]
-pub struct InnerCounter {
-    pub count: u32,
+    pub fn register(&mut self, name: T) -> &mut Self {
+        self.students.push(name);
+        self
+    }
+    pub fn total(&self) -> usize {
+        self.students.len()
+    }
+    pub fn iter(&self) -> std::slice::Iter<T> {
+        self.students.iter()
+    }
 }
 
 #[cfg(test)]
@@ -122,8 +112,25 @@ mod tests {
         assert_eq!(11, got2);
     }
     #[test]
-    fn counter_new() {
-        let counter = super::Counter::new();
-        assert_eq!(0, counter.inner.count);
+    fn students_register() {
+        let mut students = super::Students::new();
+        students
+            .register(String::from("Adam"))
+            .register(String::from("David"));
+    }
+    #[test]
+    fn students_total() {
+        let mut students = super::Students::new();
+        let students = students.register("Adam").register("Bob");
+        assert_eq!(2, students.total());
+    }
+    #[test]
+    fn students_iter() {
+        let mut students = super::Students::new();
+        let students = students.register("Adam").register("Bob");
+        let mut iter = students.iter();
+        assert_eq!(Some(&"Adam"), iter.next());
+        assert_eq!(Some(&"Bob"), iter.next());
+        assert_eq!(None, iter.next());
     }
 }
