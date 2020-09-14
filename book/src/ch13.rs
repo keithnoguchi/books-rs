@@ -81,6 +81,27 @@ impl<T: Default + Ord> Students<T> {
     }
 }
 
+#[derive(Default)]
+pub struct Counter(usize);
+
+impl Counter {
+    pub fn new() -> Self {
+        Self::default()
+    }
+}
+
+impl Iterator for Counter {
+    type Item = usize;
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.0 < 5 {
+            self.0 += 1;
+            Some(self.0)
+        } else {
+            None
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Cacher;
@@ -132,5 +153,12 @@ mod tests {
         assert_eq!(Some(&"Adam"), iter.next());
         assert_eq!(Some(&"Bob"), iter.next());
         assert_eq!(None, iter.next());
+    }
+    #[test]
+    fn counter_iter() {
+        let mut counter = super::Counter::new().skip(3);
+        assert_eq!(Some(4), counter.next());
+        assert_eq!(Some(5), counter.next());
+        assert_eq!(None, counter.next());
     }
 }
