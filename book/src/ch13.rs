@@ -61,22 +61,22 @@ impl<K: Eq + Hash + Clone, V: Clone, F: Fn(K) -> V> Cacher<K, V, F> {
 ///
 /// [iterator]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
 #[derive(Default)]
-pub struct Students<T: Default + PartialCmp> {
-    students: Vec<T>,
+pub struct Students<T: Default + Ord> {
+    students: std::collections::BTreeSet<T>,
 }
 
-impl<T: Default + PartialCmp> Students<T> {
+impl<T: Default + Ord> Students<T> {
     pub fn new() -> Self {
         Self::default()
     }
     pub fn register(&mut self, name: T) -> &mut Self {
-        self.students.push(name);
+        self.students.insert(name);
         self
     }
     pub fn total(&self) -> usize {
         self.students.len()
     }
-    pub fn iter(&self) -> std::slice::Iter<T> {
+    pub fn iter(&self) -> std::collections::btree_set::Iter<T> {
         self.students.iter()
     }
 }
@@ -127,7 +127,7 @@ mod tests {
     #[test]
     fn students_iter() {
         let mut students = super::Students::new();
-        let students = students.register("Adam").register("Bob");
+        let students = students.register("Bob").register("Adam");
         let mut iter = students.iter();
         assert_eq!(Some(&"Adam"), iter.next());
         assert_eq!(Some(&"Bob"), iter.next());
