@@ -14,10 +14,11 @@ members = [
    "stjepang",
    "crossbeam",
    "mio",
-   "kafka",
+   #"kafka",
    "async-task",
    "actix-web",
-   "hyper",
+   #"hyper",
    "tonic",
    "algorithm",
+   "redis",
 ]
