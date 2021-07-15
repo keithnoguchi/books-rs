@@ -1,13 +1,8 @@
 [package]
-name = "the-book"
+name = "book"
 version = "0.1.0"
-authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
 edition = "2018"
 
-[dependencies]
-tracing = "0.1"
-tracing-subscriber = "0.1"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[dev-dependencies]
-rand = "0.7"
-num_cpus = "1"
+[dependencies]
